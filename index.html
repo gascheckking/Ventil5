@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>VA Botkyrka · Ventilprogram 2026</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5faff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #1e293b;
+            padding: 16px;
+            font-size: 0.8rem;
+        }
+        .app {
+            max-width: 1400px;
+            width: 100%;
+            height: 90vh;
+            max-height: 950px;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 32px;
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 25px 50px -12px rgba(0,20,40,0.15);
+            display: flex;
+            overflow: hidden;
+        }
+        /* === FAST VÄNSTERMENY (sticky) === */
+        .sidebar {
+            width: 250px;
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            padding: 16px 0 12px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            align-self: flex-start;
+            height: 100%;
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            padding: 0 16px 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+        .sidebar-header h2 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+            color: #0b2a41;
+        }
+        .sidebar-header h2 span { color: #f59e0b; }
+        .sidebar-header .sub {
+            font-size: 0.55rem;
+            color: #5e7a93;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px 8px;
+        }
+        .avatar {
+            width: 36px; height: 36px;
+            background: linear-gradient(145deg, #f59e0b, #f97316);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 4px 8px rgba(245,158,11,0.15);
+        }
+        .user-info .name { font-weight: 700; font-size: 0.8rem; line-height: 1.2; }
+        .user-info .role { font-size: 0.55rem; color: #5e7a93; }
+        .nav-menu {
+            flex: 1;
+            padding: 8px 10px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #2c4c6b;
+            cursor: pointer;
+            transition: all 0.12s;
+        }
+        .nav-item i { width: 18px; font-size: 0.9rem; }
+        .nav-item.active {
+            background: #f59e0b;
+            color: white;
+            box-shadow: 0 4px 8px rgba(245,158,11,0.1);
+        }
+        .sidebar-footer {
+            padding: 8px 16px 0;
+            border-top: 1px solid rgba(0,0,0,0.04);
+            font-size: 0.55rem;
+            color: #5e7a93;
+        }
+        .admin-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+        .auth-btn-side {
+            background: white;
+            border: 1px solid #d0dde9;
+            padding: 6px 10px;
+            border-radius: 30px;
+            width: 100%;
+            font-weight: 600;
+            font-size: 0.65rem;
+            color: #1e3a5f;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        /* === HÖGER INNEHÅLL === */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 22px 28px 28px;
+            scrollbar-width: thin;
+        }
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .program-selector {
+            background: white;
+            border-radius: 40px;
+            padding: 2px 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .program-selector select {
+            background: transparent;
+            border: none;
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 7px 16px;
+            outline: none;
+        }
+        .search-section { display: flex; gap: 6px; align-items: center; }
+        .search-wrapper {
+            background: white;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            padding: 2px 6px 2px 14px;
+            min-width: 230px;
+        }
+        .search-wrapper i { color: #f59e0b; font-size: 0.8rem; }
+        .search-wrapper input {
+            background: transparent;
+            border: none;
+            padding: 9px 4px;
+            color: #1e293b;
+            font-size: 0.75rem;
+            width: 100%;
+            outline: none;
+        }
+        .icon-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #3a5c7c;
+            width: 38px; height: 38px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .icon-btn.active { background: #f59e0b; color: white; border-color: #f59e0b; }
+        .map-container {
+            border-radius: 22px;
+            overflow: hidden;
+            height: 240px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 8px 18px -6px rgba(0,0,0,0.05);
+            background: #d4e1ed;
+            margin-bottom: 22px;
+        }
+        #map { height: 100%; width: 100%; }
+        .view-panel {
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+        .view { display: none; }
+        .view.active { display: block; }
+        .card-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #1e3a5f;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+        .chip {
+            background: #eef2f7;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #2c4c6b;
+            cursor: pointer;
+        }
+        .chip.active { background: #f59e0b; color: white; }
+        .sort-bar { display: flex; gap: 18px; margin-bottom: 14px; font-size: 0.7rem; }
+        .sort-option { color: #5e7a93; cursor: pointer; font-weight: 600; }
+        .sort-option.active { color: #f59e0b; text-decoration: underline; text-underline-offset: 4px; }
+        .list-item {
+            background: white;
+            border-radius: 16px;
+            padding: 10px 14px;
+            margin-bottom: 6px;
+            border-left: 4px solid;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.7rem;
+            border: 1px solid #edf2f7;
+        }
+        .item-badge {
+            width: 36px; height: 36px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.65rem; background: #f1f5f9;
+        }
+        .input-field {
+            background: white;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 30px;
+            padding: 10px 16px;
+            color: #1e293b;
+            width: 100%;
+            margin-bottom: 12px;
+            outline: none;
+            font-size: 0.75rem;
+        }
+        .double-field { display: flex; gap: 10px; }
+        .gradient-btn {
+            background: linear-gradient(145deg, #f59e0b, #f97316);
+            border: none;
+            border-radius: 30px;
+            padding: 12px;
+            font-weight: 700;
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            box-shadow: 0 6px 12px rgba(245,158,11,0.15);
+        }
+        .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 18px; }
+        .stat-box {
+            background: white;
+            border-radius: 18px;
+            padding: 14px;
+            border: 1px solid #edf2f7;
+        }
+        .stat-value { font-size: 1.8rem; font-weight: 800; color:#0f2b40; }
+        .chart-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .chart-label { width: 75px; font-size: 0.65rem; font-weight: 600; }
+        .bar-bg { flex:1; height: 24px; background: #e2e8f0; border-radius: 20px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 20px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: white; font-size: 0.6rem; }
+
+        /* Mobiloptimering */
+        @media (max-width: 800px) {
+            body { padding: 8px; }
+            .app { flex-direction: column; height: auto; max-height: none; border-radius: 24px; }
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                align-items: center;
+                padding: 8px 12px;
+                border-right: none;
+                border-bottom: 1px solid rgba(0,0,0,0.04);
+                backdrop-filter: blur(8px);
+                position: relative; /* fallback */
+                height: auto;
+            }
+            .sidebar-header {
+                display: flex;
+                align-items: baseline;
+                gap: 6px;
+                padding: 0;
+                border-bottom: none;
+                flex: 0 1 auto;
+            }
+            .sidebar-header h2 { font-size: 1.1rem; }
+            .sidebar-header .sub { display: none; }
+            .user-profile {
+                padding: 0;
+                margin-left: 8px;
+                gap: 6px;
+                flex: 1;
+            }
+            .avatar { width: 32px; height: 32px; font-size: 0.9rem; }
+            .user-info .name { font-size: 0.75rem; }
+            .user-info .role { font-size: 0.5rem; }
+            .nav-menu {
+                flex-direction: row;
+                padding: 0;
+                gap: 4px;
+                flex-wrap: wrap;
+                margin-left: auto;
+            }
+            .nav-item {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+                border-radius: 20px;
+            }
+            .nav-item i { font-size: 0.8rem; margin-right: 2px; }
+            .sidebar-footer { display: none; }
+            .main-content { padding: 16px; }
+            .top-bar { flex-direction: column; align-items: stretch; }
+            .search-section { flex-wrap: wrap; }
+            .map-container { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <!-- FAST VÄNSTERMENY -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>VA<span>Botkyrka</span></h2>
+            <div class="sub">Ventilprogram 2026</div>
+        </div>
+        <div class="user-profile">
+            <div class="avatar" id="avatarInitial">F</div>
+            <div class="user-info">
+                <div class="name" id="sidebarUserName">fredde</div>
+                <div class="role">Registrator</div>
+            </div>
+        </div>
+        <div class="nav-menu">
+            <div class="nav-item active" data-view="register"><i class="fas fa-pen-fancy"></i><span class="nav-text">Registrera</span></div>
+            <div class="nav-item" data-view="actions"><i class="fas fa-tools"></i><span class="nav-text">Åtgärder</span></div>
+            <div class="nav-item" data-view="broken"><i class="fas fa-exclamation-triangle"></i><span class="nav-text">Trasiga</span></div>
+            <div class="nav-item" data-view="stats"><i class="fas fa-chart-pie"></i><span class="nav-text">Statistik</span></div>
+            <div class="nav-item" data-view="profile"><i class="fas fa-user-circle"></i><span class="nav-text">Profil</span></div>
+        </div>
+        <div class="sidebar-footer">
+            <div class="admin-badge"><i class="fas fa-shield-alt"></i><span>Admin</span></div>
+            <button class="auth-btn-side" id="sidebarAuthBtn"><i class="fas fa-exchange-alt"></i> Byt användare</button>
+        </div>
+    </div>
+
+    <!-- HÖGER INNEHÅLL -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="program-selector">
+                <select id="programSelect">
+                    <option value="ventilprogram" selected>📋 Ventilprogram</option>
+                    <option value="brandpostrondering">🔥 Brandpostrondering</option>
+                    <option value="test">🧪 Test</option>
+                </select>
+            </div>
+            <div class="search-section">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Sök adress ...">
+                </div>
+                <div class="icon-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></div>
+                <div class="icon-btn" id="gpsBtn"><i class="fas fa-location-arrow"></i></div>
+                <div class="icon-btn" id="trackBtn"><i class="fas fa-satellite"></i></div>
+                <div class="icon-btn" id="needleBtn"><i class="fas fa-map-pin"></i></div>
+                <div class="icon-btn" id="photoBtn"><i class="fas fa-camera"></i></div>
+            </div>
+        </div>
+
+        <div id="mapContainer" style="display:block;">
+            <div class="map-container"><div id="map"></div></div>
+        </div>
+
+        <div class="view-panel">
+            <!-- REGISTRERA -->
+            <div id="view-register" class="view active">
+                <div class="card-title"><i class="fas fa-plus-circle"></i> Ny registrering</div>
+                <div class="double-field">
+                    <select id="regType" class="input-field" style="flex:1;"><option value="VAV">VAV</option><option value="VBP">VBP</option><option value="VSP">VSP</option><option value="DNB">DNB</option><option value="SNB">SNB</option><option value="VSV">VSV</option></select>
+                    <input type="text" id="regNumber" class="input-field" placeholder="Nummer" style="flex:1.5;">
+                </div>
+                <select id="regArea" class="input-field"><option>Tullinge</option><option>Tumba</option><option>Vårsta</option><option>Norra Botkyrka</option></select>
+                <select id="regStatus" class="input-field">
+                    <option value="Trasig">🔴 Trasig</option><option value="Trög">🟠 Trög</option><option value="Övertäckt">🟡 Övertäckt</option>
+                    <option value="Betäckning defekt">🟡 Betäckning</option><option value="Hittar ej">⚪ Hittar ej</option>
+                    <option value="Ej kontrollerad">⚪ Ej kontrollerad</option><option value="OK">🟢 OK</option>
+                </select>
+                <div id="regDetailContainer" style="display:none;"><select id="regDetail" class="input-field"><option value="">Välj detalj</option></select></div>
+                <input type="text" id="regLocation" class="input-field" placeholder="Plats (klicka på karta)">
+                <input type="text" id="regNote" class="input-field" placeholder="Notering">
+                <div id="photoPreview" style="display:none; align-items:center; gap:8px; margin-bottom:10px;">
+                    <img id="photoImg" style="width:40px;height:40px;border-radius:12px;"><span id="photoGpsInfo" style="font-size:0.65rem;"></span>
+                </div>
+                <button class="gradient-btn" id="saveVentilBtn">💾 Spara ventil</button>
+            </div>
+            <!-- ÅTGÄRDSLISTA -->
+            <div id="view-actions" class="view">
+                <div class="card-title"><i class="fas fa-tools"></i> Åtgärdslista</div>
+                <div class="chip-row">
+                    <div class="chip active" data-filter="all">Alla</div><div class="chip" data-filter="trog">Trög</div>
+                    <div class="chip" data-filter="betackning">Betäckning</div><div class="chip" data-filter="overtackt">Övertäckt</div>
+                </div>
+                <div class="sort-bar">
+                    <span class="sort-option active" data-sort="id">ID</span><span class="sort-option" data-sort="address">Adress</span><span class="sort-option" data-sort="status">Status</span>
+                </div>
+                <div id="actionsList" style="max-height:340px; overflow-y:auto;"></div>
+            </div>
+            <!-- TRASIGA -->
+            <div id="view-broken" class="view">
+                <div class="card-title"><i class="fas fa-exclamation-triangle" style="color:#dc2626;"></i> Trasiga ventiler</div>
+                <div id="brokenList" style="max-height:360px; overflow-y:auto;"></div>
+            </div>
+            <!-- STATISTIK -->
+            <div id="view-stats" class="view">
+                <div class="stat-grid">
+                    <div class="stat-box"><span>Totalt</span><div class="stat-value" id="statTotal">0</div></div>
+                    <div class="stat-box"><span>Trasiga</span><div class="stat-value" id="statTrasig" style="color:#dc2626;">0</div></div>
+                    <div class="stat-box"><span>Åtgärdade</span><div class="stat-value" id="statOk" style="color:#16a34a;">0</div></div>
+                </div>
+                <div style="margin-top:16px;"><div class="card-title">Defektfördelning</div><div id="statsBars"></div></div>
+            </div>
+            <!-- PROFIL -->
+            <div id="view-profile" class="view">
+                <div class="card-title"><i class="fas fa-user-astronaut"></i> Min profil</div>
+                <div style="font-size:1rem; font-weight:700;" id="profileName">fredde</div>
+                <div class="stat-grid" style="margin:12px 0;">
+                    <div class="stat-box"><span>Mina</span><div class="stat-value" id="userTotalReg">0</div></div>
+                    <div class="stat-box"><span>Åtgärdade</span><div class="stat-value" id="userFixedReg">0</div></div>
+                </div>
+                <textarea id="userNotes" class="input-field" placeholder="Anteckningar..." rows="2"></textarea>
+                <button class="gradient-btn" id="saveNotesBtn">Spara anteckning</button>
+                <button class="auth-btn-side" id="mobileAuthBtn" style="margin-top:12px; display:none;"><i class="fas fa-exchange-alt"></i> Byt användare</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    (function(){
+        const TYPE_COLORS = {'VAV':'#1f77b4','VBP':'#d62728','VSP':'#2ca02c','DNB':'#ff7f0e','SNB':'#9467bd','VSV':'#17becf'};
+        let ventilData = [];
+        let currentUser = 'fredde';
+        let map, markersLayer, currentMarker, watchId = null;
+        let isNeedleMode = false, currentPhoto = null;
+        let currentActionFilter = 'all', actionSort = 'id';
+
+        const statusDetails = {
+            "Trasig": ["Snurrar bara", "Stum", "Saknar nyckelstång", "Läckljud"],
+            "Trög": ["Kräver 2 gubbar", "Kärvar"],
+            "Övertäckt": ["Asfalt", "Jord", "Buskage", "Bråte", "Mur", "Byggnation", "Bygge"],
+            "Betäckning defekt": ["Höjas", "Trasigt lock", "Byta hela", "Saknar lock"],
+            "Hittar ej": ["Måste mätas in", "Borttagen"],
+            "Ej kontrollerad": ["-"]
+        };
+
+        function init() {
+            loadData();
+            initMap();
+            setupListeners();
+            renderAll();
+            updateAuthUI();
+            populateDetail();
+            if (window.innerWidth <= 800) {
+                document.getElementById('mobileAuthBtn').style.display = 'block';
+            }
+        }
+
+        function initMap() {
+            map = L.map('map').setView([59.2, 17.82], 12);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© CartoDB'
+            }).addTo(map);
+            markersLayer = L.layerGroup().addTo(map);
+            map.on('click', onMapClick);
+            setTimeout(()=> map.invalidateSize(), 200);
+        }
+
+        function onMapClick(e) {
+            if(!isNeedleMode) return;
+            const {lat, lng} = e.latlng;
+            reverseGeocode(lat, lng, (addr) => {
+                document.getElementById('regLocation').value = addr;
+                if(currentMarker) markersLayer.removeLayer(currentMarker);
+                currentMarker = L.marker([lat,lng]).bindPopup(addr).addTo(markersLayer);
+                isNeedleMode = false;
+                document.getElementById('needleBtn').classList.remove('active');
+            });
+        }
+
+        function reverseGeocode(lat, lng, cb) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+                .then(r=>r.json()).then(d=> cb(d.display_name?.split(',')[0] || 'Plats'));
+        }
+
+        function updateMapMarkers() {
+            markersLayer.clearLayers();
+            ventilData.filter(v=>!v.fixed).forEach(v=>{
+                if(v.lat) {
+                    L.circleMarker([v.lat, v.lng], {radius:7, color:'white', weight:2, fillColor:TYPE_COLORS[v.type]||'#888', fillOpacity:0.9})
+                        .bindPopup(`<b>${v.ventilNr}</b><br>${v.location}<br>${v.fullStatus}<br><button onclick="window.routeTo(${v.lat},${v.lng})">🚗 Visa rutt</button>`).addTo(markersLayer);
+                }
+            });
+        }
+        window.routeTo = (lat, lng) => window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank');
+
+        function loadData() {
+            let stored = localStorage.getItem('va_clean_final');
+            if(stored) ventilData = JSON.parse(stored); else ventilData = [];
+            let u = localStorage.getItem('currentUser'); if(u) currentUser = u;
+            document.getElementById('userNotes').value = localStorage.getItem('userNotes')||'';
+        }
+        function saveToLocal() { localStorage.setItem('va_clean_final', JSON.stringify(ventilData)); if(currentUser) localStorage.setItem('currentUser', currentUser); }
+
+        function renderActions() {
+            let actions = ventilData.filter(v=>!v.fixed && (v.fullStatus.includes('Trög')||v.fullStatus.includes('Betäckning')||v.fullStatus.includes('Över')));
+            if(currentActionFilter==='trog') actions=actions.filter(v=>v.fullStatus.includes('Trög'));
+            else if(currentActionFilter==='betackning') actions=actions.filter(v=>v.fullStatus.includes('Betäckning'));
+            else if(currentActionFilter==='overtackt') actions=actions.filter(v=>v.fullStatus.includes('Över'));
+            if(actionSort==='id') actions.sort((a,b)=>a.ventilNr.localeCompare(b.ventilNr));
+            else if(actionSort==='address') actions.sort((a,b)=>a.location.localeCompare(b.location));
+            else actions.sort((a,b)=>a.fullStatus.localeCompare(b.fullStatus));
+            let html = actions.map(v=>`<div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]}"><div class="item-badge">${v.type}</div><div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div><span class="chip">${v.fullStatus.substring(0,12)}</span><i class="fas fa-check-circle" style="color:#16a34a;" onclick="approveVentil('${v.id}')"></i></div>`).join('');
+            document.getElementById('actionsList').innerHTML = html || '<div style="padding:20px;">✨ Inga åtgärder</div>';
+        }
+        window.approveVentil = function(id) {
+            let v = ventilData.find(x=>x.id===id); if(v) { v.fixed=true; v.completedBy=currentUser; saveToLocal(); renderAll(); updateMapMarkers(); }
+        };
+        function renderBroken() {
+            let broken = ventilData.filter(v=>!v.fixed && v.fullStatus.includes('Trasig'));
+            let html = broken.map(v=>`<div class="list-item"><div><b>${v.ventilNr}</b><br>${v.location}</div><i class="fas fa-check" onclick="approveVentil('${v.id}')"></i></div>`).join('');
+            document.getElementById('brokenList').innerHTML = html||'✨ Inga trasiga';
+        }
+        function renderStats() {
+            let total = ventilData.length, trasig = ventilData.filter(v=>!v.fixed && v.fullStatus.includes('Trasig')).length;
+            let trog = ventilData.filter(v=>!v.fixed && v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')).length;
+            let bet = ventilData.filter(v=>!v.fixed && v.fullStatus.includes('Betäckning')).length;
+            let ok = ventilData.filter(v=>v.fixed).length;
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statTrasig').innerText = trasig;
+            document.getElementById('statOk').innerText = ok;
+            let maxVal = Math.max(trasig, trog, bet, ok, 1);
+            let bars = [
+                {label:'🔴 Trasiga', val:trasig, color:'#dc2626', perc: total?Math.round(trasig/total*100):0},
+                {label:'🟠 Tröga', val:trog, color:'#ea580c', perc: total?Math.round(trog/total*100):0},
+                {label:'🟡 Betäckning', val:bet, color:'#d97706', perc: total?Math.round(bet/total*100):0},
+                {label:'✅ Åtgärdade', val:ok, color:'#16a34a', perc: total?Math.round(ok/total*100):0}
+            ];
+            document.getElementById('statsBars').innerHTML = bars.map(b=>`<div class="chart-bar"><div class="chart-label">${b.label}</div><div class="bar-bg"><div class="bar-fill" style="width:${(b.val/maxVal)*100}%; background:${b.color};">${b.val}</div></div><div style="width:40px;">${b.perc}%</div></div>`).join('');
+        }
+        function renderAll() { renderActions(); renderBroken(); renderStats(); updateUserStats(); updateMapMarkers(); }
+        function updateUserStats() {
+            if(!currentUser) return;
+            document.getElementById('userTotalReg').innerText = ventilData.filter(v=>v.reportedBy===currentUser).length;
+            document.getElementById('userFixedReg').innerText = ventilData.filter(v=>v.completedBy===currentUser).length;
+        }
+        function updateAuthUI() {
+            document.getElementById('sidebarUserName').innerText = currentUser || 'Inte inloggad';
+            document.getElementById('profileName').innerText = currentUser || 'Inte inloggad';
+            document.getElementById('avatarInitial').innerText = currentUser ? currentUser.charAt(0).toUpperCase() : '?';
+        }
+        function populateDetail() {
+            const sel = document.getElementById('regStatus');
+            const detailSel = document.getElementById('regDetail');
+            const cont = document.getElementById('regDetailContainer');
+            function update() {
+                let status = sel.value;
+                if(statusDetails[status]) {
+                    cont.style.display='block';
+                    detailSel.innerHTML = '<option value="">Välj detalj</option>';
+                    statusDetails[status].forEach(d=> detailSel.innerHTML += `<option>${d}</option>`);
+                } else cont.style.display='none';
+            }
+            sel.addEventListener('change', update); update();
+        }
+
+        function takePhoto() {
+            const input = document.createElement('input');
+            input.type = 'file'; input.accept = 'image/*'; input.setAttribute('capture', 'environment');
+            input.onchange = e => {
+                const file = e.target.files[0]; if(!file) return;
+                if(navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(pos => {
+                        reverseGeocode(pos.coords.latitude, pos.coords.longitude, addr => {
+                            document.getElementById('regLocation').value = addr;
+                            document.getElementById('photoGpsInfo').innerText = `📍 ${addr.substring(0,20)}`;
+                        });
+                    });
+                }
+                const reader = new FileReader();
+                reader.onload = ev => { currentPhoto = ev.target.result; document.getElementById('photoImg').src = currentPhoto; document.getElementById('photoPreview').style.display='flex'; };
+                reader.readAsDataURL(file);
+            }; input.click();
+        }
+
+        function toggleLiveTracking() {
+            if(watchId) { navigator.geolocation.clearWatch(watchId); watchId=null; document.getElementById('trackBtn').classList.remove('active'); }
+            else {
+                if(!navigator.geolocation) return;
+                watchId = navigator.geolocation.watchPosition(pos => {
+                    map.setView([pos.coords.latitude, pos.coords.longitude], 16);
+                    L.marker([pos.coords.latitude, pos.coords.longitude], {icon:L.divIcon({html:'🔵', className:'tracker'})}).addTo(markersLayer);
+                }, null, {enableHighAccuracy:true});
+                document.getElementById('trackBtn').classList.add('active');
+            }
+        }
+
+        function setupListeners() {
+            const authHandler = ()=>{
+                let newName = prompt('Ange namn:', currentUser || '');
+                if(newName) currentUser = newName;
+                updateAuthUI(); saveToLocal(); renderAll();
+            };
+            document.getElementById('sidebarAuthBtn').onclick = authHandler;
+            document.getElementById('mobileAuthBtn').onclick = authHandler;
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+                    item.classList.add('active');
+                    let viewId = item.dataset.view;
+                    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+                    document.getElementById(`view-${viewId}`).classList.add('active');
+                    document.getElementById('mapContainer').style.display = (viewId==='register') ? 'block' : 'none';
+                    if(viewId==='register') setTimeout(()=>map.invalidateSize(),100);
+                    if(viewId==='stats') renderStats();
+                });
+            });
+            document.querySelectorAll('.chip[data-filter]').forEach(c=>c.onclick=function(){
+                document.querySelectorAll('.chip[data-filter]').forEach(ch=>ch.classList.remove('active')); this.classList.add('active');
+                currentActionFilter = this.dataset.filter; renderActions();
+            });
+            document.querySelectorAll('.sort-option').forEach(s=>s.onclick=function(){
+                document.querySelectorAll('.sort-option').forEach(so=>so.classList.remove('active')); this.classList.add('active');
+                actionSort = this.dataset.sort; renderActions();
+            });
+            document.getElementById('needleBtn').onclick = ()=>{ isNeedleMode=!isNeedleMode; document.getElementById('needleBtn').classList.toggle('active'); };
+            document.getElementById('gpsBtn').onclick = ()=>{ navigator.geolocation.getCurrentPosition(p=>{ map.setView([p.coords.latitude, p.coords.longitude], 16); }); };
+            document.getElementById('trackBtn').onclick = toggleLiveTracking;
+            document.getElementById('photoBtn').onclick = takePhoto;
+            document.getElementById('saveVentilBtn').onclick = ()=>{
+                if(!currentUser) { alert('Logga in'); return; }
+                let typ = document.getElementById('regType').value, nr = document.getElementById('regNumber').value;
+                let area = document.getElementById('regArea').value, loc = document.getElementById('regLocation').value;
+                let status = document.getElementById('regStatus').value, detail = document.getElementById('regDetail').value;
+                let full = detail ? `${status} - ${detail}` : status;
+                let lat = currentMarker?.getLatLng().lat || 59.2, lng = currentMarker?.getLatLng().lng || 17.82;
+                ventilData.push({id:'usr_'+Date.now(), ventilNr:typ+nr, type:typ, area, location:loc, fullStatus:full, reportedBy:currentUser, fixed:false, lat, lng});
+                saveToLocal(); renderAll(); updateMapMarkers();
+                document.getElementById('regNumber').value=''; document.getElementById('regLocation').value=''; document.getElementById('photoPreview').style.display='none';
+            };
+            document.getElementById('searchBtn').onclick = searchAddress;
+            document.getElementById('searchInput').onkeypress = e=>{ if(e.key==='Enter') searchAddress(); };
+            document.getElementById('saveNotesBtn').onclick = ()=>{ localStorage.setItem('userNotes', document.getElementById('userNotes').value); alert('Sparat'); };
+        }
+
+        async function searchAddress() {
+            let q = document.getElementById('searchInput').value;
+            let res = await fetch(`https://nominatim.openstreetmap.org/search?q=${q} Botkyrka&format=json&limit=1`);
+            let data = await res.json();
+            if(data[0]) { map.setView([data[0].lat, data[0].lon], 16); L.marker([data[0].lat, data[0].lon]).addTo(markersLayer).bindPopup(q); document.getElementById('regLocation').value = data[0].display_name; }
+        }
+
+        init();
+    })();
+</script>
+</body>
+</html>
