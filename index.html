@@ -34,7 +34,7 @@
             display: flex;
             overflow: hidden;
         }
-        /* === FAST VÄNSTERMENY (sticky) === */
+        /* === FAST VÄNSTERMENY (STICKY) === */
         .sidebar {
             width: 250px;
             background: rgba(255,255,255,0.5);
@@ -298,7 +298,7 @@
         .bar-bg { flex:1; height: 24px; background: #e2e8f0; border-radius: 20px; overflow: hidden; }
         .bar-fill { height: 100%; border-radius: 20px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: white; font-size: 0.6rem; }
 
-        /* Mobiloptimering */
+        /* Mobil: sidomenyn fortfarande sticky */
         @media (max-width: 800px) {
             body { padding: 8px; }
             .app { flex-direction: column; height: auto; max-height: none; border-radius: 24px; }
@@ -310,8 +310,11 @@
                 border-right: none;
                 border-bottom: 1px solid rgba(0,0,0,0.04);
                 backdrop-filter: blur(8px);
-                position: relative; /* fallback */
+                position: sticky;
+                top: 0;
+                z-index: 10;
                 height: auto;
+                overflow-y: visible;
             }
             .sidebar-header {
                 display: flex;
@@ -355,7 +358,7 @@
 </head>
 <body>
 <div class="app">
-    <!-- FAST VÄNSTERMENY -->
+    <!-- FAST VÄNSTERMENY (sticky) -->
     <div class="sidebar">
         <div class="sidebar-header">
             <h2>VA<span>Botkyrka</span></h2>
@@ -527,7 +530,13 @@
 
         function reverseGeocode(lat, lng, cb) {
             fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
-                .then(r=>r.json()).then(d=> cb(d.display_name?.split(',')[0] || 'Plats'));
+                .then(r=>r.json()).then(d=> {
+                    const addr = d.address;
+                    let formatted = addr.road || addr.pedestrian || addr.path || '';
+                    if (addr.house_number) formatted += ' ' + addr.house_number;
+                    if (!formatted) formatted = d.display_name?.split(',')[0] || 'Okänd plats';
+                    cb(formatted);
+                }).catch(()=> cb('Okänd plats'));
         }
 
         function updateMapMarkers() {
@@ -672,7 +681,19 @@
                 actionSort = this.dataset.sort; renderActions();
             });
             document.getElementById('needleBtn').onclick = ()=>{ isNeedleMode=!isNeedleMode; document.getElementById('needleBtn').classList.toggle('active'); };
-            document.getElementById('gpsBtn').onclick = ()=>{ navigator.geolocation.getCurrentPosition(p=>{ map.setView([p.coords.latitude, p.coords.longitude], 16); }); };
+            document.getElementById('gpsBtn').onclick = ()=>{ 
+                if (!navigator.geolocation) { alert('GPS stöds ej'); return; }
+                navigator.geolocation.getCurrentPosition(pos => {
+                    const lat = pos.coords.latitude, lng = pos.coords.longitude;
+                    map.setView([lat, lng], 16);
+                    if(currentMarker) markersLayer.removeLayer(currentMarker);
+                    currentMarker = L.marker([lat, lng]).addTo(markersLayer).bindPopup('Din position');
+                    reverseGeocode(lat, lng, addr => {
+                        document.getElementById('regLocation').value = addr;
+                        currentMarker.setPopupContent(addr).openPopup();
+                    });
+                }, () => { alert('Kunde inte hämta position'); });
+            };
             document.getElementById('trackBtn').onclick = toggleLiveTracking;
             document.getElementById('photoBtn').onclick = takePhoto;
             document.getElementById('saveVentilBtn').onclick = ()=>{
