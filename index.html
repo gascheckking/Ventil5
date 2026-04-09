@@ -1,1108 +1,138 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>VA Botkyrka · Ventilprogram 2026</title>
-    <!-- Leaflet + MarkerCluster -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* === GLOBAL RESET === */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f4f9fe;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #1e293b;
-            padding: 20px;
-            font-size: 0.85rem;
-        }
-
-        /* === HUVUDAPP === */
-        .app {
-            max-width: 1440px;
-            width: 100%;
-            height: 95vh;
-            max-height: 1000px;
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 36px;
-            border: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 30px 50px -15px rgba(0,20,40,0.2);
-            display: flex;
-            overflow: hidden;
-        }
-
-        /* === FAST VÄNSTERMENY (STICKY) === */
-        .sidebar {
-            width: 280px;
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-right: 1px solid rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            padding: 28px 0 24px;
-            flex-shrink: 0;
-            position: sticky;
-            top: 0;
-            align-self: flex-start;
-            height: 100%;
-            overflow-y: auto;
-            scrollbar-width: thin;
-        }
-
-        .sidebar-header {
-            padding: 0 24px 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .sidebar-header h2 {
-            font-weight: 700;
-            font-size: 1.8rem;
-            letter-spacing: -0.02em;
-            color: #0b2a41;
-        }
-        .sidebar-header h2 span { color: #f59e0b; }
-        .sidebar-header .sub {
-            font-size: 0.7rem;
-            color: #5e7a93;
-            margin-top: 4px;
-            font-weight: 500;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 24px 24px 16px;
-        }
-        .avatar {
-            width: 52px; height: 52px;
-            background: linear-gradient(145deg, #f59e0b, #f97316);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 1.4rem;
-            box-shadow: 0 8px 14px rgba(245,158,11,0.2);
-        }
-        .user-info .name { font-weight: 700; font-size: 1rem; }
-        .user-info .role { font-size: 0.7rem; color: #5e7a93; }
-
-        .nav-menu {
-            flex: 1;
-            padding: 20px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 18px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #2c4c6b;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .nav-item i { width: 22px; font-size: 1.1rem; }
-        .nav-item.active {
-            background: #f59e0b;
-            color: white;
-            box-shadow: 0 8px 16px rgba(245,158,11,0.2);
-        }
-        .nav-item:hover:not(.active) { background: rgba(245,158,11,0.08); }
-
-        .sidebar-footer {
-            padding: 20px 24px 0;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            font-size: 0.7rem;
-            color: #5e7a93;
-        }
-        .auth-btn-side {
-            background: white;
-            border: 1px solid #d0dde9;
-            padding: 10px 16px;
-            border-radius: 40px;
-            width: 100%;
-            font-weight: 600;
-            color: #1e3a5f;
-            cursor: pointer;
-            transition: 0.1s;
-            margin-top: 12px;
-        }
-        .auth-btn-side:hover { background: #f8fafc; border-color: #f59e0b; }
-
-        /* === HÖGER INNEHÅLL === */
-        .main-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 28px 32px 32px;
-            scrollbar-width: thin;
-            background: transparent;
-        }
-
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        .program-selector {
-            background: white;
-            border-radius: 60px;
-            padding: 3px 8px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
-        }
-        .program-selector select {
-            background: transparent;
-            border: none;
-            color: #1e293b;
-            font-weight: 600;
-            font-size: 0.8rem;
-            padding: 8px 20px;
-            outline: none;
-        }
-
-        .search-section { display: flex; gap: 8px; align-items: center; }
-        .search-wrapper {
-            background: white;
-            border-radius: 40px;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            padding: 2px 8px 2px 18px;
-            min-width: 260px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-        .search-wrapper i { color: #f59e0b; font-size: 0.9rem; }
-        .search-wrapper input {
-            background: transparent;
-            border: none;
-            padding: 10px 6px;
-            color: #1e293b;
-            font-size: 0.8rem;
-            width: 100%;
-            outline: none;
-        }
-        .icon-btn {
-            background: white;
-            border: 1px solid #e2e8f0;
-            color: #3a5c7c;
-            width: 42px; height: 42px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            transition: all 0.1s;
-        }
-        .icon-btn.active { background: #f59e0b; color: white; border-color: #f59e0b; }
-
-        /* Karta */
-        .map-container {
-            border-radius: 24px;
-            overflow: hidden;
-            height: 280px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.08);
-            background: #d4e1ed;
-            margin-bottom: 24px;
-        }
-        #map { height: 100%; width: 100%; }
-
-        /* Dashboard-kort */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(5,1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .dash-card {
-            background: white;
-            border-radius: 20px;
-            padding: 14px;
-            text-align: center;
-            border: 1px solid #edf2f7;
-            cursor: pointer;
-            transition: all 0.1s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-        .dash-card.active {
-            border: 2px solid #f59e0b;
-            background: #fff8e7;
-        }
-        .dash-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #0f2b40;
-        }
-        .dash-label {
-            font-size: 0.7rem;
-            color: #5e7a93;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        /* Vyer */
-        .view-panel {
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 28px;
-            padding: 24px;
-            border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05);
-        }
-        .view { display: none; }
-        .view.active { display: block; }
-
-        .card-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: #1e3a5f;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Grupperad åtgärdslista */
-        .group-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0 6px;
-            font-weight: 700;
-            color: #1e3a5f;
-            cursor: pointer;
-        }
-        .group-badge {
-            background: #eef2f7;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-        }
-        .list-item {
-            background: white;
-            border-radius: 16px;
-            padding: 12px 16px;
-            margin-bottom: 6px;
-            border-left: 5px solid;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-        .list-item:active { transform: scale(0.99); }
-        .item-marker {
-            width: 28px; height: 28px;
-            border-radius: 10px;
-            background: #f1f5f9;
-        }
-
-        /* Formulär */
-        .input-field {
-            background: white;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 40px;
-            padding: 12px 18px;
-            color: #1e293b;
-            width: 100%;
-            margin-bottom: 14px;
-            outline: none;
-            font-size: 0.8rem;
-            transition: border 0.15s;
-        }
-        .input-field:focus { border-color: #f59e0b; }
-        .double-field { display: flex; gap: 12px; }
-        .gradient-btn {
-            background: linear-gradient(145deg, #f59e0b, #f97316);
-            border: none;
-            border-radius: 40px;
-            padding: 14px;
-            font-weight: 700;
-            color: white;
-            width: 100%;
-            cursor: pointer;
-            font-size: 0.85rem;
-            box-shadow: 0 8px 16px rgba(245,158,11,0.2);
-            transition: all 0.1s;
-        }
-        .gradient-btn:active { transform: scale(0.98); }
-
-        /* Statistik */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(3,1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .stat-box {
-            background: white;
-            border-radius: 18px;
-            padding: 16px;
-            border: 1px solid #edf2f7;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
-        }
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #0f2b40;
-        }
-        .chart-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .chart-label { width: 85px; font-size: 0.7rem; font-weight: 600; }
-        .bar-bg {
-            flex: 1;
-            height: 28px;
-            background: #e2e8f0;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        .bar-fill {
-            height: 100%;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 600;
-        }
-
-        /* Responsivitet */
-        @media (max-width: 1000px) {
-            .dashboard-grid { grid-template-columns: repeat(3,1fr); }
-        }
-        @media (max-width: 800px) {
-            body { padding: 12px; }
-            .app { flex-direction: column; height: auto; max-height: none; }
-            .sidebar {
-                width: 100%;
-                position: relative;
-                height: auto;
-                border-right: none;
-                border-bottom: 1px solid #eef2f6;
-                padding: 16px;
-            }
-            .nav-menu { flex-direction: row; flex-wrap: wrap; }
-            .main-content { padding: 20px; }
-        }
-        @media (max-width: 600px) {
-            .dashboard-grid { grid-template-columns: repeat(2,1fr); }
-            .top-bar { flex-direction: column; align-items: stretch; }
-            .search-wrapper { min-width: 100%; }
-        }
-
-        /* Anpassningar för clustermarkers */
-        .custom-marker {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .leaflet-popup-content button {
-            background: #f59e0b;
-            border: none;
-            border-radius: 30px;
-            padding: 6px 14px;
-            margin: 4px 2px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>VA Botkyrka · Ventilprogram 2026</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* === GLOBAL RESET === */
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:#f4f9fe;display:flex;justify-content:center;align-items:center;min-height:100vh;color:#1e293b;padding:20px;font-size:.85rem}.app{max-width:1440px;width:100%;height:95vh;max-height:1000px;background:rgba(255,255,255,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:36px;border:1px solid rgba(255,255,255,.5);box-shadow:0 30px 50px -15px rgba(0,20,40,.2);display:flex;overflow:hidden}.sidebar{width:280px;background:rgba(255,255,255,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-right:1px solid rgba(0,0,0,.05);display:flex;flex-direction:column;padding:28px 0 24px;flex-shrink:0;position:sticky;top:0;align-self:flex-start;height:100%;overflow-y:auto;scrollbar-width:thin}.sidebar-header{padding:0 24px 20px;border-bottom:1px solid rgba(0,0,0,.05)}.sidebar-header h2{font-weight:700;font-size:1.8rem;letter-spacing:-.02em;color:#0b2a41}.sidebar-header h2 span{color:#f59e0b}.sidebar-header .sub{font-size:.7rem;color:#5e7a93;margin-top:4px;font-weight:500}.user-profile{display:flex;align-items:center;gap:14px;padding:24px 24px 16px}.avatar{width:52px;height:52px;background:linear-gradient(145deg,#f59e0b,#f97316);border-radius:18px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1.4rem;box-shadow:0 8px 14px rgba(245,158,11,.2)}.user-info .name{font-weight:700;font-size:1rem}.user-info .role{font-size:.7rem;color:#5e7a93}.nav-menu{flex:1;padding:20px 16px;display:flex;flex-direction:column;gap:6px}.nav-item{display:flex;align-items:center;gap:14px;padding:12px 18px;border-radius:20px;font-weight:600;font-size:.9rem;color:#2c4c6b;cursor:pointer;transition:all .15s}.nav-item i{width:22px;font-size:1.1rem}.nav-item.active{background:#f59e0b;color:white;box-shadow:0 8px 16px rgba(245,158,11,.2)}.nav-item:hover:not(.active){background:rgba(245,158,11,.08)}.sidebar-footer{padding:20px 24px 0;border-top:1px solid rgba(0,0,0,.05);font-size:.7rem;color:#5e7a93}.auth-btn-side{background:white;border:1px solid #d0dde9;padding:10px 16px;border-radius:40px;width:100%;font-weight:600;color:#1e3a5f;cursor:pointer;transition:.1s;margin-top:12px}.auth-btn-side:hover{background:#f8fafc;border-color:#f59e0b}.main-content{flex:1;overflow-y:auto;padding:28px 32px 32px;scrollbar-width:thin;background:transparent}.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px}.program-selector{background:white;border-radius:60px;padding:3px 8px;border:1px solid #e2e8f0;box-shadow:0 4px 8px rgba(0,0,0,.02)}.program-selector select{background:transparent;border:none;color:#1e293b;font-weight:600;font-size:.8rem;padding:8px 20px;outline:none}.search-section{display:flex;gap:8px;align-items:center}.search-wrapper{background:white;border-radius:40px;border:1px solid #e2e8f0;display:flex;align-items:center;padding:2px 8px 2px 18px;min-width:260px;box-shadow:0 2px 6px rgba(0,0,0,.02)}.search-wrapper i{color:#f59e0b;font-size:.9rem}.search-wrapper input{background:transparent;border:none;padding:10px 6px;color:#1e293b;font-size:.8rem;width:100%;outline:none}.icon-btn{background:white;border:1px solid #e2e8f0;color:#3a5c7c;width:42px;height:42px;border-radius:30px;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,.02);transition:all .1s}.icon-btn.active{background:#f59e0b;color:white;border-color:#f59e0b}.map-container{border-radius:24px;overflow:hidden;height:280px;border:1px solid #e2e8f0;box-shadow:0 12px 24px -8px rgba(0,0,0,.08);background:#d4e1ed;margin-bottom:24px}#map{height:100%;width:100%}.dashboard-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}.dash-card{background:white;border-radius:20px;padding:14px;text-align:center;border:1px solid #edf2f7;cursor:pointer;transition:all .1s;box-shadow:0 2px 6px rgba(0,0,0,.02)}.dash-card.active{border:2px solid #f59e0b;background:#fff8e7}.dash-value{font-size:2rem;font-weight:800;color:#0f2b40}.dash-label{font-size:.7rem;color:#5e7a93;text-transform:uppercase;letter-spacing:.3px}.view-panel{background:rgba(255,255,255,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:28px;padding:24px;border:1px solid rgba(255,255,255,.8);box-shadow:0 10px 20px -5px rgba(0,0,0,.05)}.view{display:none}.view.active{display:block}.card-title{font-weight:700;font-size:1rem;color:#1e3a5f;margin-bottom:20px;display:flex;align-items:center;gap:10px}.group-header{display:flex;justify-content:space-between;align-items:center;padding:12px 0 6px;font-weight:700;color:#1e3a5f;cursor:pointer}.group-badge{background:#eef2f7;padding:4px 12px;border-radius:20px;font-size:.7rem}.list-item{background:white;border-radius:16px;padding:12px 16px;margin-bottom:6px;border-left:5px solid;display:flex;align-items:center;gap:12px;box-shadow:0 2px 6px rgba(0,0,0,.02);cursor:pointer;transition:transform .1s}.list-item:active{transform:scale(.99)}.item-marker{width:28px;height:28px;border-radius:10px;background:#f1f5f9}.input-field{background:white;border:1.5px solid #e2e8f0;border-radius:40px;padding:12px 18px;color:#1e293b;width:100%;margin-bottom:14px;outline:none;font-size:.8rem;transition:border .15s}.input-field:focus{border-color:#f59e0b}.double-field{display:flex;gap:12px}.gradient-btn{background:linear-gradient(145deg,#f59e0b,#f97316);border:none;border-radius:40px;padding:14px;font-weight:700;color:white;width:100%;cursor:pointer;font-size:.85rem;box-shadow:0 8px 16px rgba(245,158,11,.2);transition:all .1s}.gradient-btn:active{transform:scale(.98)}.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}.stat-box{background:white;border-radius:18px;padding:16px;border:1px solid #edf2f7;box-shadow:0 4px 8px rgba(0,0,0,.02)}.stat-value{font-size:2rem;font-weight:800;color:#0f2b40}.chart-bar{display:flex;align-items:center;gap:10px;margin-bottom:12px}.chart-label{width:85px;font-size:.7rem;font-weight:600}.bar-bg{flex:1;height:28px;background:#e2e8f0;border-radius:20px;overflow:hidden}.bar-fill{height:100%;border-radius:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:white;font-size:.65rem;font-weight:600}@media(max-width:1000px){.dashboard-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:800px){body{padding:12px}.app{flex-direction:column;height:auto;max-height:none}.sidebar{width:100%;position:relative;height:auto;border-right:none;border-bottom:1px solid #eef2f6;padding:16px}.nav-menu{flex-direction:row;flex-wrap:wrap}.main-content{padding:20px}}@media(max-width:600px){.dashboard-grid{grid-template-columns:repeat(2,1fr)}.top-bar{flex-direction:column;align-items:stretch}.search-wrapper{min-width:100%}}.custom-marker{display:flex;align-items:center;justify-content:center}.leaflet-popup-content button{background:#f59e0b;border:none;border-radius:30px;padding:6px 14px;margin:4px 2px;color:white;font-weight:600;cursor:pointer}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+</style>
 </head>
 <body>
 <div class="app">
-    <!-- FAST VÄNSTERMENY -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>VA<span>Botkyrka</span></h2>
-            <div class="sub">Ventilprogram 2026</div>
-        </div>
-        <div class="user-profile">
-            <div class="avatar" id="avatarInitial">F</div>
-            <div class="user-info">
-                <div class="name" id="sidebarUserName">fredde</div>
-                <div class="role">Registrator</div>
-            </div>
-        </div>
-        <div class="nav-menu">
-            <div class="nav-item active" data-view="register"><i class="fas fa-pen-fancy"></i>Registrera</div>
-            <div class="nav-item" data-view="actions"><i class="fas fa-tools"></i>Åtgärdslista</div>
-            <div class="nav-item" data-view="broken"><i class="fas fa-exclamation-triangle"></i>Trasiga</div>
-            <div class="nav-item" data-view="stats"><i class="fas fa-chart-pie"></i>Statistik</div>
-            <div class="nav-item" data-view="profile"><i class="fas fa-user-circle"></i>Profil</div>
-        </div>
-        <div class="sidebar-footer">
-            <div style="display:flex; gap:8px; margin-bottom:12px;"><i class="fas fa-shield-alt"></i><span>Adminläge</span></div>
-            <button class="auth-btn-side" id="sidebarAuthBtn"><i class="fas fa-exchange-alt"></i> Byt användare</button>
-        </div>
-    </div>
-
-    <!-- HÖGER INNEHÅLL -->
-    <div class="main-content">
-        <div class="top-bar">
-            <div class="program-selector">
-                <select id="programSelect">
-                    <option value="" disabled selected>Ventilprogram</option>
-                    <option value="brandpostrondering">🔥 Brandpostrondering</option>
-                    <option value="test">🧪 Test</option>
-                </select>
-            </div>
-            <div class="search-section">
-                <div class="search-wrapper">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Sök adress (t.ex. Oxelvägen 2)">
-                </div>
-                <div class="icon-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></div>
-                <div class="icon-btn" id="gpsBtn"><i class="fas fa-location-arrow"></i></div>
-                <div class="icon-btn" id="trackBtn" title="Live-spårning"><i class="fas fa-satellite"></i></div>
-                <div class="icon-btn" id="needleBtn"><i class="fas fa-map-pin"></i></div>
-                <div class="icon-btn" id="photoBtn"><i class="fas fa-camera"></i></div>
-            </div>
-        </div>
-
-        <!-- Kartcontainer (döljs i adminvyer) -->
-        <div id="mapContainer" style="display:block;">
-            <div class="map-container"><div id="map"></div></div>
-        </div>
-
-        <!-- Dashboard (visas i åtgärds-/trasig-vy) -->
-        <div id="dashboardArea" style="display:none; margin-bottom:20px;">
-            <div class="dashboard-grid">
-                <div class="dash-card" data-filter="all"><div class="dash-label">Totalt</div><div class="dash-value" id="dashTotal">0</div></div>
-                <div class="dash-card" data-filter="trasig"><div class="dash-label">Trasiga</div><div class="dash-value" id="dashTrasig" style="color:#dc2626;">0</div></div>
-                <div class="dash-card" data-filter="trog"><div class="dash-label">Tröga</div><div class="dash-value" id="dashTrog" style="color:#ea580c;">0</div></div>
-                <div class="dash-card" data-filter="betackning"><div class="dash-label">Betäckning</div><div class="dash-value" id="dashBet" style="color:#d97706;">0</div></div>
-                <div class="dash-card" data-filter="overtackt"><div class="dash-label">Övertäckt</div><div class="dash-value" id="dashOver" style="color:#a16207;">0</div></div>
-            </div>
-        </div>
-
-        <!-- VY-PANEL -->
-        <div class="view-panel">
-            <!-- REGISTRERA -->
-            <div id="view-register" class="view active">
-                <div class="card-title"><i class="fas fa-plus-circle"></i> Ny registrering</div>
-                <div class="double-field">
-                    <select id="regType" class="input-field" style="flex:1;">
-                        <option value="VAV">VAV</option><option value="VBP">VBP</option><option value="VSP">VSP</option>
-                        <option value="DNB">DNB</option><option value="SNB">SNB</option><option value="VSV">VSV</option>
-                    </select>
-                    <div style="flex:1.5; display:flex; align-items:center; background:white; border:1.5px solid #e2e8f0; border-radius:40px; padding:0 18px;">
-                        <span id="typePrefix">VAV-</span>
-                        <input type="text" id="regNumber" style="border:none; padding:12px 0; width:100%; outline:none; background:transparent;" placeholder="74259">
-                    </div>
-                </div>
-                <select id="regArea" class="input-field">
-                    <option>Tullinge</option><option>Tumba</option><option>Vårsta</option><option>Norra Botkyrka</option>
-                </select>
-                <!-- Status med detaljdropdown -->
-                <select id="regStatus" class="input-field">
-                    <option value="Trasig">🔴 Trasig</option>
-                    <option value="Trög">🟠 Trög</option>
-                    <option value="Övertäckt">🟡 Övertäckt</option>
-                    <option value="Betäckning defekt">🟡 Betäckning</option>
-                    <option value="Hittar ej">⚪ Hittar ej</option>
-                    <option value="Ej kontrollerad">⚪ Ej kontrollerad</option>
-                    <option value="OK">🟢 OK</option>
-                </select>
-                <div id="regDetailContainer">
-                    <select id="regDetail" class="input-field">
-                        <option value="">Välj detalj</option>
-                    </select>
-                </div>
-                <input type="text" id="regLocation" class="input-field" placeholder="Plats (klicka på karta)">
-                <input type="text" id="regNote" class="input-field" placeholder="Notering">
-                <div id="photoPreview" style="display:none; align-items:center; gap:10px; margin-bottom:12px;">
-                    <img id="photoImg" style="width:45px;height:45px;border-radius:14px;"><span id="photoGpsInfo" style="font-size:0.7rem;"></span>
-                </div>
-                <button class="gradient-btn" id="saveVentilBtn">💾 Spara ventil</button>
-            </div>
-
-            <!-- ÅTGÄRDSLISTA (grupperad) -->
-            <div id="view-actions" class="view">
-                <div class="card-title"><i class="fas fa-tools"></i> Åtgärdslista</div>
-                <div id="groupedActionsList"></div>
-            </div>
-
-            <!-- TRASIGA -->
-            <div id="view-broken" class="view">
-                <div class="card-title"><i class="fas fa-exclamation-triangle" style="color:#dc2626;"></i> Trasiga ventiler</div>
-                <div id="brokenList"></div>
-            </div>
-
-            <!-- STATISTIK -->
-            <div id="view-stats" class="view">
-                <div class="stat-grid">
-                    <div class="stat-box"><span>Totalt</span><div class="stat-value" id="statTotal">0</div></div>
-                    <div class="stat-box"><span>Trasiga</span><div class="stat-value" id="statTrasig" style="color:#dc2626;">0</div></div>
-                    <div class="stat-box"><span>Åtgärdade</span><div class="stat-value" id="statOk" style="color:#16a34a;">0</div></div>
-                </div>
-                <div class="card-title">Defektfördelning</div>
-                <div id="statsBars"></div>
-            </div>
-
-            <!-- PROFIL -->
-            <div id="view-profile" class="view">
-                <div class="card-title"><i class="fas fa-user-astronaut"></i> Min profil</div>
-                <div style="font-size:1.2rem; font-weight:700;" id="profileName">fredde</div>
-                <div class="stat-grid" style="grid-template-columns:1fr 1fr; margin:16px 0;">
-                    <div class="stat-box"><span>Mina</span><div class="stat-value" id="userTotalReg">0</div></div>
-                    <div class="stat-box"><span>Åtgärdade</span><div class="stat-value" id="userFixedReg">0</div></div>
-                </div>
-                <textarea id="userNotes" class="input-field" placeholder="Anteckningar..." rows="3"></textarea>
-                <button class="gradient-btn" id="saveNotesBtn">Spara anteckning</button>
-            </div>
-        </div>
-    </div>
+<!-- SIDEBAR -->
+<div class="sidebar">
+<div class="sidebar-header"><h2>VA<span>Botkyrka</span></h2><div class="sub">Ventilprogram 2026</div></div>
+<div class="user-profile"><div class="avatar" id="avatarInitial">F</div><div class="user-info"><div class="name" id="sidebarUserName">fredde</div><div class="role">Registrator</div></div></div>
+<div class="nav-menu">
+<div class="nav-item active" data-view="register"><i class="fas fa-pen-fancy"></i>Registrera</div>
+<div class="nav-item" data-view="actions"><i class="fas fa-tools"></i>Åtgärdslista</div>
+<div class="nav-item" data-view="broken"><i class="fas fa-exclamation-triangle"></i>Trasiga</div>
+<div class="nav-item" data-view="stats"><i class="fas fa-chart-pie"></i>Statistik</div>
+<div class="nav-item" data-view="profile"><i class="fas fa-user-circle"></i>Profil</div>
+</div>
+<div class="sidebar-footer">
+<div style="display:flex; gap:8px; margin-bottom:12px;"><i class="fas fa-shield-alt"></i><span>Adminläge</span></div>
+<button class="auth-btn-side" id="sidebarAuthBtn"><i class="fas fa-exchange-alt"></i> Byt användare</button>
+</div>
 </div>
 
-<!-- Scripts -->
+<!-- HUVUDINNEHÅLL -->
+<div class="main-content">
+<div class="top-bar">
+<div class="program-selector">
+<select id="programSelect"><option value="" disabled selected>Ventilprogram</option><option value="brandpostrondering">🔥 Brandpostrondering</option><option value="test">🧪 Test</option></select>
+</div>
+<div class="search-section">
+<div class="search-wrapper"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Sök adress (t.ex. Oxelvägen 2)"></div>
+<div class="icon-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></div>
+<div class="icon-btn" id="gpsBtn"><i class="fas fa-location-arrow"></i></div>
+<div class="icon-btn" id="trackBtn" title="Live-spårning"><i class="fas fa-satellite"></i></div>
+<div class="icon-btn" id="needleBtn"><i class="fas fa-map-pin"></i></div>
+<div class="icon-btn" id="photoBtn"><i class="fas fa-camera"></i></div>
+</div>
+</div>
+<div id="mapContainer" style="display:block;"><div class="map-container"><div id="map"></div></div></div>
+<div id="dashboardArea" style="display:none; margin-bottom:20px;">
+<div class="dashboard-grid">
+<div class="dash-card" data-filter="all"><div class="dash-label">Totalt</div><div class="dash-value" id="dashTotal">0</div></div>
+<div class="dash-card" data-filter="trasig"><div class="dash-label">Trasiga</div><div class="dash-value" id="dashTrasig" style="color:#dc2626;">0</div></div>
+<div class="dash-card" data-filter="trog"><div class="dash-label">Tröga</div><div class="dash-value" id="dashTrog" style="color:#ea580c;">0</div></div>
+<div class="dash-card" data-filter="betackning"><div class="dash-label">Betäckning</div><div class="dash-value" id="dashBet" style="color:#d97706;">0</div></div>
+<div class="dash-card" data-filter="overtackt"><div class="dash-label">Övertäckt</div><div class="dash-value" id="dashOver" style="color:#a16207;">0</div></div>
+</div>
+</div>
+
+<!-- VIEW PANEL (REGISTRERA, ÅTGÄRDSLISTA, TRASIGA, STATS, PROFIL) -->
+<div class="view-panel">
+<!-- Registrera -->
+<div id="view-register" class="view active">
+<div class="card-title"><i class="fas fa-plus-circle"></i> Ny registrering</div>
+<div class="double-field">
+<select id="regType" class="input-field" style="flex:1;"><option>VAV</option><option>VBP</option><option>VSP</option><option>DNB</option><option>SNB</option><option>VSV</option></select>
+<div style="flex:1.5; display:flex; align-items:center; background:white; border:1.5px solid #e2e8f0; border-radius:40px; padding:0 18px;"><span id="typePrefix">VAV-</span><input type="text" id="regNumber" style="border:none; padding:12px 0; width:100%; outline:none; background:transparent;" placeholder="74259"></div>
+</div>
+<select id="regArea" class="input-field"><option>Tullinge</option><option>Tumba</option><option>Vårsta</option><option>Norra Botkyrka</option></select>
+<select id="regStatus" class="input-field"><option value="Trasig">🔴 Trasig</option><option value="Trög">🟠 Trög</option><option value="Övertäckt">🟡 Övertäckt</option><option value="Betäckning defekt">🟡 Betäckning</option><option value="Hittar ej">⚪ Hittar ej</option><option value="Ej kontrollerad">⚪ Ej kontrollerad</option><option value="OK">🟢 OK</option></select>
+<div id="regDetailContainer"><select id="regDetail" class="input-field"><option value="">Välj detalj</option></select></div>
+<input type="text" id="regLocation" class="input-field" placeholder="Plats (klicka på karta)">
+<input type="text" id="regNote" class="input-field" placeholder="Notering">
+<div id="photoPreview" style="display:none; align-items:center; gap:10px; margin-bottom:12px;"><img id="photoImg" style="width:45px;height:45px;border-radius:14px;"><span id="photoGpsInfo" style="font-size:.7rem;"></span></div>
+<button class="gradient-btn" id="saveVentilBtn">💾 Spara ventil</button>
+</div>
+
+<!-- Åtgärdslista -->
+<div id="view-actions" class="view"><div class="card-title"><i class="fas fa-tools"></i> Åtgärdslista</div><div id="groupedActionsList"></div></div>
+
+<!-- Trasiga -->
+<div id="view-broken" class="view"><div class="card-title"><i class="fas fa-exclamation-triangle" style="color:#dc2626;"></i> Trasiga ventiler</div><div id="brokenList"></div></div>
+
+<!-- Statistik -->
+<div id="view-stats" class="view">
+<div class="stat-grid">
+<div class="stat-box"><span>Totalt</span><div class="stat-value" id="statTotal">0</div></div>
+<div class="stat-box"><span>Trasiga</span><div class="stat-value" id="statTrasig" style="color:#dc2626;">0</div></div>
+<div class="stat-box"><span>Åtgärdade</span><div class="stat-value" id="statOk" style="color:#16a34a;">0</div></div>
+</div>
+<div class="card-title">Defektfördelning</div>
+<div id="statsBars"></div>
+</div>
+
+<!-- Profil -->
+<div id="view-profile" class="view">
+<div class="card-title"><i class="fas fa-user-astronaut"></i> Min profil</div>
+<div style="font-size:1.2rem; font-weight:700;" id="profileName">fredde</div>
+<div class="stat-grid" style="grid-template-columns:1fr 1fr; margin:16px 0;">
+<div class="stat-box"><span>Mina</span><div class="stat-value" id="userTotalReg">0</div></div>
+<div class="stat-box"><span>Åtgärdade</span><div class="stat-value" id="userFixedReg">0</div></div>
+</div>
+<textarea id="userNotes" class="input-field" placeholder="Anteckningar..." rows="3"></textarea>
+<button class="gradient-btn" id="saveNotesBtn">Spara anteckningar</button>
+</div>
+</div>
+</div>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script>
-    (function(){
-        "use strict";
+// Kartinitiering
+const map = L.map('map').setView([59.25,17.9], 12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
+const markers = L.markerClusterGroup().addTo(map);
 
-        // ---------- KONFIGURATION ----------
-        const TYPE_COLORS = {
-            'VAV':'#1f77b4', 'VBP':'#d62728', 'VSP':'#2ca02c',
-            'DNB':'#ff7f0e', 'SNB':'#9467bd', 'VSV':'#17becf'
-        };
-        
-        // Detaljer per status
-        const statusDetails = {
-            "Trasig": ["Snurrar bara", "Stum (kan ej rubba)", "Saknar nyckelstång", "Läckljud", "Avdragen"],
-            "Trög": ["Kräver 2 gubbar", "Kärvar", "Går tungt"],
-            "Övertäckt": ["Asfalt", "Jord", "Buskage", "Bråte", "Mur", "Byggnation", "Bygge"],
-            "Betäckning defekt": ["Höjas", "Trasigt lock", "Byta hela", "Saknar lock"],
-            "Hittar ej": ["Måste mätas in", "Borttagen"],
-            "Ej kontrollerad": ["-"],
-            "OK": ["Fungerar"]
-        };
+// Exempeldata
+const ventiler = [
+{lat:59.25, lng:17.9, type:"VAV", status:"OK"},
+{lat:59.26, lng:17.92, type:"VBP", status:"Trasig"},
+{lat:59.24, lng:17.88, type:"VSP", status:"Trög"},
+];
+ventiler.forEach(v=>{
+const marker = L.marker([v.lat,v.lng]);
+marker.bindPopup(`<b>${v.type}</b><br>Status: ${v.status}<br><button onclick="alert('Åtgärd för ${v.type}')">Åtgärda</button>`);
+markers.addLayer(marker);
+});
 
-        // ---------- GLOBALA VARIABLER ----------
-        let ventilData = [];                // Alla ventiler
-        let currentUser = 'fredde';         // Inloggad användare
-        let map, markerClusterGroup;        // Karta och klustergrupp
-        let currentMarker = null;           // Tillfällig markör (nål/GPS)
-        let watchId = null;                // Live-spårning
-        let isNeedleMode = false;          // Nål-läge
-        let currentPhoto = null;           // Base64-sträng för foto
-        let currentFilter = 'all';         // Dashboard-filter
-        let currentView = 'register';      // Aktiv vy
-
-        // ---------- INITIERING ----------
-        function init() {
-            loadData();
-            initMap();
-            setupEventListeners();
-            renderAll();
-            updateAuthUI();
-            populateDetailDropdown();
-            // Sätt prefix
-            document.getElementById('regType').addEventListener('change', (e) => {
-                document.getElementById('typePrefix').innerText = e.target.value + '-';
-            });
-        }
-
-        // ---------- KARTA ----------
-        function initMap() {
-            map = L.map('map').setView([59.2, 17.82], 12);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '© CartoDB, OpenStreetMap'
-            }).addTo(map);
-            
-            markerClusterGroup = L.markerClusterGroup({
-                maxClusterRadius: 40,
-                iconCreateFunction: function(cluster) {
-                    const count = cluster.getChildCount();
-                    return L.divIcon({
-                        html: `<div style="background:#f59e0b; color:white; width:36px; height:36px; border-radius:18px; display:flex; align-items:center; justify-content:center; font-weight:bold; border:2px solid white; box-shadow:0 4px 8px rgba(0,0,0,0.2);">${count}</div>`,
-                        iconSize: [36,36],
-                        className: 'cluster-marker'
-                    });
-                }
-            });
-            map.addLayer(markerClusterGroup);
-            
-            map.on('click', onMapClick);
-            setTimeout(() => map.invalidateSize(), 200);
-        }
-
-        function onMapClick(e) {
-            if (!isNeedleMode) return;
-            const { lat, lng } = e.latlng;
-            reverseGeocode(lat, lng, (addr) => {
-                document.getElementById('regLocation').value = addr;
-                if (currentMarker) markerClusterGroup.removeLayer(currentMarker);
-                currentMarker = createMarker(lat, lng, 'VAV', addr);
-                markerClusterGroup.addLayer(currentMarker);
-                isNeedleMode = false;
-                document.getElementById('needleBtn').classList.remove('active');
-            });
-        }
-
-        function createMarker(lat, lng, type, popupContent) {
-            const icon = L.divIcon({
-                html: `<div style="background:${TYPE_COLORS[type]}; width:32px; height:32px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border:2px solid white; box-shadow:0 4px 8px rgba(0,0,0,0.2);">${type}</div>`,
-                iconSize: [32,32],
-                className: 'custom-marker'
-            });
-            return L.marker([lat, lng], { icon }).bindPopup(popupContent);
-        }
-
-        function updateMapMarkers() {
-            markerClusterGroup.clearLayers();
-            ventilData.filter(v => !v.fixed).forEach(v => {
-                if (v.lat && v.lng) {
-                    const popup = `<b>${v.ventilNr}</b><br>${v.location}<br>${v.fullStatus}<br>
-                        <button onclick="window.routeTo(${v.lat},${v.lng})">🚗 Rutt</button>
-                        <button onclick="window.focusVentil('${v.id}')">🔍 Visa</button>`;
-                    const marker = createMarker(v.lat, v.lng, v.type, popup);
-                    markerClusterGroup.addLayer(marker);
-                }
-            });
-        }
-
-        // Globala hjälpfunktioner för popup
-        window.routeTo = (lat, lng) => window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank');
-        window.focusVentil = (id) => {
-            const v = ventilData.find(x => x.id === id);
-            if (v) {
-                map.setView([v.lat, v.lng], 17);
-                // Öppna popup? Vi kan inte enkelt trigga popup via kluster, men vi kan zooma.
-            }
-        };
-
-        // ---------- GEOKODNING ----------
-        function reverseGeocode(lat, lng, callback) {
-            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
-                .then(r => r.json())
-                .then(d => {
-                    const addr = d.address;
-                    let formatted = addr.road || addr.pedestrian || '';
-                    if (addr.house_number) formatted += ' ' + addr.house_number;
-                    if (!formatted) formatted = d.display_name?.split(',')[0] || 'Okänd plats';
-                    callback(formatted);
-                })
-                .catch(() => callback('Okänd plats'));
-        }
-
-        // ---------- DATAHANTERING ----------
-        function loadData() {
-            const stored = localStorage.getItem('va_botkyrka_ultimate');
-            if (stored) {
-                try { ventilData = JSON.parse(stored); } catch(e){ ventilData = []; }
-            } else {
-                ventilData = []; // Tom start
-            }
-            const user = localStorage.getItem('currentUser');
-            if (user) currentUser = user;
-            document.getElementById('userNotes').value = localStorage.getItem('userNotes') || '';
-        }
-
-        function saveToLocal() {
-            localStorage.setItem('va_botkyrka_ultimate', JSON.stringify(ventilData));
-            if (currentUser) localStorage.setItem('currentUser', currentUser);
-            localStorage.setItem('userNotes', document.getElementById('userNotes').value);
-        }
-
-        // ---------- RENDERING ----------
-        function renderAll() {
-            updateMapMarkers();
-            renderGroupedActions();
-            renderBrokenList();
-            renderStats();
-            updateUserStats();
-            updateDashboard();
-        }
-
-        function renderGroupedActions() {
-            const actions = ventilData.filter(v => !v.fixed);
-            const groups = {
-                trog: actions.filter(v => v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')),
-                betackning: actions.filter(v => v.fullStatus.includes('Betäckning')),
-                overtackt: actions.filter(v => v.fullStatus.includes('Över'))
-            };
-            
-            let html = '';
-            const labels = { trog: '🟠 Trög', betackning: '🟡 Betäckning', overtackt: '⬜ Övertäckt' };
-            
-            for (let key in groups) {
-                const items = groups[key];
-                if (items.length === 0) continue;
-                html += `<div class="group-header" data-group="${key}">
-                    <span>${labels[key]}</span>
-                    <span class="group-badge">${items.length}</span>
-                </div>`;
-                
-                items.sort((a,b) => a.ventilNr.localeCompare(b.ventilNr));
-                items.forEach(v => {
-                    html += `<div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')">
-                        <div class="item-marker" style="background:${TYPE_COLORS[v.type]};"></div>
-                        <div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div>
-                        <i class="fas fa-check-circle" style="color:#16a34a; font-size:1.2rem;" onclick="event.stopPropagation(); approveVentil('${v.id}')"></i>
-                    </div>`;
-                });
-            }
-            
-            document.getElementById('groupedActionsList').innerHTML = html || '<div style="padding:20px; text-align:center;">✨ Inga åtgärder just nu</div>';
-        }
-
-        window.approveVentil = (id) => {
-            const v = ventilData.find(x => x.id === id);
-            if (v) {
-                v.fixed = true;
-                v.completedBy = currentUser;
-                v.completedDate = new Date().toLocaleString();
-                saveToLocal();
-                renderAll();
-            }
-        };
-
-        function renderBrokenList() {
-            const broken = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trasig'));
-            let html = broken.map(v => `
-                <div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')">
-                    <div class="item-marker" style="background:${TYPE_COLORS[v.type]};"></div>
-                    <div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div>
-                    <i class="fas fa-check-circle" style="color:#16a34a;" onclick="event.stopPropagation(); approveVentil('${v.id}')"></i>
-                </div>
-            `).join('');
-            document.getElementById('brokenList').innerHTML = html || '<div style="padding:20px; text-align:center;">✨ Inga trasiga ventiler</div>';
-        }
-
-        function renderStats() {
-            const total = ventilData.length;
-            const trasig = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trasig')).length;
-            const trog = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')).length;
-            const bet = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Betäckning')).length;
-            const ok = ventilData.filter(v => v.fixed).length;
-            
-            document.getElementById('statTotal').innerText = total;
-            document.getElementById('statTrasig').innerText = trasig;
-            document.getElementById('statOk').innerText = ok;
-            
-            const maxVal = Math.max(trasig, trog, bet, ok, 1);
-            const bars = [
-                { label: '🔴 Trasiga', val: trasig, color: '#dc2626' },
-                { label: '🟠 Tröga', val: trog, color: '#ea580c' },
-                { label: '🟡 Betäckning', val: bet, color: '#d97706' },
-                { label: '✅ Åtgärdade', val: ok, color: '#16a34a' }
-            ];
-            
-            let barsHtml = '';
-            bars.forEach(b => {
-                const percent = total ? Math.round((b.val / total) * 100) : 0;
-                barsHtml += `<div class="chart-bar">
-                    <div class="chart-label">${b.label}</div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width:${(b.val / maxVal) * 100}%; background:${b.color};">${b.val}</div>
-                    </div>
-                    <div style="width:40px; text-align:right;">${percent}%</div>
-                </div>`;
-            });
-            document.getElementById('statsBars').innerHTML = barsHtml;
-        }
-
-        function updateDashboard() {
-            const total = ventilData.length;
-            const trasig = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trasig')).length;
-            const trog = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')).length;
-            const bet = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Betäckning')).length;
-            const over = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Över')).length;
-            
-            document.getElementById('dashTotal').innerText = total;
-            document.getElementById('dashTrasig').innerText = trasig;
-            document.getElementById('dashTrog').innerText = trog;
-            document.getElementById('dashBet').innerText = bet;
-            document.getElementById('dashOver').innerText = over;
-        }
-
-        function updateUserStats() {
-            if (!currentUser) return;
-            document.getElementById('userTotalReg').innerText = ventilData.filter(v => v.reportedBy === currentUser).length;
-            document.getElementById('userFixedReg').innerText = ventilData.filter(v => v.completedBy === currentUser).length;
-        }
-
-        function updateAuthUI() {
-            document.getElementById('sidebarUserName').innerText = currentUser || 'Inte inloggad';
-            document.getElementById('profileName').innerText = currentUser || 'Inte inloggad';
-            document.getElementById('avatarInitial').innerText = currentUser ? currentUser.charAt(0).toUpperCase() : '?';
-        }
-
-        // ---------- DROPDOWN FÖR DETALJER ----------
-        function populateDetailDropdown() {
-            const statusSelect = document.getElementById('regStatus');
-            const detailSelect = document.getElementById('regDetail');
-            const container = document.getElementById('regDetailContainer');
-            
-            function updateDetails() {
-                const status = statusSelect.value;
-                const details = statusDetails[status];
-                if (details) {
-                    container.style.display = 'block';
-                    detailSelect.innerHTML = '<option value="">Välj detalj</option>';
-                    details.forEach(d => { detailSelect.innerHTML += `<option>${d}</option>`; });
-                } else {
-                    container.style.display = 'none';
-                }
-            }
-            
-            statusSelect.addEventListener('change', updateDetails);
-            updateDetails();
-        }
-
-        // ---------- EVENT LISTENERS ----------
-        function setupEventListeners() {
-            // Navigation
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                    item.classList.add('active');
-                    const viewId = item.dataset.view;
-                    currentView = viewId;
-                    
-                    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                    document.getElementById(`view-${viewId}`).classList.add('active');
-                    
-                    const mapContainer = document.getElementById('mapContainer');
-                    const dashboardArea = document.getElementById('dashboardArea');
-                    
-                    if (viewId === 'register') {
-                        mapContainer.style.display = 'block';
-                        dashboardArea.style.display = 'none';
-                        setTimeout(() => map.invalidateSize(), 100);
-                    } else {
-                        mapContainer.style.display = 'none';
-                        dashboardArea.style.display = (viewId === 'actions' || viewId === 'broken') ? 'block' : 'none';
-                    }
-                    
-                    if (viewId === 'actions') renderGroupedActions();
-                    if (viewId === 'broken') renderBrokenList();
-                    if (viewId === 'stats') renderStats();
-                });
-            });
-            
-            // Dashboard-filter
-            document.querySelectorAll('.dash-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const filter = card.dataset.filter;
-                    currentFilter = filter;
-                    // Här kan vi implementera filtrering av åtgärdslistan vid behov
-                    renderGroupedActions(); // enkel uppdatering
-                });
-            });
-            
-            // Nål-läge
-            document.getElementById('needleBtn').addEventListener('click', () => {
-                isNeedleMode = !isNeedleMode;
-                document.getElementById('needleBtn').classList.toggle('active');
-                map.getContainer().style.cursor = isNeedleMode ? 'crosshair' : '';
-            });
-            
-            // GPS-knapp
-            document.getElementById('gpsBtn').addEventListener('click', () => {
-                if (!navigator.geolocation) { alert('GPS stöds ej'); return; }
-                navigator.geolocation.getCurrentPosition(pos => {
-                    const { latitude, longitude } = pos.coords;
-                    map.setView([latitude, longitude], 16);
-                    reverseGeocode(latitude, longitude, addr => {
-                        document.getElementById('regLocation').value = addr;
-                        if (currentMarker) markerClusterGroup.removeLayer(currentMarker);
-                        currentMarker = createMarker(latitude, longitude, 'VAV', addr);
-                        markerClusterGroup.addLayer(currentMarker);
-                    });
-                }, () => alert('Kunde inte hämta position'));
-            });
-            
-            // Live-spårning
-            document.getElementById('trackBtn').addEventListener('click', function() {
-                if (watchId) {
-                    navigator.geolocation.clearWatch(watchId);
-                    watchId = null;
-                    this.classList.remove('active');
-                } else {
-                    if (!navigator.geolocation) return;
-                    watchId = navigator.geolocation.watchPosition(pos => {
-                        map.setView([pos.coords.latitude, pos.coords.longitude], 16);
-                        L.marker([pos.coords.latitude, pos.coords.longitude], {
-                            icon: L.divIcon({ html: '🔵', className: 'tracker-marker', iconSize: [20,20] })
-                        }).addTo(markerClusterGroup);
-                    }, null, { enableHighAccuracy: true });
-                    this.classList.add('active');
-                }
-            });
-            
-            // Foto
-            document.getElementById('photoBtn').addEventListener('click', takePhoto);
-            
-            // Spara ventil
-            document.getElementById('saveVentilBtn').addEventListener('click', () => {
-                if (!currentUser) { alert('Logga in först'); return; }
-                
-                const type = document.getElementById('regType').value;
-                const number = document.getElementById('regNumber').value.trim();
-                if (!number) { alert('Ange nummer'); return; }
-                
-                const fullNr = type + number;
-                const area = document.getElementById('regArea').value;
-                const location = document.getElementById('regLocation').value.trim();
-                if (!location) { alert('Ange plats'); return; }
-                
-                const status = document.getElementById('regStatus').value;
-                const detail = document.getElementById('regDetail').value;
-                const fullStatus = detail ? `${status} - ${detail}` : status;
-                const note = document.getElementById('regNote').value;
-                
-                let lat, lng;
-                if (currentMarker) {
-                    const pos = currentMarker.getLatLng();
-                    lat = pos.lat; lng = pos.lng;
-                } else {
-                    // Default till centrum om ingen markör
-                    lat = 59.2; lng = 17.82;
-                }
-                
-                const newVentil = {
-                    id: 'v_' + Date.now() + Math.random().toString(36),
-                    ventilNr: fullNr,
-                    type: type,
-                    area: area,
-                    location: location,
-                    fullStatus: fullStatus,
-                    note: note,
-                    reportedBy: currentUser,
-                    fixed: false,
-                    lat, lng,
-                    photo: currentPhoto,
-                    date: new Date().toLocaleString()
-                };
-                
-                ventilData.push(newVentil);
-                saveToLocal();
-                renderAll();
-                
-                // Rensa formulär
-                document.getElementById('regNumber').value = '';
-                document.getElementById('regLocation').value = '';
-                document.getElementById('regNote').value = '';
-                document.getElementById('photoPreview').style.display = 'none';
-                currentPhoto = null;
-                if (currentMarker) markerClusterGroup.removeLayer(currentMarker);
-                currentMarker = null;
-                
-                alert(`✅ ${fullNr} sparad!`);
-            });
-            
-            // Sök
-            document.getElementById('searchBtn').addEventListener('click', searchAddress);
-            document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') searchAddress(); });
-            
-            // Anteckningar
-            document.getElementById('saveNotesBtn').addEventListener('click', () => {
-                localStorage.setItem('userNotes', document.getElementById('userNotes').value);
-                alert('Anteckning sparad');
-            });
-            
-            // Byt användare
-            document.getElementById('sidebarAuthBtn').addEventListener('click', () => {
-                const newName = prompt('Ange namn:', currentUser || '');
-                if (newName) {
-                    currentUser = newName;
-                    updateAuthUI();
-                    saveToLocal();
-                    renderAll();
-                }
-            });
-        }
-
-        function takePhoto() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.setAttribute('capture', 'environment');
-            input.onchange = e => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(pos => {
-                        reverseGeocode(pos.coords.latitude, pos.coords.longitude, addr => {
-                            document.getElementById('regLocation').value = addr;
-                            document.getElementById('photoGpsInfo').innerText = `📍 ${addr.substring(0,25)}`;
-                        });
-                    });
-                }
-                
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    currentPhoto = ev.target.result;
-                    document.getElementById('photoImg').src = currentPhoto;
-                    document.getElementById('photoPreview').style.display = 'flex';
-                };
-                reader.readAsDataURL(file);
-            };
-            input.click();
-        }
-
-        async function searchAddress() {
-            const query = document.getElementById('searchInput').value.trim();
-            if (!query) return;
-            try {
-                const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)} Botkyrka&format=json&limit=1`);
-                const data = await res.json();
-                if (data && data[0]) {
-                    const lat = parseFloat(data[0].lat);
-                    const lng = parseFloat(data[0].lon);
-                    map.setView([lat, lng], 16);
-                    const marker = createMarker(lat, lng, 'VAV', data[0].display_name);
-                    markerClusterGroup.addLayer(marker);
-                    document.getElementById('regLocation').value = data[0].display_name;
-                } else {
-                    alert('Ingen adress hittades');
-                }
-            } catch (e) {
-                alert('Sökning misslyckades');
-            }
-        }
-
-        // Starta appen
-        init();
-    })();
+// Nav-view switch
+document.querySelectorAll('.nav-item').forEach(item=>{
+item.addEventListener('click',()=>{document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));item.classList.add('active');document.getElementById('view-'+item.dataset.view).classList.add('active');document.getElementById('mapContainer').style.display=(item.dataset.view==='register')?'block':'none';document.getElementById('dashboardArea').style.display=(item.dataset.view==='actions'||item.dataset.view==='broken')?'block':'none';});
+});
 </script>
 </body>
 </html>
