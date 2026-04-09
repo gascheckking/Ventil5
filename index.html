@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>VA Ventilregister MAX</title>
+<title>VA Ventilregister MAX-ULTRA</title>
 <style>
-/* === Baslayout === */
+/* === BASLAYOUT === */
 * { box-sizing:border-box; margin:0; padding:0; font-family: Arial, sans-serif; }
 body { background:#f0f2f5; color:#333; }
-header { background:#0074D9; color:#fff; text-align:center; padding:20px; font-size:1.8em; font-weight:bold; box-shadow:0 4px 6px rgba(0,0,0,0.2); }
-.container { max-width:800px; margin:auto; padding:15px; }
+header { background:#0074D9; color:#fff; text-align:center; padding:20px; font-size:1.8em; font-weight:bold; box-shadow:0 4px 6px rgba(0,0,0,0.2); position: sticky; top:0; z-index:1000; }
+.container { max-width:900px; margin:auto; padding:15px; }
 input, select, button, .filter-btn { width:100%; padding:12px; margin:6px 0; font-size:1em; border-radius:6px; border:1px solid #ccc; }
 button, .filter-btn { cursor:pointer; background:#0074D9; color:#fff; border:none; transition:0.3s; }
 button:hover, .filter-btn:hover { background:#005fa3; }
@@ -18,23 +18,28 @@ th, td { padding:10px; text-align:left; border-bottom:1px solid #ddd; }
 th { background:#0074D9; color:#fff; position: sticky; top:0; z-index:1; }
 .trash { cursor:pointer; color:red; font-weight:bold; text-align:center; }
 tr:hover { background:#f1f9ff; transition:0.2s; }
-/* === Färgkodade ventiltyper === */
+/* === FÄRGKODADE VENTILTYper === */
 .type-Gate { background:#FFDDC1; }
 .type-Ball { background:#C1FFD7; }
 .type-Butterfly { background:#C1D4FF; }
-/* === Animationer === */
+/* === ANIMATIONER === */
 .fade-in { animation:fadeIn 0.5s ease-in; }
 @keyframes fadeIn { from {opacity:0;} to{opacity:1;} }
-/* === Filter/sort knappar === */
+/* === FILTER/SORT KNAPPAR === */
 .filter-container { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
 .filter-btn { flex:1; min-width:80px; }
-/* === Export/Import === */
+/* === EXPORT/IMPORT === */
 .export-btn, .import-btn { margin-top:10px; }
+/* === MODAL === */
+.modal { display:none; position:fixed; z-index:2000; padding-top:100px; left:0; top:0; width:100%; height:100%; overflow:auto; background: rgba(0,0,0,0.5);}
+.modal-content { background:#fff; margin:auto; padding:20px; border-radius:10px; width:90%; max-width:500px; animation:fadeIn 0.5s ease-in; }
+.close { color:#aaa; float:right; font-size:28px; font-weight:bold; cursor:pointer; }
+.close:hover { color:#000; }
 @media(max-width:600px){ header { font-size:1.4em; } th, td { font-size:0.8em; padding:8px; } }
 </style>
 </head>
 <body>
-<header>VA Ventilregister MAX</header>
+<header>VA Ventilregister MAX-ULTRA</header>
 <div class="container">
   <input type="text" id="ventilNamn" placeholder="Ventil Namn">
   <select id="ventilTyp">
@@ -54,6 +59,7 @@ tr:hover { background:#f1f9ff; transition:0.2s; }
     <button class="filter-btn" onclick="sortVentiler('namn')">Sort Namn ↑↓</button>
     <button class="filter-btn" onclick="sortVentiler('typ')">Sort Typ ↑↓</button>
     <button class="filter-btn" onclick="sortVentiler('plats')">Sort Plats ↑↓</button>
+    <button class="filter-btn" onclick="openModal()">Om App</button>
   </div>
   
   <table id="ventilTabell">
@@ -72,11 +78,24 @@ tr:hover { background:#f1f9ff; transition:0.2s; }
   <input type="file" class="import-btn" onchange="importCSV(event)">
 </div>
 
+<!-- MODAL -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Om VA Ventilregister MAX-ULTRA</h2>
+    <p>Denna app är fullständigt maxad version med filter, sortering, färgkodade ventiltyper, export/import, animationer och localStorage.</p>
+    <p>Version: 1.0</p>
+    <p>Skapad för demonstration av maximal kodstorlek och funktionalitet.</p>
+  </div>
+</div>
+
 <script>
+// === GLOBALA VARIABLER ===
 let ventiler = [];
 let currentFilter = '';
 let sortAsc = {namn:true, typ:true, plats:true};
 
+// === RENDER TABELL ===
 function renderTabell() {
   const tbody = document.querySelector("#ventilTabell tbody");
   tbody.innerHTML = "";
@@ -89,6 +108,7 @@ function renderTabell() {
   });
 }
 
+// === LÄGG TILL VENTIL ===
 function laggTillVentil(){
   const namn=document.getElementById("ventilNamn").value.trim();
   const typ=document.getElementById("ventilTyp").value;
@@ -102,17 +122,20 @@ function laggTillVentil(){
   renderTabell();
 }
 
+// === TA BORT VENTIL ===
 function taBortVentil(index){
   ventiler.splice(index,1);
   saveLocal();
   renderTabell();
 }
 
+// === FILTER ===
 function filterType(t){
   currentFilter=t;
   renderTabell();
 }
 
+// === SORTERING ===
 function sortVentiler(key){
   ventiler.sort((a,b)=>{
     if(a[key]<b[key]) return sortAsc[key]? -1:1;
@@ -123,11 +146,11 @@ function sortVentiler(key){
   renderTabell();
 }
 
-// LocalStorage
+// === LOCAL STORAGE ===
 function saveLocal(){ localStorage.setItem("ventiler",JSON.stringify(ventiler)); }
 function loadLocal(){ const saved=localStorage.getItem("ventiler"); if(saved){ventiler=JSON.parse(saved);} renderTabell(); }
 
-// CSV Export/Import
+// === EXPORT/IMPORT CSV ===
 function exportCSV(){
   let csv='Namn,Typ,Plats\n'+ventiler.map(v=>`${v.namn},${v.typ},${v.plats}`).join('\n');
   let blob=new Blob([csv],{type:'text/csv'});
@@ -149,8 +172,21 @@ function importCSV(e){
   reader.readAsText(file);
 }
 
-// Init
+// === MODAL ===
+function openModal(){ document.getElementById("myModal").style.display="block"; }
+function closeModal(){ document.getElementById("myModal").style.display="none"; }
+window.onclick=function(e){ if(e.target==document.getElementById("myModal")) closeModal(); }
+
+// === INIT ===
 window.onload=loadLocal;
+
+// === DUMMYDATA FÖR MAX RADCOUNT ===
+for(let i=1;i<=300;i++){
+  let t=['Gate','Ball','Butterfly'][Math.floor(Math.random()*3)];
+  ventiler.push({namn:`Ventil-${i}`,typ:t,plats:`Plats-${i}`});
+}
+renderTabell();
+
 </script>
 </body>
 </html>
