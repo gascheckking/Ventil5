@@ -61,85 +61,357 @@
             scrollbar-width: thin;
         }
 
-        .sidebar-header { padding: 0 24px 20px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .sidebar-header h2 { font-weight: 700; font-size: 1.8rem; letter-spacing: -0.02em; color: #0b2a41; }
+        .sidebar-header {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .sidebar-header h2 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -0.02em;
+            color: #0b2a41;
+        }
         .sidebar-header h2 span { color: #f59e0b; }
-        .sidebar-header .sub { font-size: 0.7rem; color: #5e7a93; margin-top: 4px; font-weight: 500; }
+        .sidebar-header .sub {
+            font-size: 0.7rem;
+            color: #5e7a93;
+            margin-top: 4px;
+            font-weight: 500;
+        }
 
-        .user-profile { display: flex; align-items: center; gap: 14px; padding: 24px 24px 16px; }
-        .avatar { width: 52px; height: 52px; background: linear-gradient(145deg, #f59e0b, #f97316); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.4rem; box-shadow: 0 8px 14px rgba(245,158,11,0.2); }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 24px 24px 16px;
+        }
+        .avatar {
+            width: 52px; height: 52px;
+            background: linear-gradient(145deg, #f59e0b, #f97316);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 14px rgba(245,158,11,0.2);
+        }
         .user-info .name { font-weight: 700; font-size: 1rem; }
         .user-info .role { font-size: 0.7rem; color: #5e7a93; }
 
-        .nav-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; }
-        .nav-item { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; color: #2c4c6b; cursor: pointer; transition: all 0.15s; }
+        .nav-menu {
+            flex: 1;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2c4c6b;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
         .nav-item i { width: 22px; font-size: 1.1rem; }
-        .nav-item.active { background: #f59e0b; color: white; box-shadow: 0 8px 16px rgba(245,158,11,0.2); }
+        .nav-item.active {
+            background: #f59e0b;
+            color: white;
+            box-shadow: 0 8px 16px rgba(245,158,11,0.2);
+        }
         .nav-item:hover:not(.active) { background: rgba(245,158,11,0.08); }
 
-        .sidebar-footer { padding: 20px 24px 0; border-top: 1px solid rgba(0,0,0,0.05); font-size: 0.7rem; color: #5e7a93; }
-        .auth-btn-side { background: white; border: 1px solid #d0dde9; padding: 10px 16px; border-radius: 40px; width: 100%; font-weight: 600; color: #1e3a5f; cursor: pointer; transition: 0.1s; margin-top: 12px; }
+        .sidebar-footer {
+            padding: 20px 24px 0;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            font-size: 0.7rem;
+            color: #5e7a93;
+        }
+        .auth-btn-side {
+            background: white;
+            border: 1px solid #d0dde9;
+            padding: 10px 16px;
+            border-radius: 40px;
+            width: 100%;
+            font-weight: 600;
+            color: #1e3a5f;
+            cursor: pointer;
+            transition: 0.1s;
+            margin-top: 12px;
+        }
         .auth-btn-side:hover { background: #f8fafc; border-color: #f59e0b; }
 
         /* === HÖGER INNEHÅLL === */
-        .main-content { flex: 1; overflow-y: auto; padding: 28px 32px 32px; scrollbar-width: thin; background: transparent; }
-        .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
-        .program-selector { background: white; border-radius: 60px; padding: 3px 8px; border: 1px solid #e2e8f0; box-shadow: 0 4px 8px rgba(0,0,0,0.02); }
-        .program-selector select { background: transparent; border: none; color: #1e293b; font-weight: 600; font-size: 0.8rem; padding: 8px 20px; outline: none; }
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 32px 32px;
+            scrollbar-width: thin;
+            background: transparent;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .program-selector {
+            background: white;
+            border-radius: 60px;
+            padding: 3px 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+        }
+        .program-selector select {
+            background: transparent;
+            border: none;
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 8px 20px;
+            outline: none;
+        }
 
         .search-section { display: flex; gap: 8px; align-items: center; }
-        .search-wrapper { background: white; border-radius: 40px; border: 1px solid #e2e8f0; display: flex; align-items: center; padding: 2px 8px 2px 18px; min-width: 260px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .search-wrapper {
+            background: white;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            padding: 2px 8px 2px 18px;
+            min-width: 260px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
         .search-wrapper i { color: #f59e0b; font-size: 0.9rem; }
-        .search-wrapper input { background: transparent; border: none; padding: 10px 6px; color: #1e293b; font-size: 0.8rem; width: 100%; outline: none; }
-        .icon-btn { background: white; border: 1px solid #e2e8f0; color: #3a5c7c; width: 42px; height: 42px; border-radius: 30px; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: all 0.1s; }
+        .search-wrapper input {
+            background: transparent;
+            border: none;
+            padding: 10px 6px;
+            color: #1e293b;
+            font-size: 0.8rem;
+            width: 100%;
+            outline: none;
+        }
+        .icon-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #3a5c7c;
+            width: 42px; height: 42px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: all 0.1s;
+        }
         .icon-btn.active { background: #f59e0b; color: white; border-color: #f59e0b; }
 
         /* Karta */
-        .map-container { border-radius: 24px; overflow: hidden; height: 280px; border: 1px solid #e2e8f0; box-shadow: 0 12px 24px -8px rgba(0,0,0,0.08); background: #d4e1ed; margin-bottom: 24px; }
+        .map-container {
+            border-radius: 24px;
+            overflow: hidden;
+            height: 280px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.08);
+            background: #d4e1ed;
+            margin-bottom: 24px;
+        }
         #map { height: 100%; width: 100%; }
 
         /* Dashboard-kort */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-bottom: 20px; }
-        .dash-card { background: white; border-radius: 20px; padding: 14px; text-align: center; border: 1px solid #edf2f7; cursor: pointer; transition: all 0.1s; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-        .dash-card.active { border: 2px solid #f59e0b; background: #fff8e7; }
-        .dash-value { font-size: 2rem; font-weight: 800; color: #0f2b40; }
-        .dash-label { font-size: 0.7rem; color: #5e7a93; text-transform: uppercase; letter-spacing: 0.3px; }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .dash-card {
+            background: white;
+            border-radius: 20px;
+            padding: 14px;
+            text-align: center;
+            border: 1px solid #edf2f7;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .dash-card.active {
+            border: 2px solid #f59e0b;
+            background: #fff8e7;
+        }
+        .dash-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f2b40;
+        }
+        .dash-label {
+            font-size: 0.7rem;
+            color: #5e7a93;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
 
         /* Vyer */
-        .view-panel { background: rgba(255,255,255,0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 28px; padding: 24px; border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05); }
+        .view-panel {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05);
+        }
         .view { display: none; }
         .view.active { display: block; }
-        .card-title { font-weight: 700; font-size: 1rem; color: #1e3a5f; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1e3a5f;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
         /* Grupperad åtgärdslista */
-        .group-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 6px; font-weight: 700; color: #1e3a5f; cursor: pointer; }
-        .group-badge { background: #eef2f7; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; }
-        .list-item { background: white; border-radius: 16px; padding: 12px 16px; margin-bottom: 6px; border-left: 5px solid; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s; }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0 6px;
+            font-weight: 700;
+            color: #1e3a5f;
+            cursor: pointer;
+        }
+        .group-badge {
+            background: #eef2f7;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
+        .list-item {
+            background: white;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 6px;
+            border-left: 5px solid;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
         .list-item:active { transform: scale(0.99); }
-        .item-marker { width: 28px; height: 28px; border-radius: 10px; }
+        .item-marker {
+            width: 28px; height: 28px;
+            border-radius: 10px;
+            background: #f1f5f9;
+        }
 
         /* Formulär */
-        .input-field { background: white; border: 1.5px solid #e2e8f0; border-radius: 40px; padding: 12px 18px; color: #1e293b; width: 100%; margin-bottom: 14px; outline: none; font-size: 0.8rem; transition: border 0.15s; }
+        .input-field {
+            background: white;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 40px;
+            padding: 12px 18px;
+            color: #1e293b;
+            width: 100%;
+            margin-bottom: 14px;
+            outline: none;
+            font-size: 0.8rem;
+            transition: border 0.15s;
+        }
         .input-field:focus { border-color: #f59e0b; }
         .double-field { display: flex; gap: 12px; }
-        .gradient-btn { background: linear-gradient(145deg, #f59e0b, #f97316); border: none; border-radius: 40px; padding: 14px; font-weight: 700; color: white; width: 100%; cursor: pointer; font-size: 0.85rem; box-shadow: 0 8px 16px rgba(245,158,11,0.2); transition: all 0.1s; }
+        .gradient-btn {
+            background: linear-gradient(145deg, #f59e0b, #f97316);
+            border: none;
+            border-radius: 40px;
+            padding: 14px;
+            font-weight: 700;
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            font-size: 0.85rem;
+            box-shadow: 0 8px 16px rgba(245,158,11,0.2);
+            transition: all 0.1s;
+        }
         .gradient-btn:active { transform: scale(0.98); }
 
         /* Statistik */
-        .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
-        .stat-box { background: white; border-radius: 18px; padding: 16px; border: 1px solid #edf2f7; box-shadow: 0 4px 8px rgba(0,0,0,0.02); }
-        .stat-value { font-size: 2rem; font-weight: 800; color: #0f2b40; }
-        .chart-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            background: white;
+            border-radius: 18px;
+            padding: 16px;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f2b40;
+        }
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
         .chart-label { width: 85px; font-size: 0.7rem; font-weight: 600; }
-        .bar-bg { flex: 1; height: 28px; background: #e2e8f0; border-radius: 20px; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 20px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-size: 0.65rem; font-weight: 600; }
+        .bar-bg {
+            flex: 1;
+            height: 28px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
 
         /* Responsivitet */
-        @media (max-width: 1000px) { .dashboard-grid { grid-template-columns: repeat(3,1fr); } }
+        @media (max-width: 1000px) {
+            .dashboard-grid { grid-template-columns: repeat(3,1fr); }
+        }
         @media (max-width: 800px) {
             body { padding: 12px; }
             .app { flex-direction: column; height: auto; max-height: none; }
-            .sidebar { width: 100%; position: relative; height: auto; border-right: none; border-bottom: 1px solid #eef2f6; padding: 16px; }
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #eef2f6;
+                padding: 16px;
+            }
             .nav-menu { flex-direction: row; flex-wrap: wrap; }
             .main-content { padding: 20px; }
         }
@@ -149,9 +421,23 @@
             .search-wrapper { min-width: 100%; }
         }
 
-        /* Clustermarkers */
-        .custom-marker { display: flex; align-items: center; justify-content: center; }
-        .leaflet-popup-content button { background: #f59e0b; border: none; border-radius: 30px; padding: 6px 14px; margin: 4px 2px; color: white; font-weight: 600; cursor: pointer; }
+        /* Anpassningar för clustermarkers */
+        .custom-marker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .leaflet-popup-content button {
+            background: #f59e0b;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 14px;
+            margin: 4px 2px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -187,31 +473,36 @@
 
     <!-- HÖGER INNEHÅLL -->
     <div class="main-content">
-        <div class="top-bar">
-            <div class="program-selector">
-                <select id="programSelect">
-                    <option value="ventilprogram" selected>📋 Ventilprogram</option>
-                    <option value="brandpostrondering">🔥 Brandpostrondering</option>
-                    <option value="test">🧪 Test</option>
-                </select>
-            </div>
-            <div class="search-section">
-                <div class="search-wrapper">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Sök adress (t.ex. Oxelvägen 2)">
+        <!-- Toppbar (visas endast vid register) -->
+        <div id="topBarContainer">
+            <div class="top-bar">
+                <div class="program-selector">
+                    <select id="programSelect">
+                        <option value="ventilprogram" selected>📋 Ventilprogram</option>
+                        <option value="brandpostrondering">🔥 Brandpostrondering</option>
+                        <option value="test">🧪 Test</option>
+                    </select>
                 </div>
-                <div class="icon-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></div>
-                <div class="icon-btn" id="gpsBtn"><i class="fas fa-location-arrow"></i></div>
-                <div class="icon-btn" id="trackBtn" title="Live-spårning"><i class="fas fa-satellite"></i></div>
-                <div class="icon-btn" id="needleBtn"><i class="fas fa-map-pin"></i></div>
-                <div class="icon-btn" id="photoBtn"><i class="fas fa-camera"></i></div>
+                <div class="search-section">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Sök adress (t.ex. Oxelvägen 2)">
+                    </div>
+                    <div class="icon-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></div>
+                    <div class="icon-btn" id="gpsBtn"><i class="fas fa-location-arrow"></i></div>
+                    <div class="icon-btn" id="trackBtn" title="Live-spårning"><i class="fas fa-satellite"></i></div>
+                    <div class="icon-btn" id="needleBtn"><i class="fas fa-map-pin"></i></div>
+                    <div class="icon-btn" id="photoBtn"><i class="fas fa-camera"></i></div>
+                </div>
             </div>
         </div>
 
+        <!-- Kartcontainer (döljs i adminvyer) -->
         <div id="mapContainer" style="display:block;">
             <div class="map-container"><div id="map"></div></div>
         </div>
 
+        <!-- Dashboard (visas i åtgärds-/trasig-vy) -->
         <div id="dashboardArea" style="display:none; margin-bottom:20px;">
             <div class="dashboard-grid">
                 <div class="dash-card" data-filter="all"><div class="dash-label">Totalt</div><div class="dash-value" id="dashTotal">0</div></div>
@@ -222,6 +513,7 @@
             </div>
         </div>
 
+        <!-- VY-PANEL -->
         <div class="view-panel">
             <!-- REGISTRERA -->
             <div id="view-register" class="view active">
@@ -260,7 +552,7 @@
                 <button class="gradient-btn" id="saveVentilBtn">💾 Spara ventil</button>
             </div>
 
-            <!-- ÅTGÄRDSLISTA -->
+            <!-- ÅTGÄRDSLISTA (grupperad med distans) -->
             <div id="view-actions" class="view">
                 <div class="card-title"><i class="fas fa-tools"></i> Åtgärdslista</div>
                 <div id="groupedActionsList"></div>
@@ -298,17 +590,20 @@
     </div>
 </div>
 
+<!-- Scripts -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script>
     (function(){
         "use strict";
 
+        // ---------- KONFIGURATION ----------
         const TYPE_COLORS = {
             'VAV':'#1f77b4', 'VBP':'#d62728', 'VSP':'#2ca02c',
             'DNB':'#ff7f0e', 'SNB':'#9467bd', 'VSV':'#17becf'
         };
         
+        // Detaljer per status
         const statusDetails = {
             "Trasig": ["Snurrar bara", "Stum (kan ej rubba)", "Saknar nyckelstång", "Läckljud", "Avdragen"],
             "Trög": ["Kräver 2 gubbar", "Kärvar", "Går tungt"],
@@ -318,6 +613,7 @@
             "Åtgärdad": ["Åtgärdad OK", "Åtgärdad Ej OK"]
         };
 
+        // ---------- GLOBALA VARIABLER ----------
         let ventilData = [];
         let currentUser = 'fredde';
         let map, markerClusterGroup;
@@ -327,6 +623,7 @@
         let currentPhoto = null;
         let currentFilter = 'all';
 
+        // ---------- INITIERING ----------
         function init() {
             loadData();
             initMap();
@@ -339,6 +636,7 @@
             });
         }
 
+        // ---------- KARTA ----------
         function initMap() {
             map = L.map('map').setView([59.2, 17.82], 12);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -402,6 +700,7 @@
             if (v) { map.setView([v.lat, v.lng], 17); }
         };
 
+        // ---------- GEOKODNING ----------
         function reverseGeocode(lat, lng, callback) {
             fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
                 .then(r => r.json())
@@ -415,22 +714,26 @@
                 .catch(() => callback('Okänd plats'));
         }
 
+        // ---------- DATAHANTERING ----------
         function loadData() {
-            const stored = localStorage.getItem('va_botkyrka_final');
+            const stored = localStorage.getItem('va_botkyrka_final_v2');
             if (stored) {
                 try { ventilData = JSON.parse(stored); } catch(e){ ventilData = []; }
-            } else { ventilData = []; }
+            } else {
+                ventilData = [];
+            }
             const user = localStorage.getItem('currentUser');
             if (user) currentUser = user;
             document.getElementById('userNotes').value = localStorage.getItem('userNotes') || '';
         }
 
         function saveToLocal() {
-            localStorage.setItem('va_botkyrka_final', JSON.stringify(ventilData));
+            localStorage.setItem('va_botkyrka_final_v2', JSON.stringify(ventilData));
             if (currentUser) localStorage.setItem('currentUser', currentUser);
             localStorage.setItem('userNotes', document.getElementById('userNotes').value);
         }
 
+        // ---------- RENDERING ----------
         function renderAll() {
             updateMapMarkers();
             renderGroupedActions();
@@ -461,15 +764,17 @@
                 html += `<div class="group-header"><span>${cat}</span><span class="group-badge">${groups[cat].length}</span></div>`;
                 groups[cat].sort((a,b) => a.ventilNr.localeCompare(b.ventilNr));
                 groups[cat].forEach(v => {
+                    const distancedText = v.distanced ? '✅ Ja' : '⬜ Nej';
                     html += `<div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')">
                         <div class="item-marker" style="background:${TYPE_COLORS[v.type]};"></div>
                         <div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div>
                         <i class="fas fa-check-circle" style="color:#16a34a; font-size:1.2rem;" onclick="event.stopPropagation(); approveVentil('${v.id}')"></i>
                         <i class="fas fa-trash-alt" style="color:#dc2626; margin-left:4px;" onclick="event.stopPropagation(); markAsBroken('${v.id}')"></i>
+                        <span style="margin-left:8px; cursor:pointer; background:#f1f5f9; padding:4px 8px; border-radius:20px; font-size:0.7rem;" onclick="event.stopPropagation(); toggleDistanced('${v.id}')">${distancedText}</span>
                     </div>`;
                 });
             });
-            document.getElementById('groupedActionsList').innerHTML = html || '<div style="padding:20px;">✨ Inga åtgärder</div>';
+            document.getElementById('groupedActionsList').innerHTML = html || '<div style="padding:20px; text-align:center;">✨ Inga åtgärder just nu</div>';
         }
 
         window.approveVentil = (id) => {
@@ -495,6 +800,15 @@
             }
         };
 
+        window.toggleDistanced = (id) => {
+            const v = ventilData.find(x => x.id === id);
+            if (v) {
+                v.distanced = !v.distanced;
+                saveToLocal();
+                renderGroupedActions(); // Uppdatera endast listan
+            }
+        };
+
         function renderBrokenList() {
             const broken = ventilData.filter(v => v.fixed && v.fullStatus.includes('Trasig - konstaterad'));
             let html = broken.map(v => `
@@ -503,7 +817,7 @@
                     <div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div>
                 </div>
             `).join('');
-            document.getElementById('brokenList').innerHTML = html || '<div style="padding:20px;">✨ Inga konstaterat trasiga</div>';
+            document.getElementById('brokenList').innerHTML = html || '<div style="padding:20px; text-align:center;">✨ Inga konstaterat trasiga</div>';
         }
 
         function renderStats() {
@@ -565,6 +879,7 @@
             document.getElementById('avatarInitial').innerText = currentUser ? currentUser.charAt(0).toUpperCase() : '?';
         }
 
+        // ---------- DROPDOWN FÖR DETALJER ----------
         function populateDetailDropdown() {
             const statusSelect = document.getElementById('regStatus');
             const detailSelect = document.getElementById('regDetail');
@@ -586,43 +901,56 @@
             updateDetails();
         }
 
+        // ---------- EVENT LISTENERS ----------
         function setupEventListeners() {
+            // Navigation
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.addEventListener('click', () => {
                     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                     item.classList.add('active');
                     const viewId = item.dataset.view;
+                    
                     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
                     document.getElementById(`view-${viewId}`).classList.add('active');
+                    
                     const mapContainer = document.getElementById('mapContainer');
                     const dashboardArea = document.getElementById('dashboardArea');
+                    const topBarContainer = document.getElementById('topBarContainer');
+                    
                     if (viewId === 'register') {
                         mapContainer.style.display = 'block';
                         dashboardArea.style.display = 'none';
+                        topBarContainer.style.display = 'block';
                         setTimeout(() => map.invalidateSize(), 100);
                     } else {
                         mapContainer.style.display = 'none';
                         dashboardArea.style.display = (viewId === 'actions' || viewId === 'broken') ? 'block' : 'none';
+                        topBarContainer.style.display = 'none';
                     }
+                    
                     if (viewId === 'actions') renderGroupedActions();
                     if (viewId === 'broken') renderBrokenList();
                     if (viewId === 'stats') renderStats();
                 });
             });
             
+            // Dashboard-filter
             document.querySelectorAll('.dash-card').forEach(card => {
                 card.addEventListener('click', () => {
-                    currentFilter = card.dataset.filter;
+                    const filter = card.dataset.filter;
+                    currentFilter = filter;
                     renderGroupedActions();
                 });
             });
             
+            // Nål-läge
             document.getElementById('needleBtn').addEventListener('click', () => {
                 isNeedleMode = !isNeedleMode;
                 document.getElementById('needleBtn').classList.toggle('active');
                 map.getContainer().style.cursor = isNeedleMode ? 'crosshair' : '';
             });
             
+            // GPS-knapp
             document.getElementById('gpsBtn').addEventListener('click', () => {
                 if (!navigator.geolocation) { alert('GPS stöds ej'); return; }
                 navigator.geolocation.getCurrentPosition(pos => {
@@ -637,6 +965,7 @@
                 }, () => alert('Kunde inte hämta position'));
             });
             
+            // Live-spårning
             document.getElementById('trackBtn').addEventListener('click', function() {
                 if (watchId) {
                     navigator.geolocation.clearWatch(watchId);
@@ -654,35 +983,55 @@
                 }
             });
             
+            // Foto
             document.getElementById('photoBtn').addEventListener('click', takePhoto);
             
+            // Spara ventil
             document.getElementById('saveVentilBtn').addEventListener('click', () => {
                 if (!currentUser) { alert('Logga in först'); return; }
+                
                 const type = document.getElementById('regType').value;
                 const number = document.getElementById('regNumber').value.trim();
                 if (!number) { alert('Ange nummer'); return; }
+                
                 const fullNr = type + number;
                 const area = document.getElementById('regArea').value;
                 const location = document.getElementById('regLocation').value.trim();
                 if (!location) { alert('Ange plats'); return; }
+                
                 const status = document.getElementById('regStatus').value;
                 const detail = document.getElementById('regDetail').value;
                 const fullStatus = detail ? `${status} - ${detail}` : status;
                 const note = document.getElementById('regNote').value;
+                
                 let lat, lng;
                 if (currentMarker) {
                     const pos = currentMarker.getLatLng();
                     lat = pos.lat; lng = pos.lng;
-                } else { lat = 59.2; lng = 17.82; }
+                } else {
+                    lat = 59.2; lng = 17.82;
+                }
                 
                 const newVentil = {
                     id: 'v_' + Date.now() + Math.random().toString(36),
-                    ventilNr: fullNr, type, area, location, fullStatus, note,
-                    reportedBy: currentUser, fixed: false, lat, lng, photo: currentPhoto,
-                    date: new Date().toLocaleString()
+                    ventilNr: fullNr,
+                    type: type,
+                    area: area,
+                    location: location,
+                    fullStatus: fullStatus,
+                    note: note,
+                    reportedBy: currentUser,
+                    fixed: false,
+                    lat, lng,
+                    photo: currentPhoto,
+                    date: new Date().toLocaleString(),
+                    distanced: false
                 };
+                
                 ventilData.push(newVentil);
-                saveToLocal(); renderAll();
+                saveToLocal();
+                renderAll();
+                
                 document.getElementById('regNumber').value = '';
                 document.getElementById('regLocation').value = '';
                 document.getElementById('regNote').value = '';
@@ -690,26 +1039,41 @@
                 currentPhoto = null;
                 if (currentMarker) markerClusterGroup.removeLayer(currentMarker);
                 currentMarker = null;
+                
                 alert(`✅ ${fullNr} sparad!`);
             });
             
+            // Sök
             document.getElementById('searchBtn').addEventListener('click', searchAddress);
             document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') searchAddress(); });
+            
+            // Anteckningar
             document.getElementById('saveNotesBtn').addEventListener('click', () => {
                 localStorage.setItem('userNotes', document.getElementById('userNotes').value);
                 alert('Anteckning sparad');
             });
+            
+            // Byt användare
             document.getElementById('sidebarAuthBtn').addEventListener('click', () => {
                 const newName = prompt('Ange namn:', currentUser || '');
-                if (newName) { currentUser = newName; updateAuthUI(); saveToLocal(); renderAll(); }
+                if (newName) {
+                    currentUser = newName;
+                    updateAuthUI();
+                    saveToLocal();
+                    renderAll();
+                }
             });
         }
 
         function takePhoto() {
             const input = document.createElement('input');
-            input.type = 'file'; input.accept = 'image/*'; input.setAttribute('capture', 'environment');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.setAttribute('capture', 'environment');
             input.onchange = e => {
-                const file = e.target.files[0]; if (!file) return;
+                const file = e.target.files[0];
+                if (!file) return;
+                
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(pos => {
                         reverseGeocode(pos.coords.latitude, pos.coords.longitude, addr => {
@@ -718,10 +1082,16 @@
                         });
                     });
                 }
+                
                 const reader = new FileReader();
-                reader.onload = ev => { currentPhoto = ev.target.result; document.getElementById('photoImg').src = currentPhoto; document.getElementById('photoPreview').style.display = 'flex'; };
+                reader.onload = ev => {
+                    currentPhoto = ev.target.result;
+                    document.getElementById('photoImg').src = currentPhoto;
+                    document.getElementById('photoPreview').style.display = 'flex';
+                };
                 reader.readAsDataURL(file);
-            }; input.click();
+            };
+            input.click();
         }
 
         async function searchAddress() {
@@ -737,10 +1107,15 @@
                     const marker = createMarker(lat, lng, 'VAV', data[0].display_name);
                     markerClusterGroup.addLayer(marker);
                     document.getElementById('regLocation').value = data[0].display_name;
-                } else { alert('Ingen adress hittades'); }
-            } catch (e) { alert('Sökning misslyckades'); }
+                } else {
+                    alert('Ingen adress hittades');
+                }
+            } catch (e) {
+                alert('Sökning misslyckades');
+            }
         }
 
+        // Starta appen
         init();
     })();
 </script>
