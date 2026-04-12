@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>VA Botkyrka · Ventilprogram 2026 · PRODUKTION</title>
+    <title>VA Botkyrka · Ventilprogram 2026 · ULTIMATE FINAL</title>
     <!-- Leaflet + MarkerCluster -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
@@ -14,8 +14,7 @@
     <style>
         /* ============================================================
          *                VA BOTKYRKA - VENTILPROGRAM 2026
-         *                  ULTIMATE PRODUCTION VERSION
-         *              OPTIMERAD FÖR MOBIL REGISTRERING & DESKTOP ADMIN
+         *                  ULTIMATE FINAL VERSION
          * ============================================================ */
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -65,7 +64,6 @@
             overflow: hidden;
         }
         
-        /* ----- SIDEBAR ----- */
         .sidebar {
             width: 320px;
             background: rgba(10, 20, 35, 0.7);
@@ -101,9 +99,7 @@
         
         .sidebar-footer { padding: 24px 28px 0; border-top: 1px solid var(--glass-border); margin-top: auto; }
         .auth-btn-side { background: transparent; border: 2px solid var(--accent-gold); padding: 14px 20px; border-radius: 40px; width: 100%; font-weight: 700; color: var(--accent-gold); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .auth-btn-side:hover { background: var(--accent-gold); color: #0a0f1c; }
         
-        /* ----- MAIN CONTENT ----- */
         .main-content { flex: 1; overflow-y: auto; padding: 36px 40px 40px; }
         
         .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 20px; }
@@ -121,24 +117,20 @@
         .icon-btn:hover { background: #f59e0b; color: #0a0f1c; }
         .icon-btn.active { background: var(--accent-gold); color: #0a0f1c; }
         
-        /* ----- KARTA (större för mobil) ----- */
-        .map-container { border-radius: 32px; overflow: hidden; height: 450px; border: 2px solid var(--glass-border); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6); margin-bottom: 32px; }
+        .map-container { border-radius: 32px; overflow: hidden; height: 420px; border: 2px solid var(--glass-border); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6); margin-bottom: 32px; }
         #map { height: 100%; width: 100%; background: #1a2a3a; }
         
-        /* ----- DASHBOARD ----- */
         .dashboard-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-bottom: 28px; }
         .dash-card { background: var(--glass-bg); backdrop-filter: blur(8px); border-radius: 24px; padding: 20px 12px; text-align: center; border: 1px solid var(--glass-border); cursor: pointer; }
         .dash-card:hover { transform: translateY(-4px); border-color: var(--accent-gold); }
         .dash-value { font-size: 2.5rem; font-weight: 800; color: var(--accent-gold); }
         .dash-label { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; }
         
-        /* ----- VY-PANEL ----- */
         .view-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border-radius: 32px; padding: 32px; border: 1px solid var(--glass-border); }
         .view { display: none; }
         .view.active { display: block; }
         .card-title { font-weight: 700; font-size: 1.3rem; color: var(--accent-gold); margin-bottom: 28px; display: flex; align-items: center; gap: 14px; }
         
-        /* ----- LISTOR ----- */
         .group-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0 10px; font-weight: 700; color: white; cursor: pointer; border-bottom: 2px solid var(--border-light); }
         .group-badge { background: var(--accent-gold); padding: 8px 18px; border-radius: 40px; color: #0a0f1c; font-weight: 800; }
         
@@ -150,15 +142,13 @@
         .item-sub { font-size: 0.75rem; color: var(--text-secondary); }
         .item-status { font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; display: inline-block; background: #334155; }
         
-        /* ----- FORMULÄR ----- */
         .input-field { background: #0f1a2b; border: 2px solid var(--border-light); border-radius: 50px; padding: 16px 24px; color: white; width: 100%; margin-bottom: 18px; outline: none; }
         .input-field:focus { border-color: var(--accent-gold); }
         .gradient-btn { background: linear-gradient(145deg, var(--accent-gold), var(--accent-orange)); border: none; border-radius: 50px; padding: 18px; font-weight: 700; color: #0a0f1c; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
         
-        /* ----- POPUP (anpassad för mobil) ----- */
         .leaflet-popup-content-wrapper { background: var(--bg-card); color: white; border-radius: 28px; border: 2px solid var(--accent-gold); }
-        .leaflet-popup-content { margin: 20px; min-width: 300px; max-width: 350px; }
-        .leaflet-popup-close-button { color: #f59e0b !important; font-size: 24px !important; margin: 10px !important; }
+        .leaflet-popup-content { margin: 20px; min-width: 320px; }
+        .leaflet-popup-close-button { color: #f59e0b !important; font-size: 20px !important; margin: 8px !important; }
         .leaflet-popup-tip { background: var(--bg-card); }
         
         .popup-form { display: flex; flex-direction: column; gap: 12px; }
@@ -166,14 +156,12 @@
         .popup-form select, .popup-form input { background: #0f1a2b; border: 1.5px solid var(--border-light); border-radius: 30px; padding: 14px 18px; color: white; font-size: 16px; }
         .popup-form button { background: var(--accent-gold); border: none; border-radius: 30px; padding: 16px; font-weight: 700; color: #0a0f1c; cursor: pointer; font-size: 16px; margin-top: 8px; }
         
-        /* ----- MODAL ----- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
         .modal-container { background: var(--bg-card); border-radius: 32px; border: 2px solid var(--accent-gold); padding: 32px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .modal-header h3 { color: var(--accent-gold); font-size: 1.3rem; }
         .modal-close { background: none; border: none; color: var(--text-secondary); font-size: 1.8rem; cursor: pointer; }
         
-        /* ----- ACTION BUTTONS ----- */
         .action-buttons { display: flex; gap: 6px; margin-left: auto; }
         .btn-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border: 1px solid var(--border-light); color: var(--text-secondary); cursor: pointer; font-size: 1rem; }
         .btn-icon:hover { background: var(--accent-gold); color: #0a0f1c; }
@@ -181,7 +169,6 @@
         .btn-danger { background: var(--accent-red); color: white; border: none; }
         .distanced-badge { background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 30px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-light); }
         
-        /* ----- STATISTIK ----- */
         .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-bottom: 32px; }
         .stat-box { background: rgba(20,35,55,0.8); border-radius: 24px; padding: 24px; text-align: center; border: 1px solid var(--glass-border); }
         .stat-value { font-size: 3rem; font-weight: 800; color: var(--accent-gold); }
@@ -192,7 +179,6 @@
         .text-warning { color: var(--accent-gold); }
         .text-muted { color: var(--text-secondary); }
         
-        /* ----- MOBILANPASSNING ----- */
         @media (max-width: 900px) {
             body { padding: 8px; }
             .app { flex-direction: column; height: auto; max-height: none; }
@@ -207,16 +193,10 @@
             .popup-form select, .popup-form input { padding: 16px 18px; font-size: 16px; }
             .popup-form button { padding: 18px; font-size: 18px; }
         }
-        
-        @media (max-width: 480px) {
-            .map-container { height: 300px; }
-            .card-title { font-size: 1.1rem; }
-        }
     </style>
 </head>
 <body>
 <div class="app">
-    <!-- ==================== SIDEBAR ==================== -->
     <div class="sidebar">
         <div class="sidebar-header">
             <h2>VA<span>Botkyrka</span></h2>
@@ -242,20 +222,18 @@
         </div>
     </div>
     
-    <!-- ==================== MAIN CONTENT ==================== -->
     <div class="main-content">
-        <!-- Top Bar - endast register -->
         <div id="topBarContainer">
             <div class="top-bar">
                 <div class="program-selector">
                     <select id="programSelect">
                         <option value="ventilprogram" selected>📋 Ventilprogram</option>
-                        <option value="brandpostrondering">🔥 Brandpostrondering</option>
-                        <option value="test">🧪 Test</option>
+                        <option>🔥 Brandpostrondering</option>
+                        <option>🧪 Test</option>
                     </select>
                 </div>
                 <div class="search-section">
-                    <div class="search-wrapper"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Sök adress (Oxelvägen 2)"></div>
+                    <div class="search-wrapper"><i class="fas fa-search"></i><input type="text" id="122Input" placeholder="Sök adress (Oxelvägen 2)"></div>
                     <div class="icon-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></div>
                     <div class="icon-btn" id="gpsBtn"><i class="fas fa-location-arrow"></i></div>
                     <div class="icon-btn" id="trackBtn"><i class="fas fa-satellite"></i></div>
@@ -265,10 +243,8 @@
             </div>
         </div>
         
-        <!-- Karta -->
         <div id="mapContainer"><div class="map-container"><div id="map"></div></div></div>
         
-        <!-- Dashboard -->
         <div id="dashboardArea" style="display:none;">
             <div class="dashboard-grid">
                 <div class="dash-card"><div class="dash-value" id="dashTotal">0</div><div class="dash-label">Totalt</div></div>
@@ -279,9 +255,7 @@
             </div>
         </div>
         
-        <!-- Vy-panel -->
         <div class="view-panel">
-            <!-- REGISTRERA -->
             <div id="view-register" class="view active">
                 <div class="card-title"><i class="fas fa-map-pin"></i> Fältregistrering</div>
                 <p class="text-muted" style="margin-bottom:32px; font-size:1rem;">📱 Aktivera <strong>Nål-läget</strong> och klicka på kartan, eller använd <strong>GPS</strong>.</p>
@@ -299,7 +273,6 @@
                 </div>
             </div>
             
-            <!-- ÅTGÄRDSLISTA -->
             <div id="view-actions" class="view">
                 <div class="card-title"><i class="fas fa-tools"></i> Åtgärdslista</div>
                 <div class="bulk-bar" id="bulkActionsBar" style="display:none; gap:20px; padding:12px 0; border-bottom:2px solid var(--border-light); margin-bottom:20px;">
@@ -310,19 +283,16 @@
                 <div id="groupedActionsList"></div>
             </div>
             
-            <!-- TRASIGA -->
             <div id="view-broken" class="view">
                 <div class="card-title"><i class="fas fa-exclamation-triangle text-danger"></i> Konstaterat trasiga</div>
                 <div id="brokenList"></div>
             </div>
             
-            <!-- KLARA -->
             <div id="view-completed" class="view">
                 <div class="card-title"><i class="fas fa-check-circle text-success"></i> Klara / Godkända</div>
                 <div id="completedList"></div>
             </div>
             
-            <!-- STATISTIK -->
             <div id="view-stats" class="view">
                 <div class="stat-grid">
                     <div class="stat-box"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Totalt</div></div>
@@ -333,7 +303,6 @@
                 <div id="statsBars"></div>
             </div>
             
-            <!-- PROFIL -->
             <div id="view-profile" class="view">
                 <div class="card-title"><i class="fas fa-user-astronaut"></i> Min profil</div>
                 <div style="display:flex; align-items:center; gap:20px; margin-bottom:32px;">
@@ -351,7 +320,6 @@
     </div>
 </div>
 
-<!-- MODAL FÖR REDIGERING -->
 <div class="modal-overlay" id="editModal">
     <div class="modal-container">
         <div class="modal-header">
@@ -391,8 +359,16 @@
     (function(){
         "use strict";
         
-        // ======================== KONFIG ========================
-        const TYPE_COLORS = {'VAV':'#3b82f6','VBP':'#ef4444','VSP':'#10b981','DNB':'#f59e0b','SNB':'#8b5cf6','VSV':'#06b6d4'};
+        // ======================== KONFIGURATION ========================
+        const TYPE_COLORS = {
+            'VAV':'#3b82f6',
+            'VBP':'#ef4444',
+            'VSP':'#10b981',
+            'DNB':'#f59e0b',
+            'SNB':'#8b5cf6',
+            'VSV':'#06b6d4'
+        };
+        
         const statusDetails = {
             "Trasig": ["Snurrar bara", "Stum (kan ej rubba)", "Saknar nyckelstång", "Läckljud", "Avdragen", "Läs kommentar"],
             "Trög": ["Trög, 2 gubbar", "Trög, 1 gubbe", "Kärvar", "Läs kommentar"],
@@ -401,104 +377,108 @@
             "Ej kontrollerad": ["Måste mätas in", "Borttagen", "Ska tas bort i VA-banken", "Läs kommentar"],
             "Åtgärdad": ["Åtgärdad OK", "Åtgärdad Ej OK", "Läs kommentar"]
         };
+        
         const AREAS = ['Tullinge', 'Tumba', 'Vårsta', 'Grödinge', 'Norra Botkyrka'];
         
-        let ventilData = [], currentUser = 'fredde', map, markerClusterGroup, watchId, isNeedleMode = false, popupMarker, selectedIds = new Set();
-        
-        // SEED DATA - Dina punkter
+        // ======================== SEED DATA - KOMPLETT LISTA ========================
         const SEED = [
-            {area:'Tullinge',nr:'VAV74259',status:'Snurrar bara',loc:'Oxelvägen/Askvägen',lat:59.21,lng:17.90},
-            {area:'Tullinge',nr:'VAV94388',status:'Fel lock',loc:'Oxelvägen förskola',lat:59.208,lng:17.895},
-            {area:'Tullinge',nr:'VAV97298',status:'Trög, 2 gubbar',loc:'Eklundhovsvägen 33',lat:59.215,lng:17.91},
-            {area:'Tullinge',nr:'VAV11',status:'Trög, 2 gubbar',loc:'Solskensvägen 19',lat:59.205,lng:17.88},
-            {area:'Tumba',nr:'VAV83993',status:'Trög, 2 gubbar',loc:'Skyttbrinksvägen',lat:59.195,lng:17.83},
-            {area:'Tumba',nr:'SNB61103',status:'Överasfalterad',loc:'Myntvägen 14',lat:59.19,lng:17.84},
-            {area:'Norra Botkyrka',nr:'VAV51611',status:'Överasfalterad',loc:'Rotmannavägen 28',lat:59.24,lng:17.87},
-            {area:'Vårsta',nr:'VAV31785',status:'Betäckning byta',loc:'Sandavägen',lat:59.17,lng:17.80},
-            {area:'Tullinge',nr:'VAV82149',status:'Trög, 2 gubbar',loc:'Flottiljvägen/Bergmovägen',lat:59.212,lng:17.905},
-            {area:'Tullinge',nr:'VAV71821',status:'Trög, 2 gubbar',loc:'Adler Salvius väg',lat:59.209,lng:17.892},
-            {area:'Tullinge',nr:'VAV81793',status:'Hittar ej',loc:'Flemings väg 23',lat:59.207,lng:17.885},
-            {area:'Tullinge',nr:'VAV94485',status:'Hittar ej',loc:'Skogsmulles väg',lat:59.213,lng:17.898},
-            {area:'Tullinge',nr:'VAV97388',status:'Överasfalterad',loc:'Friluftsvägen 101',lat:59.218,lng:17.915},
-            {area:'Tullinge',nr:'VAV97646',status:'Överasfalterad',loc:'Hanvedens alle 58',lat:59.22,lng:17.92},
-            {area:'Tullinge',nr:'VAV81438',status:'Överasfalterad',loc:'Dalkärrsvägen',lat:59.204,lng:17.88},
-            {area:'Tullinge',nr:'VAV82456',status:'Överasfalterad',loc:'Plåtslagarvägen',lat:59.206,lng:17.882},
-            {area:'Tullinge',nr:'VAV81307',status:'Överasfalterad',loc:'Skogshemsvägen 7',lat:59.203,lng:17.878},
-            {area:'Tullinge',nr:'VAV82455',status:'Överasfalterad',loc:'Plåtslagarvägen',lat:59.206,lng:17.883},
-            {area:'Tullinge',nr:'VAV82416',status:'Överasfalterad',loc:'Smedvägen/Sliparvägen',lat:59.205,lng:17.88},
-            {area:'Tullinge',nr:'VAV81517',status:'Ej kontrollerad',loc:'Skogshemsvägen',lat:59.202,lng:17.875},
-            {area:'Tullinge',nr:'VAV82003',status:'Ej kontrollerad',loc:'Bergmovägen 1',lat:59.21,lng:17.908},
-            {area:'Tullinge',nr:'VBP93823',status:'Justera betäckning',loc:'Mekanikervägen 1',lat:59.214,lng:17.912},
-            {area:'Tumba',nr:'VAV83972',status:'Trög, 2 gubbar',loc:'Skyttbrinksvägen 4',lat:59.194,lng:17.832},
-            {area:'Tumba',nr:'VAV83971',status:'Trög, 2 gubbar',loc:'Skyttbrinksvägen 4',lat:59.194,lng:17.831},
-            {area:'Tumba',nr:'VAV3016',status:'Trög, 2 gubbar',loc:'Kärrvägen/Kärrtuvevägen',lat:59.192,lng:17.828},
-            {area:'Tumba',nr:'VAV92506',status:'Trög, 2 gubbar',loc:'Björkvägen 24',lat:59.196,lng:17.835},
-            {area:'Tumba',nr:'VAV1818',status:'Trög, 2 gubbar',loc:'Grödingevägen/Högbrinksvägen',lat:59.193,lng:17.83},
-            {area:'Tumba',nr:'VAV91658',status:'Trög, 2 gubbar',loc:'Björkvägen 40',lat:59.197,lng:17.836},
-            {area:'Tumba',nr:'VAV93497',status:'Trög, 2 gubbar',loc:'Bäckvägen 21',lat:59.191,lng:17.826},
-            {area:'Tumba',nr:'VAV91806',status:'Trög, 2 gubbar',loc:'Skäcklingegårdsväg',lat:59.188,lng:17.824},
-            {area:'Tumba',nr:'VAV93062',status:'Trög, 2 gubbar',loc:'Korpvägen 9',lat:59.189,lng:17.825},
-            {area:'Tumba',nr:'VAV93028',status:'Trög, 2 gubbar',loc:'Duvhöksvägen 7',lat:59.19,lng:17.827},
-            {area:'Tumba',nr:'VAV1181',status:'Trög, 2 gubbar',loc:'Prästhagsvägen/Länsmansvägen',lat:59.192,lng:17.829},
-            {area:'Tumba',nr:'VAV1182',status:'Trög, 2 gubbar',loc:'Prästhagsvägen/Länsmansvägen',lat:59.192,lng:17.83},
-            {area:'Tumba',nr:'VAV94413',status:'Trög, 2 gubbar',loc:'Segersjövägen 55',lat:59.187,lng:17.822},
-            {area:'Tumba',nr:'VAV61306',status:'Trög, 2 gubbar',loc:'Hans stahles väg',lat:59.185,lng:17.82},
-            {area:'Tumba',nr:'VAV61532',status:'Trög, 2 gubbar',loc:'Backvägen/Lignellsvägen',lat:59.186,lng:17.821},
-            {area:'Tumba',nr:'VAV61589',status:'Trög, 2 gubbar',loc:'Ängsvägen 1',lat:59.184,lng:17.818},
-            {area:'Tumba',nr:'VAV93486',status:'Trasig/snurrar',loc:'Svedjevägen/grytstigen',lat:59.183,lng:17.816},
-            {area:'Tumba',nr:'VAV1481',status:'Trasig/snurrar',loc:'Parkbacken 9',lat:59.182,lng:17.815},
-            {area:'Tumba',nr:'VAV92231',status:'Trasig/snurrar',loc:'Odlingsvägen Lekpark',lat:59.18,lng:17.812},
-            {area:'Tumba',nr:'VAV1278',status:'Trasig/snurrar',loc:'Högbrinksvägen 2',lat:59.181,lng:17.814},
-            {area:'Tumba',nr:'VAV61707',status:'Trasig/snurrar',loc:'Ängsvägen 16',lat:59.183,lng:17.817},
-            {area:'Tumba',nr:'VAV61708',status:'Trasig/snurrar',loc:'Ängsvägen 16',lat:59.183,lng:17.818},
-            {area:'Tumba',nr:'VAV91921',status:'Justera betäckning',loc:'Harbrovägen 42Y',lat:59.179,lng:17.81},
-            {area:'Tumba',nr:'VAV94384',status:'Justera betäckning',loc:'Engwallsväg 20',lat:59.178,lng:17.808},
-            {area:'Tumba',nr:'VAV91763',status:'Justera betäckning',loc:'Gångväg Bäverstigen 111',lat:59.177,lng:17.806},
-            {area:'Tumba',nr:'VAV91762',status:'Justera betäckning + saknar lock',loc:'Gångväg Bäverstigen 111',lat:59.177,lng:17.805},
-            {area:'Tumba',nr:'VAV1724',status:'Justera betäckning',loc:'kyrkvärdsvägen 20',lat:59.176,lng:17.804},
-            {area:'Tumba',nr:'VAV94302',status:'Justera betäckning',loc:'Enbacken 21',lat:59.175,lng:17.802},
-            {area:'Tumba',nr:'VAV94134',status:'Justera betäckning (sne)',loc:'Tuna gårdsväg 4',lat:59.174,lng:17.8},
-            {area:'Tumba',nr:'VAV62018',status:'Justera betäckning (trasigt lock)',loc:'Fältvägen/Bondgårdsvägen',lat:59.173,lng:17.798},
-            {area:'Tumba',nr:'VAV62017',status:'Justera betäckning (trasigt lock)',loc:'Fältvägen/Bondgårdsvägen',lat:59.173,lng:17.797},
-            {area:'Tumba',nr:'VAV357',status:'Justera betäckning (höjas)',loc:'Strandvägen 47',lat:59.172,lng:17.796},
-            {area:'Tumba',nr:'VAV41018',status:'Justera betäckning (höjas)',loc:'Kumla gårds väg 28a',lat:59.171,lng:17.794},
-            {area:'Tumba',nr:'VAV62105',status:'Överasfalterad',loc:'Tunavägen/Prästgårdsvägen',lat:59.17,lng:17.792},
-            {area:'Tumba',nr:'VAV2371',status:'Överasfalterad',loc:'Skrävstavägen 37',lat:59.169,lng:17.79},
-            {area:'Tumba',nr:'VAV1726',status:'Överasfalterad',loc:'Sveavägen/kyrkvärdsvägen',lat:59.168,lng:17.788},
-            {area:'Tumba',nr:'VAV61103',status:'Överasfalterad',loc:'Myntvägen 14',lat:59.167,lng:17.786},
-            {area:'Tumba',nr:'VAV94100',status:'Övertäckt (plattläggning)',loc:'Sandstuguvägen 6',lat:59.166,lng:17.784},
-            {area:'Tumba',nr:'VAV41749',status:'Ej kontrollerad',loc:'Kumla gårdsväg 11',lat:59.165,lng:17.782},
-            {area:'Tumba',nr:'VAV3624',status:'Trasig (RAPPAR + rinner vatten)',loc:'Norrbyvretsvägen 20',lat:59.164,lng:17.78},
-            {area:'Tumba',nr:'VAV61893',status:'Hittar ej',loc:'Trädgårdsvägen 10',lat:59.163,lng:17.778},
-            {area:'Tumba',nr:'VAV61717',status:'Hittar ej',loc:'Trädgårdsvägen 15',lat:59.162,lng:17.776},
-            {area:'Tumba',nr:'VAV1470',status:'Hittar ej',loc:'Parkbacken/Strandvägen',lat:59.161,lng:17.774},
-            {area:'Tumba',nr:'VAV92081',status:'Ej kontrollerad',loc:'Grytstigen 79',lat:59.16,lng:17.772},
-            {area:'Tumba',nr:'VAV91437',status:'Ej kontrollerad',loc:'Bryggarvägen 9C',lat:59.159,lng:17.77},
-            {area:'Tumba',nr:'VAV3152',status:'Ej kontrollerad',loc:'Brinkvägen 1',lat:59.158,lng:17.768},
-            {area:'Tumba',nr:'VAV2100',status:'Ej kontrollerad',loc:'Brinkvägen 1',lat:59.158,lng:17.767},
-            {area:'Tumba',nr:'VAV93113',status:'Justera betäckning',loc:'Storvretsvägen 91B',lat:59.157,lng:17.766},
-            {area:'Tumba',nr:'SV',status:'Fixa asfalt',loc:'Hökbursvägen 48',lat:59.156,lng:17.764},
-            {area:'Tumba',nr:'SV',status:'Trasig',loc:'Olvonvägen 10',lat:59.155,lng:17.762},
-            {area:'Tumba',nr:'SNB61103',status:'Överasfalterad',loc:'Myntvägen 14',lat:59.19,lng:17.84},
-            {area:'Norra Botkyrka',nr:'VAV52124',status:'Fel inmätt?',loc:'Amalias väg 33',lat:59.242,lng:17.872},
-            {area:'Norra Botkyrka',nr:'VAV52467',status:'Hittar ej',loc:'Storskiftesvägen 56',lat:59.244,lng:17.875},
-            {area:'Norra Botkyrka',nr:'VAV5265',status:'Trasig/snurrar',loc:'Storskiftesvägen 56',lat:59.244,lng:17.876},
-            {area:'Norra Botkyrka',nr:'VAV51610',status:'Trasig/snurrar',loc:'Rotmannavägen 28/29',lat:59.24,lng:17.87},
-            {area:'Norra Botkyrka',nr:'VAV56471',status:'Trasig/snurrar',loc:'Värdshusvägen 40',lat:59.246,lng:17.878},
-            {area:'Norra Botkyrka',nr:'VAV56781',status:'Höja betäckning',loc:'Fittjavägen rondell',lat:59.248,lng:17.88},
-            {area:'Norra Botkyrka',nr:'VAV56678',status:'Höja betäckning',loc:'Fittja dagvattenpark',lat:59.25,lng:17.882},
-            {area:'Norra Botkyrka',nr:'VAV21883',status:'Trög, 2 gubbar',loc:'Sjöbodavägen',lat:59.252,lng:17.884},
-            {area:'Norra Botkyrka',nr:'VAV94238',status:'Röjas runt',loc:'tuna gårdsväg',lat:59.254,lng:17.886},
-            {area:'Norra Botkyrka',nr:'VAV97463',status:'Betäckning saknar lock',loc:'Fittja torg',lat:59.256,lng:17.888},
-            {area:'Norra Botkyrka',nr:'VAV56181',status:'FÅR EJ RÖRAS',loc:'Fittjastråket 29',lat:59.258,lng:17.89},
-            {area:'Vårsta',nr:'VAV31604',status:'Trög, 2 gubbar',loc:'Ringvägen 30',lat:59.172,lng:17.802},
-            {area:'Vårsta',nr:'VAV31080',status:'Trög, 2 gubbar',loc:'Bremoravägen',lat:59.174,lng:17.804},
-            {area:'Vårsta',nr:'VAV94338',status:'Ej kontrollerad',loc:'Trastvägen 1',lat:59.176,lng:17.806},
-            {area:'Vårsta',nr:'VAV94339',status:'Ej kontrollerad',loc:'Trastvägen 1',lat:59.176,lng:17.807},
-            {area:'Vårsta',nr:'VAV31643',status:'STUM kan ej rubba',loc:'Brosjöstråket',lat:59.178,lng:17.808},
-            {area:'Vårsta',nr:'VAV32283',status:'Borttagen',loc:'Ringvägen',lat:59.18,lng:17.81},
-            {area:'Vårsta',nr:'VAV31685',status:'Borttagen',loc:'Ringvägen',lat:59.18,lng:17.811}
+            // TULLINGE
+            {area:'Tullinge', nr:'VAV74259', status:'Snurrar bara, trasig', loc:'Korsning Oxelvägen/Askvägen', lat:59.210, lng:17.900},
+            {area:'Tullinge', nr:'VAV94388', status:'Fel lock, byta', loc:'Oxelvägen Förskolan bäverhyddan', lat:59.208, lng:17.895},
+            {area:'Tullinge', nr:'VAV97298', status:'Trög, 2 gubbar', loc:'Eklundhovsvägen 33/35', lat:59.215, lng:17.910},
+            {area:'Tullinge', nr:'VAV82149', status:'Trög, 2 gubbar', loc:'Korsning Flottiljvägen/Bergmovägen', lat:59.212, lng:17.905},
+            {area:'Tullinge', nr:'VAV71821', status:'Trög, 2 gubbar', loc:'Korsning Adler Salvius väg/Liselundsvägen', lat:59.209, lng:17.892},
+            {area:'Tullinge', nr:'VAV11', status:'Trög, 2 gubbar', loc:'Solskensvägen 19', lat:59.205, lng:17.880},
+            {area:'Tullinge', nr:'VAV81793', status:'Hittar ej', loc:'Flemings väg 23', lat:59.207, lng:17.885},
+            {area:'Tullinge', nr:'VAV94485', status:'Hittar ej', loc:'Korsning Skogsmulles väg/Strövarvägen', lat:59.213, lng:17.898},
+            {area:'Tullinge', nr:'VAV97388', status:'Överasfalterad', loc:'Friluftsvägen 101', lat:59.218, lng:17.915},
+            {area:'Tullinge', nr:'VAV97646', status:'Överasfalterad', loc:'Hanvedens alle 58', lat:59.220, lng:17.920},
+            {area:'Tullinge', nr:'VAV81438', status:'Överasfalterad', loc:'Korsning Dalkärrsvägen/Skogshemsvägen', lat:59.204, lng:17.880},
+            {area:'Tullinge', nr:'VAV82456', status:'Överasfalterad', loc:'Korsning Plåtslagarvägen/smedvägen', lat:59.206, lng:17.882},
+            {area:'Tullinge', nr:'VAV81307', status:'Överasfalterad', loc:'Skogshemsvägen 7', lat:59.203, lng:17.878},
+            {area:'Tullinge', nr:'VAV82455', status:'Överasfalterad', loc:'Korsning Plåtslagarvägen/smedvägen', lat:59.206, lng:17.883},
+            {area:'Tullinge', nr:'VAV82416', status:'Överasfalterad', loc:'Korsning Smedvägen/Sliparvägen', lat:59.205, lng:17.881},
+            {area:'Tullinge', nr:'VAV81517', status:'Ej kontrollerad', loc:'Skogshemsvägen', lat:59.202, lng:17.875},
+            {area:'Tullinge', nr:'VAV82003', status:'Ej kontrollerad', loc:'Bergmovägen 1', lat:59.210, lng:17.908},
+            {area:'Tullinge', nr:'VBP93823', status:'Justera betäckning', loc:'Mekanikervägen 1', lat:59.214, lng:17.912},
+            // TUMBA
+            {area:'Tumba', nr:'VAV83993', status:'Trög, 2 gubbar', loc:'Korsning Skyttbrinksvägen/Kompassvägen', lat:59.195, lng:17.830},
+            {area:'Tumba', nr:'VAV83972', status:'Trög, 2 gubbar', loc:'Skyttbrinksvägen 4', lat:59.194, lng:17.832},
+            {area:'Tumba', nr:'VAV83971', status:'Trög, 2 gubbar', loc:'Skyttbrinksvägen 4', lat:59.194, lng:17.831},
+            {area:'Tumba', nr:'VAV3016', status:'Trög, 2 gubbar', loc:'Korsning Kärrvägen/Kärrtuvevägen', lat:59.192, lng:17.828},
+            {area:'Tumba', nr:'VAV92506', status:'Trög, 2 gubbar', loc:'Björkvägen 24', lat:59.196, lng:17.835},
+            {area:'Tumba', nr:'VAV1818', status:'Trög, 2 gubbar', loc:'Korsning Grödingevägen/Högbrinksvägen', lat:59.193, lng:17.830},
+            {area:'Tumba', nr:'VAV91658', status:'Trög, 2 gubbar', loc:'Björkvägen 40', lat:59.197, lng:17.836},
+            {area:'Tumba', nr:'VAV93497', status:'Trög, 2 gubbar', loc:'Bäckvägen 21', lat:59.191, lng:17.826},
+            {area:'Tumba', nr:'VAV91806', status:'Trög, 2 gubbar', loc:'Korsning Skäcklingegårdsväg/bäverstigen', lat:59.188, lng:17.824},
+            {area:'Tumba', nr:'VAV93062', status:'Trög, 2 gubbar', loc:'Korpvägen 9', lat:59.189, lng:17.825},
+            {area:'Tumba', nr:'VAV93028', status:'Trög, 2 gubbar', loc:'Duvhöksvägen 7', lat:59.190, lng:17.827},
+            {area:'Tumba', nr:'VAV1181', status:'Trög, 2 gubbar', loc:'Korsning Prästhagsvägen/Länsmansvägen', lat:59.192, lng:17.829},
+            {area:'Tumba', nr:'VAV1182', status:'Trög, 2 gubbar', loc:'Korsning Prästhagsvägen/Länsmansvägen', lat:59.192, lng:17.830},
+            {area:'Tumba', nr:'VAV94413', status:'Trög, 2 gubbar', loc:'Segersjövägen 55', lat:59.187, lng:17.822},
+            {area:'Tumba', nr:'VAV61306', status:'Trög, 2 gubbar', loc:'Hans stahles väg', lat:59.185, lng:17.820},
+            {area:'Tumba', nr:'VAV61532', status:'Trög, 2 gubbar', loc:'Korsning Backvägen/Lignellsvägen', lat:59.186, lng:17.821},
+            {area:'Tumba', nr:'VAV61589', status:'Trög, 2 gubbar', loc:'Ängsvägen 1', lat:59.184, lng:17.818},
+            {area:'Tumba', nr:'VAV93486', status:'Trasig/snurrar', loc:'Korsning Svedjevägen/grytstigen', lat:59.183, lng:17.816},
+            {area:'Tumba', nr:'VAV1481', status:'Trasig/snurrar', loc:'Parkbacken 9', lat:59.182, lng:17.815},
+            {area:'Tumba', nr:'VAV92231', status:'Trasig/snurrar', loc:'Odlingsvägen Lekpark', lat:59.180, lng:17.812},
+            {area:'Tumba', nr:'VAV1278', status:'Trasig/snurrar', loc:'Högbrinksvägen 2', lat:59.181, lng:17.814},
+            {area:'Tumba', nr:'VAV61707', status:'Trasig/snurrar', loc:'Ängsvägen 16', lat:59.183, lng:17.817},
+            {area:'Tumba', nr:'VAV61708', status:'Trasig/snurrar', loc:'Ängsvägen 16', lat:59.183, lng:17.818},
+            {area:'Tumba', nr:'VAV91921', status:'Justera betäckning', loc:'Harbrovägen 42Y vid övergångsstället', lat:59.179, lng:17.810},
+            {area:'Tumba', nr:'VAV94384', status:'Justera betäckning', loc:'Engwallsväg 20', lat:59.178, lng:17.808},
+            {area:'Tumba', nr:'VAV91763', status:'Justera betäckning', loc:'Gångväg nära Bäverstigen 111', lat:59.177, lng:17.806},
+            {area:'Tumba', nr:'VAV91762', status:'Justera betäckning + saknar lock', loc:'Gångväg nära Bäverstigen 111', lat:59.177, lng:17.805},
+            {area:'Tumba', nr:'VAV1724', status:'Justera betäckning', loc:'kyrkvärdsvägen 20', lat:59.176, lng:17.804},
+            {area:'Tumba', nr:'VAV94302', status:'Justera betäckning', loc:'Enbacken 21', lat:59.175, lng:17.802},
+            {area:'Tumba', nr:'VAV94134', status:'Justera betäckning (sne)', loc:'Tuna gårdsväg 4', lat:59.174, lng:17.800},
+            {area:'Tumba', nr:'VAV62018', status:'Justera betäckning (trasigt lock)', loc:'Fältvägen/Bondgårdsvägen', lat:59.173, lng:17.798},
+            {area:'Tumba', nr:'VAV62017', status:'Justera betäckning (trasigt lock)', loc:'Fältvägen/Bondgårdsvägen', lat:59.173, lng:17.797},
+            {area:'Tumba', nr:'VAV357', status:'Justera betäckning (höjas)', loc:'Strandvägen 47', lat:59.172, lng:17.796},
+            {area:'Tumba', nr:'VAV41018', status:'Justera betäckning (höjas)', loc:'Kumla gårds väg 28a', lat:59.171, lng:17.794},
+            {area:'Tumba', nr:'VAV62105', status:'Överasfalterad', loc:'Korsning Tunavägen/Prästgårdsvägen', lat:59.170, lng:17.792},
+            {area:'Tumba', nr:'VAV2371', status:'Överasfalterad', loc:'Skrävstavägen 37', lat:59.169, lng:17.790},
+            {area:'Tumba', nr:'VAV1726', status:'Överasfalterad', loc:'Korsning Sveavägen/kyrkvärdsvägen', lat:59.168, lng:17.788},
+            {area:'Tumba', nr:'VAV61103', status:'Överasfalterad', loc:'Myntvägen 14', lat:59.167, lng:17.786},
+            {area:'Tumba', nr:'VAV94100', status:'Övertäckt (plattläggning)', loc:'Sandstuguvägen 6', lat:59.166, lng:17.784},
+            {area:'Tumba', nr:'VAV41749', status:'Ej kontrollerad', loc:'Kumla gårdsväg 11', lat:59.165, lng:17.782},
+            {area:'Tumba', nr:'VAV3624', status:'Trasig (RAPPAR + rinner vatten)', loc:'Norrbyvretsvägen 20', lat:59.164, lng:17.780},
+            {area:'Tumba', nr:'VAV61893', status:'Hittar ej', loc:'Trädgårdsvägen 10', lat:59.163, lng:17.778},
+            {area:'Tumba', nr:'VAV61717', status:'Hittar ej', loc:'Trädgårdsvägen 15', lat:59.162, lng:17.776},
+            {area:'Tumba', nr:'VAV1470', status:'Hittar ej', loc:'Korsning Parkbacken/Strandvägen', lat:59.161, lng:17.774},
+            {area:'Tumba', nr:'VAV92081', status:'Ej kontrollerad', loc:'Grytstigen 79', lat:59.160, lng:17.772},
+            {area:'Tumba', nr:'VAV91437', status:'Ej kontrollerad', loc:'Bryggarvägen 9C', lat:59.159, lng:17.770},
+            {area:'Tumba', nr:'VAV3152', status:'Ej kontrollerad', loc:'Brinkvägen 1', lat:59.158, lng:17.768},
+            {area:'Tumba', nr:'VAV2100', status:'Ej kontrollerad', loc:'Brinkvägen 1', lat:59.158, lng:17.767},
+            {area:'Tumba', nr:'VAV93113', status:'Justera betäckning', loc:'Storvretsvägen 91B', lat:59.157, lng:17.766},
+            {area:'Tumba', nr:'SV', status:'Fixa asfalt', loc:'Hökbursvägen 48', lat:59.156, lng:17.764},
+            {area:'Tumba', nr:'SV', status:'Trasig', loc:'Olvonvägen 10', lat:59.155, lng:17.762},
+            {area:'Tumba', nr:'SNB61103', status:'Överasfalterad', loc:'Myntvägen 14', lat:59.190, lng:17.840},
+            // NORRA BOTKYRKA
+            {area:'Norra Botkyrka', nr:'VAV51611', status:'Överasfalterad', loc:'Korsning Rotmannavägen 28/29', lat:59.240, lng:17.870},
+            {area:'Norra Botkyrka', nr:'VAV52124', status:'Fel inmätt?', loc:'Amalias väg 33', lat:59.242, lng:17.872},
+            {area:'Norra Botkyrka', nr:'VAV52467', status:'Hittar ej', loc:'Storskiftesvägen 56', lat:59.244, lng:17.875},
+            {area:'Norra Botkyrka', nr:'VAV5265', status:'Trasig/snurrar', loc:'Storskiftesvägen 56', lat:59.244, lng:17.876},
+            {area:'Norra Botkyrka', nr:'VAV51610', status:'Trasig/snurrar', loc:'Korsning Rotmannavägen 28/29', lat:59.240, lng:17.871},
+            {area:'Norra Botkyrka', nr:'VAV56471', status:'Trasig/snurrar', loc:'Värdshusvägen 40', lat:59.246, lng:17.878},
+            {area:'Norra Botkyrka', nr:'VAV56781', status:'Höja betäckning', loc:'Fittjavägen rondell OK', lat:59.248, lng:17.880},
+            {area:'Norra Botkyrka', nr:'VAV56678', status:'Höja betäckning', loc:'Fittja dagvattenpark', lat:59.250, lng:17.882},
+            {area:'Norra Botkyrka', nr:'VAV21883', status:'Trög, 2 gubbar', loc:'Sjöbodavägen', lat:59.252, lng:17.884},
+            {area:'Norra Botkyrka', nr:'VAV94238', status:'Röjas runt', loc:'tuna gårdsväg', lat:59.254, lng:17.886},
+            {area:'Norra Botkyrka', nr:'VAV97463', status:'Betäckning saknar lock', loc:'Fittja torg', lat:59.256, lng:17.888},
+            {area:'Norra Botkyrka', nr:'VAV56181', status:'FÅR EJ RÖRAS', loc:'Fittjastråket 29', lat:59.258, lng:17.890},
+            // VÅRSTA
+            {area:'Vårsta', nr:'VAV31785', status:'Betäckning byta hela', loc:'Korsning Sandavägen/Klockarevägen', lat:59.170, lng:17.800},
+            {area:'Vårsta', nr:'VAV31604', status:'Trög, 2 gubbar', loc:'Ringvägen 30', lat:59.172, lng:17.802},
+            {area:'Vårsta', nr:'VAV31080', status:'Trög, 2 gubbar', loc:'Bremoravägen', lat:59.174, lng:17.804},
+            {area:'Vårsta', nr:'VAV94338', status:'Ej kontrollerad', loc:'Trastvägen 1', lat:59.176, lng:17.806},
+            {area:'Vårsta', nr:'VAV94339', status:'Ej kontrollerad', loc:'Trastvägen 1', lat:59.176, lng:17.807},
+            {area:'Vårsta', nr:'VAV31643', status:'STUM kan ej rubba', loc:'Brosjöstråket', lat:59.178, lng:17.808},
+            {area:'Vårsta', nr:'VAV32283', status:'Borttagen SKA TAS BORT FRÅN KARTAN', loc:'Ringvägen', lat:59.180, lng:17.810},
+            {area:'Vårsta', nr:'VAV31685', status:'Borttagen SKA TAS BORT FRÅN KARTAN', loc:'Ringvägen', lat:59.180, lng:17.811}
         ];
+        
+        let ventilData = [], currentUser = 'fredde', map, markerClusterGroup, watchId, isNeedleMode = false, popupMarker, selectedIds = new Set();
         
         // ======================== INIT ========================
         function init() {
@@ -507,6 +487,7 @@
             setupListeners();
             renderAll();
             updateAuthUI();
+            setupDetailDropdowns();
         }
         
         function initMap() {
@@ -532,7 +513,7 @@
         function openPopup(lat, lng, addr, existing = null) {
             if (popupMarker) map.removeLayer(popupMarker);
             const div = document.createElement('div'); div.className = 'popup-form';
-            div.innerHTML = `<h4>${existing?'✏️ Redigera':'📝 Ny registrering'}</h4>
+            div.innerHTML = `<h4>${existing?'✏️ Redigera ventil':'📝 Ny registrering'}</h4>
                 <div style="display:flex; gap:8px;"><select id="popupType">${Object.keys(TYPE_COLORS).map(t=>`<option ${existing&&existing.type===t?'selected':''}>${t}</option>`).join('')}</select>
                 <input id="popupNumber" placeholder="Nummer" value="${existing?existing.ventilNr.replace(existing.type,''):''}"></div>
                 <select id="popupArea">${AREAS.map(a=>`<option ${existing&&existing.area===a?'selected':''}>${a}</option>`).join('')}</select>
@@ -540,7 +521,7 @@
                 <select id="popupDetail"><option>Välj detalj</option></select>
                 <input id="popupLocation" value="${existing?existing.location:addr}">
                 <input id="popupNote" placeholder="Notering" value="${existing?existing.note||'':''}">
-                <button id="popupSave">${existing?'Uppdatera':'💾 Spara'}</button>`;
+                <button id="popupSave">${existing?'💾 Uppdatera':'💾 Spara ventil'}</button>`;
             
             const statusSel = div.querySelector('#popupStatus'), detailSel = div.querySelector('#popupDetail');
             function upd() { const s = statusSel.value; detailSel.innerHTML = '<option>Välj detalj</option>'; if(statusDetails[s]) statusDetails[s].forEach(d=>detailSel.innerHTML+=`<option>${d}</option>`); }
@@ -562,7 +543,8 @@
         }
         
         function createMarker(v) {
-            const icon = L.divIcon({ html: `<div style="background:${TYPE_COLORS[v.type]}; width:42px; height:42px; border-radius:14px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:0.8rem; border:3px solid white; box-shadow:0 6px 14px rgba(0,0,0,0.3);">${v.type}</div>`, iconSize: [42,42] });
+            const color = TYPE_COLORS[v.type] || '#888';
+            const icon = L.divIcon({ html: `<div style="background:${color}; width:42px; height:42px; border-radius:14px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:0.8rem; border:3px solid white; box-shadow:0 6px 14px rgba(0,0,0,0.3);">${v.type}</div>`, iconSize: [42,42] });
             return L.marker([v.lat, v.lng], { icon }).bindPopup(`<b>${v.ventilNr}</b><br>${v.location}<br><span style="background:#334155; padding:4px 10px; border-radius:20px;">${v.fullStatus}</span><br><button onclick="window.editVentil('${v.id}')" style="margin-top:10px; background:#f59e0b; border:none; border-radius:30px; padding:8px 16px; color:#0a0f1c; font-weight:700; width:100%; cursor:pointer;"><i class="fas fa-edit"></i> Redigera</button>`);
         }
         
@@ -572,9 +554,9 @@
         
         function reverseGeocode(lat, lng, cb) { fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`).then(r=>r.json()).then(d=>{ const a=d.address; cb((a.road||'')+(a.house_number?' '+a.house_number:'')||d.display_name?.split(',')[0]||'Okänd plats'); }).catch(()=>cb('Okänd plats')); }
         
-        function loadData() { const s = localStorage.getItem('va_ultimate_v5'); if(s) try{ventilData=JSON.parse(s);}catch(e){seedData();} else { seedData(); } const u=localStorage.getItem('currentUser'); if(u) currentUser=u; document.getElementById('userNotes').value=localStorage.getItem('userNotes')||''; }
-        function seedData() { ventilData = SEED.map(p=>{ const t=p.nr.match(/^[A-Z]+/)[0]||'VAV'; return {...p, id:'s_'+Date.now()+'_'+Math.random().toString(36), type:t, fullStatus:p.status, fixed:false, reportedBy:'system', distanced:false}; }); saveToLocal(); }
-        function saveToLocal() { localStorage.setItem('va_ultimate_v5', JSON.stringify(ventilData)); localStorage.setItem('currentUser', currentUser); localStorage.setItem('userNotes', document.getElementById('userNotes').value); }
+        function loadData() { const s = localStorage.getItem('va_ultimate_final_v1'); if(s) try{ventilData=JSON.parse(s);}catch(e){seedData();} else { seedData(); } const u=localStorage.getItem('currentUser'); if(u) currentUser=u; document.getElementById('userNotes').value=localStorage.getItem('userNotes')||''; }
+        function seedData() { ventilData = SEED.map(p=>{ const t=p.nr.match(/^[A-Z]+/)?.[0]||'VAV'; return {...p, id:'s_'+Date.now()+'_'+Math.random().toString(36), type:t, fullStatus:p.status, fixed:false, reportedBy:'system', distanced:false, date: new Date().toLocaleString('sv-SE')}; }); saveToLocal(); }
+        function saveToLocal() { localStorage.setItem('va_ultimate_final_v1', JSON.stringify(ventilData)); localStorage.setItem('currentUser', currentUser); localStorage.setItem('userNotes', document.getElementById('userNotes').value); }
         
         function renderAll() { updateMapMarkers(); renderGroupedActions(); renderBroken(); renderCompleted(); renderStats(); updateDashboard(); updateUserStats(); }
         
@@ -582,13 +564,14 @@
             const acts = ventilData.filter(v=>!v.fixed), groups = {};
             acts.forEach(v=>{ let c = v.fullStatus.includes('Trög')?'Trög':v.fullStatus.includes('Betäckning')?'Betäckning':v.fullStatus.includes('Över')?'Övertäckt':v.fullStatus.includes('Ej kontrollerad')?'Ej kontrollerad':'Övrigt'; if(!groups[c]) groups[c]=[]; groups[c].push(v); });
             let html = '';
+            const labels = {'Trög':'🟠 Tröga','Betäckning':'🟡 Betäckning','Övertäckt':'⬜ Övertäckta','Ej kontrollerad':'⚪ Ej kontrollerade','Övrigt':'📌 Övriga'};
             ['Trög','Betäckning','Övertäckt','Ej kontrollerad','Övrigt'].forEach(cat=>{ if(!groups[cat]) return;
-                html += `<div class="group-header" onclick="document.getElementById('group-${cat}').style.display=document.getElementById('group-${cat}').style.display==='none'?'block':'none'"><span>${cat==='Trög'?'🟠 Trög':cat==='Betäckning'?'🟡 Betäckning':cat==='Övertäckt'?'⬜ Övertäckt':cat==='Ej kontrollerad'?'⚪ Ej kontrollerad':'📌 Övrigt'}</span><span class="group-badge">${groups[cat].length}</span></div><div id="group-${cat}">`;
+                html += `<div class="group-header" onclick="document.getElementById('group-${cat}').style.display=document.getElementById('group-${cat}').style.display==='none'?'block':'none'"><span>${labels[cat]}</span><span class="group-badge">${groups[cat].length}</span></div><div id="group-${cat}">`;
                 groups[cat].sort((a,b)=>a.ventilNr.localeCompare(b.ventilNr));
                 groups[cat].forEach(v=>{ const checked=selectedIds.has(v.id)?'checked':'';
                     html += `<div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')"><input type="checkbox" ${checked} onchange="toggleSelect('${v.id}')" onclick="event.stopPropagation()" style="width:20px; height:20px; cursor:pointer;"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr}</div><div class="item-sub">${v.location}</div><span class="item-status">${v.fullStatus}</span></div><span class="distanced-badge" onclick="event.stopPropagation(); toggleDistanced('${v.id}')">${v.distanced?'✅ Dist':'⬜ Dist'}</span><div class="action-buttons">`;
-                    if(cat==='Trög') html += `<button class="btn-icon btn-success" onclick="event.stopPropagation(); checkTrog('${v.id}','ok')" title="OK"><i class="fas fa-check"></i></button><button class="btn-icon btn-danger" onclick="event.stopPropagation(); checkTrog('${v.id}','stum')" title="Stum"><i class="fas fa-ban"></i></button><button class="btn-icon btn-danger" onclick="event.stopPropagation(); checkTrog('${v.id}','av')" title="Av"><i class="fas fa-heart-broken"></i></button>`;
-                    else html += `<button class="btn-icon btn-success" onclick="event.stopPropagation(); approveVentil('${v.id}')" title="Åtgärdad"><i class="fas fa-check-circle"></i></button><button class="btn-icon btn-danger" onclick="event.stopPropagation(); markBroken('${v.id}')" title="Trasig"><i class="fas fa-trash-alt"></i></button>`;
+                    if(cat==='Trög') html += `<button class="btn-icon btn-success" onclick="event.stopPropagation(); checkTrog('${v.id}','ok')" title="Kontrollerad - OK"><i class="fas fa-check"></i></button><button class="btn-icon btn-danger" onclick="event.stopPropagation(); checkTrog('${v.id}','stum')" title="Kontrollerad - Stum"><i class="fas fa-ban"></i></button><button class="btn-icon btn-danger" onclick="event.stopPropagation(); checkTrog('${v.id}','av')" title="Kontrollerad - Av"><i class="fas fa-heart-broken"></i></button>`;
+                    else html += `<button class="btn-icon btn-success" onclick="event.stopPropagation(); approveVentil('${v.id}')" title="Markera som åtgärdad"><i class="fas fa-check-circle"></i></button><button class="btn-icon btn-danger" onclick="event.stopPropagation(); markBroken('${v.id}')" title="Flytta till trasiga"><i class="fas fa-trash-alt"></i></button>`;
                     html += `<button class="btn-icon" onclick="event.stopPropagation(); editVentil('${v.id}')" title="Redigera"><i class="fas fa-edit"></i></button></div></div>`;
                 });
                 html += '</div>';
@@ -599,19 +582,31 @@
         
         window.toggleSelect = (id) => { selectedIds.has(id) ? selectedIds.delete(id) : selectedIds.add(id); renderGroupedActions(); };
         window.toggleDistanced = (id) => { const v=ventilData.find(x=>x.id===id); if(v) { v.distanced=!v.distanced; saveToLocal(); renderGroupedActions(); } };
-        window.checkTrog = (id, r) => { const v=ventilData.find(x=>x.id===id); if(v) { v.fixed=true; v.completedBy=currentUser; v.fullStatus = r==='ok'?'Åtgärdad - OK (Trög)':(r==='stum'?'Trasig - konstaterad (Stum)':'Trasig - konstaterad (Av)'); saveToLocal(); renderAll(); } };
-        window.approveVentil = (id) => { const v=ventilData.find(x=>x.id===id); if(v) { v.fixed=true; v.completedBy=currentUser; v.fullStatus='Åtgärdad - OK'; saveToLocal(); renderAll(); } };
-        window.markBroken = (id) => { const v=ventilData.find(x=>x.id===id); if(v) { v.fixed=true; v.fullStatus='Trasig - konstaterad (Av/Stum)'; v.completedBy=currentUser; saveToLocal(); renderAll(); } };
-        window.bulkApprove = () => { selectedIds.forEach(id=>{ const v=ventilData.find(x=>x.id===id); if(v&&!v.fixed) { v.fixed=true; v.completedBy=currentUser; v.fullStatus='Åtgärdad - OK'; } }); selectedIds.clear(); saveToLocal(); renderAll(); };
-        window.bulkMarkBroken = () => { selectedIds.forEach(id=>{ const v=ventilData.find(x=>x.id===id); if(v&&!v.fixed) { v.fixed=true; v.fullStatus='Trasig - konstaterad (Av/Stum)'; v.completedBy=currentUser; } }); selectedIds.clear(); saveToLocal(); renderAll(); };
+        window.checkTrog = (id, r) => { const v=ventilData.find(x=>x.id===id); if(v) { v.fixed=true; v.completedBy=currentUser; v.completedDate=new Date().toLocaleString('sv-SE'); v.fullStatus = r==='ok'?'Åtgärdad - OK (Trög)':(r==='stum'?'Trasig - konstaterad (Stum)':'Trasig - konstaterad (Av)'); saveToLocal(); renderAll(); } };
+        window.approveVentil = (id) => { const v=ventilData.find(x=>x.id===id); if(v) { v.fixed=true; v.completedBy=currentUser; v.completedDate=new Date().toLocaleString('sv-SE'); v.fullStatus='Åtgärdad - OK'; saveToLocal(); renderAll(); } };
+        window.markBroken = (id) => { const v=ventilData.find(x=>x.id===id); if(v) { v.fixed=true; v.completedBy=currentUser; v.completedDate=new Date().toLocaleString('sv-SE'); v.fullStatus='Trasig - konstaterad (Av/Stum)'; saveToLocal(); renderAll(); } };
+        window.bulkApprove = () => { selectedIds.forEach(id=>{ const v=ventilData.find(x=>x.id===id); if(v&&!v.fixed) { v.fixed=true; v.completedBy=currentUser; v.completedDate=new Date().toLocaleString('sv-SE'); v.fullStatus='Åtgärdad - OK'; } }); selectedIds.clear(); saveToLocal(); renderAll(); };
+        window.bulkMarkBroken = () => { selectedIds.forEach(id=>{ const v=ventilData.find(x=>x.id===id); if(v&&!v.fixed) { v.fixed=true; v.completedBy=currentUser; v.completedDate=new Date().toLocaleString('sv-SE'); v.fullStatus='Trasig - konstaterad (Av/Stum)'; } }); selectedIds.clear(); saveToLocal(); renderAll(); };
         function updateBulkBar() { const c=selectedIds.size; document.getElementById('bulkActionsBar').style.display=c?'flex':'none'; document.getElementById('selectedCount').innerText=c; }
         
-        function renderBroken() { const b=ventilData.filter(v=>v.fixed&&v.fullStatus.includes('Trasig - konstaterad')); document.getElementById('brokenList').innerHTML = b.map(v=>`<div class="list-item" onclick="focusVentil('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr}</div><div class="item-sub">${v.location}</div><span class="item-status" style="background:#7f1d1d; color:#fca5a5;">${v.fullStatus}</span></div></div>`).join('')||'<div style="padding:40px;">✨ Inga trasiga</div>'; }
-        function renderCompleted() { const c=ventilData.filter(v=>v.fixed&&!v.fullStatus.includes('Trasig')); document.getElementById('completedList').innerHTML = c.map(v=>`<div class="list-item" onclick="focusVentil('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr}</div><div class="item-sub">${v.location}</div><span class="item-status" style="background:#14532d; color:#86efac;">${v.fullStatus}</span></div></div>`).join('')||'<div style="padding:40px;">✨ Inga klara</div>'; }
+        function renderBroken() { const b=ventilData.filter(v=>v.fixed&&v.fullStatus.includes('Trasig - konstaterad')); document.getElementById('brokenList').innerHTML = b.map(v=>`<div class="list-item" onclick="focusVentil('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr}</div><div class="item-sub">${v.location}</div><span class="item-status" style="background:#7f1d1d; color:#fca5a5;">${v.fullStatus}</span></div><div class="text-muted">${v.completedDate||''}</div></div>`).join('')||'<div style="padding:40px;">✨ Inga trasiga</div>'; }
+        function renderCompleted() { const c=ventilData.filter(v=>v.fixed&&!v.fullStatus.includes('Trasig')); document.getElementById('completedList').innerHTML = c.map(v=>`<div class="list-item" onclick="focusVentil('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr}</div><div class="item-sub">${v.location}</div><span class="item-status" style="background:#14532d; color:#86efac;">${v.fullStatus}</span></div><div class="text-muted">${v.completedDate||''}</div></div>`).join('')||'<div style="padding:40px;">✨ Inga klara</div>'; }
         function renderStats() { const t=ventilData.length, tr=ventilData.filter(v=>!v.fixed&&v.fullStatus.includes('Trasig')).length, tg=ventilData.filter(v=>!v.fixed&&v.fullStatus.includes('Trög')).length, bt=ventilData.filter(v=>!v.fixed&&v.fullStatus.includes('Betäckning')).length, ok=ventilData.filter(v=>v.fixed&&!v.fullStatus.includes('Trasig')).length; document.getElementById('statTotal').innerText=t; document.getElementById('statTrasig').innerText=tr; document.getElementById('statOk').innerText=ok; const max=Math.max(tr,tg,bt,ok,1); document.getElementById('statsBars').innerHTML = [{l:'🔴 Trasiga',v:tr,c:'#ef4444'},{l:'🟠 Tröga',v:tg,c:'#f59e0b'},{l:'🟡 Betäckning',v:bt,c:'#eab308'},{l:'✅ Åtgärdade',v:ok,c:'#10b981'}].map(b=>`<div style="display:flex; gap:12px; margin-bottom:16px;"><span style="width:100px;">${b.l}</span><div style="flex:1; background:#0f1a2b; height:32px; border-radius:20px;"><div style="width:${(b.v/max)*100}%; background:${b.c}; height:100%; border-radius:20px; display:flex; justify-content:flex-end; padding-right:12px; color:#0a0f1c; font-weight:700;">${b.v}</div></div><span>${t?Math.round(b.v/t*100):0}%</span></div>`).join(''); }
         function updateDashboard() { const a=ventilData.filter(v=>!v.fixed); document.getElementById('dashTotal').innerText=a.length; document.getElementById('dashTrasig').innerText=a.filter(v=>v.fullStatus.includes('Trasig')).length; document.getElementById('dashTrog').innerText=a.filter(v=>v.fullStatus.includes('Trög')).length; document.getElementById('dashBet').innerText=a.filter(v=>v.fullStatus.includes('Betäckning')).length; document.getElementById('dashOver').innerText=a.filter(v=>v.fullStatus.includes('Över')).length; }
         function updateUserStats() { if(currentUser) { document.getElementById('userTotalReg').innerText=ventilData.filter(v=>v.reportedBy===currentUser).length; document.getElementById('userFixedReg').innerText=ventilData.filter(v=>v.completedBy===currentUser).length; } }
         function updateAuthUI() { document.getElementById('sidebarUserName').innerText=currentUser; document.getElementById('profileName').innerText=currentUser; document.getElementById('avatarInitial').innerText=currentUser?.[0]||'?'; }
+        
+        function setupDetailDropdowns() {
+            const editStatus = document.getElementById('editStatus');
+            const editDetail = document.getElementById('editDetail');
+            if(editStatus) {
+                editStatus.addEventListener('change', function() {
+                    const s = this.value;
+                    editDetail.innerHTML = '<option value="">Välj detalj</option>';
+                    if(statusDetails[s]) statusDetails[s].forEach(d=> editDetail.innerHTML += `<option>${d}</option>`);
+                });
+            }
+        }
         
         function setupListeners() {
             document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click', ()=>{
@@ -630,13 +625,13 @@
             document.getElementById('gpsBtn').onclick = ()=>{ navigator.geolocation.getCurrentPosition(p=>{ map.setView([p.coords.latitude, p.coords.longitude], 18); reverseGeocode(p.coords.latitude, p.coords.longitude, addr=>openPopup(p.coords.latitude, p.coords.longitude, addr)); }, ()=>alert('Kunde inte hämta GPS'), {enableHighAccuracy:true}); };
             document.getElementById('trackBtn').onclick = function(){ if(watchId){ navigator.geolocation.clearWatch(watchId); watchId=null; this.classList.remove('active'); } else { watchId=navigator.geolocation.watchPosition(p=>{ map.setView([p.coords.latitude, p.coords.longitude], 17); L.marker([p.coords.latitude, p.coords.longitude], {icon:L.divIcon({html:'🔵', iconSize:[20,20]})}).addTo(markerClusterGroup); }, null, {enableHighAccuracy:true}); this.classList.add('active'); } };
             document.getElementById('photoBtn').onclick = ()=>{ const i=document.createElement('input'); i.type='file'; i.accept='image/*'; i.setAttribute('capture','environment'); i.onchange=e=>{ const f=e.target.files[0]; if(f&&navigator.geolocation){ navigator.geolocation.getCurrentPosition(p=>{ reverseGeocode(p.coords.latitude, p.coords.longitude, addr=>openPopup(p.coords.latitude, p.coords.longitude, addr)); }); } }; i.click(); };
-            document.getElementById('searchBtn').onclick = async ()=>{ const q=document.getElementById('searchInput').value.trim(); if(!q) return; const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)} Botkyrka&format=json&limit=1`); const d=await r.json(); if(d[0]) map.setView([d[0].lat, d[0].lon], 18); else alert('Hittades inte'); };
-            document.getElementById('searchInput').onkeypress = e=>{ if(e.key==='Enter') document.getElementById('searchBtn').click(); };
+            document.getElementById('searchBtn').onclick = async ()=>{ const q=document.getElementById('122Input').value.trim(); if(!q) return; const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)} Botkyrka&format=json&limit=1`); const d=await r.json(); if(d[0]) map.setView([d[0].lat, d[0].lon], 18); else alert('Hittades inte'); };
+            document.getElementById('122Input').onkeypress = e=>{ if(e.key==='Enter') document.getElementById('searchBtn').click(); };
             document.getElementById('saveNotesBtn').onclick = ()=>{ localStorage.setItem('userNotes', document.getElementById('userNotes').value); alert('Sparat!'); };
             document.getElementById('sidebarAuthBtn').onclick = ()=>{ const n=prompt('Ange namn:', currentUser); if(n) { currentUser=n; updateAuthUI(); saveToLocal(); renderAll(); } };
         }
         
-        // Modal functions
+        // Modal
         window.closeEditModal = () => document.getElementById('editModal').style.display='none';
         window.openEditModal = (id) => { const v=ventilData.find(x=>x.id===id); if(!v) return; document.getElementById('editId').value=v.id; document.getElementById('editType').value=v.type; document.getElementById('editNumber').value=v.ventilNr.replace(v.type,''); document.getElementById('editArea').value=v.area; document.getElementById('editLocation').value=v.location; document.getElementById('editNote').value=v.note||''; const s=v.fullStatus.split(' - ')[0]; document.getElementById('editStatus').value=s; setTimeout(()=>{ if(v.fullStatus.includes(' - ')) document.getElementById('editDetail').value=v.fullStatus.split(' - ')[1]; }, 50); document.getElementById('editModal').style.display='flex'; };
         window.saveEdit = (e) => { e.preventDefault(); const id=document.getElementById('editId').value; const v=ventilData.find(x=>x.id===id); if(!v) return; const type=document.getElementById('editType').value; const nr=document.getElementById('editNumber').value.trim(); if(!nr) return; v.ventilNr=type+nr; v.type=type; v.area=document.getElementById('editArea').value; v.location=document.getElementById('editLocation').value; v.note=document.getElementById('editNote').value; const status=document.getElementById('editStatus').value; const detail=document.getElementById('editDetail').value; v.fullStatus=detail?`${status} - ${detail}`:status; saveToLocal(); renderAll(); closeEditModal(); alert('✅ Uppdaterad!'); };
