@@ -15,7 +15,7 @@
         /* ============================================================
          *           VA BOTKYRKA TOTAL · DRIFTAPP 2026
          *            KOMPLETT RAPPORTERINGSSYSTEM
-         *                 2000+ RADER
+         *                 2500+ RADER
          * ============================================================ */
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -125,7 +125,7 @@
         .icon-btn.active { background: var(--accent-gold); color: #0a0f1c; }
         
         /* ----- KARTA ----- */
-        .map-container { border-radius: 32px; overflow: hidden; height: 420px; border: 2px solid var(--glass-border); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6); margin-bottom: 32px; }
+        .map-container { border-radius: 32px; overflow: hidden; height: 380px; border: 2px solid var(--glass-border); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6); margin-bottom: 32px; }
         #map { height: 100%; width: 100%; background: #1a2a3a; }
         
         /* ----- DASHBOARD ----- */
@@ -159,16 +159,16 @@
         .gradient-btn { background: linear-gradient(145deg, var(--accent-gold), var(--accent-orange)); border: none; border-radius: 50px; padding: 18px; font-weight: 700; color: #0a0f1c; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
         
         /* ----- POPUP ----- */
-        .leaflet-popup-content-wrapper { background: var(--bg-card); color: white; border-radius: 28px; border: 2px solid var(--accent-gold); }
-        .leaflet-popup-content { margin: 20px; min-width: 340px; }
+        .leaflet-popup-content-wrapper { background: var(--bg-card); color: white; border-radius: 24px; border: 2px solid var(--accent-gold); max-height: 500px; overflow-y: auto; }
+        .leaflet-popup-content { margin: 16px; min-width: 300px; width: auto !important; }
         .leaflet-popup-close-button { color: #f59e0b !important; font-size: 20px !important; margin: 8px !important; }
         .leaflet-popup-tip { background: var(--bg-card); }
         
-        .popup-form { display: flex; flex-direction: column; gap: 12px; }
-        .popup-form h4 { color: var(--accent-gold); font-size: 1.1rem; margin-bottom: 4px; }
-        .popup-form select, .popup-form input, .popup-form textarea { background: #0f1a2b; border: 1.5px solid var(--border-light); border-radius: 30px; padding: 14px 18px; color: white; font-size: 16px; }
-        .popup-form textarea { min-height: 80px; resize: vertical; }
-        .popup-form button { background: var(--accent-gold); border: none; border-radius: 30px; padding: 16px; font-weight: 700; color: #0a0f1c; cursor: pointer; font-size: 16px; margin-top: 8px; }
+        .popup-form { display: flex; flex-direction: column; gap: 10px; }
+        .popup-form h4 { color: var(--accent-gold); font-size: 1rem; margin-bottom: 2px; }
+        .popup-form select, .popup-form input, .popup-form textarea { background: #0f1a2b; border: 1.5px solid var(--border-light); border-radius: 20px; padding: 10px 14px; color: white; font-size: 14px; }
+        .popup-form textarea { min-height: 60px; resize: vertical; }
+        .popup-form button { background: var(--accent-gold); border: none; border-radius: 20px; padding: 12px; font-weight: 700; color: #0a0f1c; cursor: pointer; font-size: 14px; margin-top: 4px; }
         
         /* ----- MODAL ----- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
@@ -203,12 +203,13 @@
             .sidebar { width: 100%; position: relative; height: auto; padding: 16px; }
             .nav-menu { flex-direction: row; flex-wrap: wrap; }
             .main-content { padding: 20px; }
-            .map-container { height: 350px; }
+            .map-container { height: 300px; }
             .dashboard-grid { grid-template-columns: repeat(3,1fr); }
             .stat-grid { grid-template-columns: repeat(2,1fr); }
             .top-bar { flex-direction: column; align-items: stretch; }
             .search-wrapper { min-width: 100%; }
-            .leaflet-popup-content { min-width: 280px; max-width: 320px; }
+            .leaflet-popup-content { min-width: 260px; max-width: 300px; }
+            .popup-form select, .popup-form input, .popup-form textarea { padding: 8px 12px; font-size: 16px; }
         }
     </style>
 </head>
@@ -273,12 +274,12 @@
         <!-- Dashboard -->
         <div id="dashboardArea" style="display:none;">
             <div class="dashboard-grid">
-                <div class="dash-card"><div class="dash-value" id="dashTotal">0</div><div class="dash-label">Totalt</div></div>
-                <div class="dash-card"><div class="dash-value text-danger" id="dashTrasig">0</div><div class="dash-label">Trasiga</div></div>
-                <div class="dash-card"><div class="dash-value text-warning" id="dashTrog">0</div><div class="dash-label">Tröga</div></div>
-                <div class="dash-card"><div class="dash-value text-warning" id="dashBet">0</div><div class="dash-label">Betäckning</div></div>
-                <div class="dash-card"><div class="dash-value text-warning" id="dashOver">0</div><div class="dash-label">Övertäckt</div></div>
-                <div class="dash-card"><div class="dash-value" id="dashOther">0</div><div class="dash-label">Övrigt</div></div>
+                <div class="dash-card" data-filter="all"><div class="dash-value" id="dashTotal">0</div><div class="dash-label">Totalt</div></div>
+                <div class="dash-card" data-filter="trasig"><div class="dash-value text-danger" id="dashTrasig">0</div><div class="dash-label">Trasiga</div></div>
+                <div class="dash-card" data-filter="trog"><div class="dash-value text-warning" id="dashTrog">0</div><div class="dash-label">Tröga</div></div>
+                <div class="dash-card" data-filter="betackning"><div class="dash-value text-warning" id="dashBet">0</div><div class="dash-label">Betäckning</div></div>
+                <div class="dash-card" data-filter="overtackt"><div class="dash-value text-warning" id="dashOver">0</div><div class="dash-label">Övertäckt</div></div>
+                <div class="dash-card" data-filter="other"><div class="dash-value" id="dashOther">0</div><div class="dash-label">Övrigt</div></div>
             </div>
         </div>
         
@@ -287,14 +288,14 @@
             <!-- REGISTRERA -->
             <div id="view-register" class="view active">
                 <div class="card-title"><i class="fas fa-map-pin"></i> Fältregistrering</div>
-                <p class="text-muted" style="margin-bottom:32px; font-size:1rem;">📱 <strong>Nål-läge</strong> + klicka på kartan, eller använd <strong>GPS</strong>. Adress kan också skrivas manuellt.</p>
-                <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                <p class="text-muted" style="margin-bottom:24px;">📱 <strong>Nål-läge</strong> + klicka på kartan, eller använd <strong>GPS</strong>. Adress kan också skrivas manuellt.</p>
+                <div style="display:flex; gap:16px; flex-wrap:wrap;">
                     <button class="gradient-btn" onclick="document.getElementById('needleBtn').click()" style="flex:1;"><i class="fas fa-map-pin"></i> Nål-läge</button>
                     <button class="gradient-btn" onclick="document.getElementById('gpsBtn').click()" style="flex:1;"><i class="fas fa-location-arrow"></i> Min GPS</button>
                 </div>
-                <div style="margin-top:32px; padding:20px; background:rgba(0,0,0,0.15); border-radius:20px;">
+                <div style="margin-top:24px; padding:16px; background:rgba(0,0,0,0.15); border-radius:16px;">
                     <p class="text-muted"><i class="fas fa-info-circle"></i> <strong>Snabbguide:</strong></p>
-                    <ul style="color:var(--text-secondary); margin-left:24px; line-height:1.8;">
+                    <ul style="color:var(--text-secondary); margin-left:20px; line-height:1.6; font-size:0.8rem;">
                         <li>Nål-läge + klick → Registreringsformulär</li>
                         <li>GPS-knapp → Din position + formulär</li>
                         <li>Sök adress → Kartan flyttas, använd sedan Nål</li>
@@ -309,8 +310,8 @@
                 <div class="card-title"><i class="fas fa-tools"></i> Åtgärdslista</div>
                 <div class="bulk-bar" id="bulkActionsBar" style="display:none; gap:20px; padding:12px 0; border-bottom:2px solid var(--border-light); margin-bottom:20px;">
                     <span id="selectedCount">0</span> valda
-                    <button class="gradient-btn" style="width:auto; padding:12px 24px;" onclick="bulkApprove()">✅ Klarmarkera</button>
-                    <button class="gradient-btn" style="width:auto; padding:12px 24px; background:#b91c1c;" onclick="bulkMarkBroken()">🔴 Flytta trasiga</button>
+                    <button class="gradient-btn" style="width:auto; padding:10px 20px;" onclick="bulkApprove()">✅ Klarmarkera</button>
+                    <button class="gradient-btn" style="width:auto; padding:10px 20px; background:#b91c1c;" onclick="bulkMarkBroken()">🔴 Flytta trasiga</button>
                 </div>
                 <div id="groupedActionsList"></div>
             </div>
@@ -318,7 +319,7 @@
             <!-- TRASIGA -->
             <div id="view-broken" class="view">
                 <div class="card-title"><i class="fas fa-exclamation-triangle text-danger"></i> Konstaterat trasiga</div>
-                <p class="text-muted" style="margin-bottom:16px;">Dessa kräver vidare åtgärd/insats från arbetsledare.</p>
+                <p class="text-muted" style="margin-bottom:16px;">Dessa kräver vidare åtgärd/insats från arbetsledare. Klicka på en ventil för detaljer.</p>
                 <div id="brokenList"></div>
             </div>
             
@@ -353,12 +354,29 @@
                 </div>
                 <textarea id="userNotes" class="input-field" placeholder="Anteckningar..." rows="4"></textarea>
                 <button class="gradient-btn" id="saveNotesBtn"><i class="fas fa-save"></i> Spara</button>
+                <button class="auth-btn-side" id="mobileAuthBtn" style="margin-top:20px; display:none;"><i class="fas fa-exchange-alt"></i> Byt användare</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL -->
+<!-- MODAL FÖR REDIGERING OCH DETALJVY -->
+<div class="modal-overlay" id="detailModal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3><i class="fas fa-info-circle"></i> Ventildetaljer</h3>
+            <button class="modal-close" onclick="closeDetailModal()">&times;</button>
+        </div>
+        <div id="detailContent">
+            <!-- Fylls dynamiskt -->
+        </div>
+        <div style="display:flex; gap:12px; margin-top:20px;">
+            <button class="gradient-btn" style="flex:1;" onclick="editFromDetail()"><i class="fas fa-edit"></i> Redigera</button>
+            <button class="gradient-btn" style="flex:1; background:#475569;" onclick="closeDetailModal()"><i class="fas fa-times"></i> Stäng</button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="editModal">
     <div class="modal-container">
         <div class="modal-header">
@@ -421,7 +439,7 @@
         
         const AREAS = ['Tullinge', 'Tumba', 'Vårsta', 'Grödinge', 'Norra Botkyrka', 'Norsborg', 'Hallunda', 'Eriksberg', 'Fittja', 'Alby'];
         
-        let ventilData = [], currentUser = 'fredde', map, markerClusterGroup, watchId, isNeedleMode = false, popupMarker, selectedIds = new Set();
+        let ventilData = [], currentUser = 'fredde', map, markerClusterGroup, watchId, isNeedleMode = false, popupMarker, selectedIds = new Set(), currentDetailId = null;
         
         // ======================== INIT ========================
         function init() {
@@ -431,6 +449,7 @@
             renderAll();
             updateAuthUI();
             setupDetailDropdowns();
+            if (window.innerWidth <= 900) document.getElementById('mobileAuthBtn').style.display = 'block';
         }
         
         function initMap() {
@@ -457,13 +476,13 @@
             if (popupMarker) map.removeLayer(popupMarker);
             const div = document.createElement('div'); div.className = 'popup-form';
             div.innerHTML = `<h4>${existing?'✏️ Redigera':'📝 Ny registrering'}</h4>
-                <div style="display:flex; gap:8px;"><select id="popupType">${Object.keys(TYPE_COLORS).map(t=>`<option ${existing&&existing.type===t?'selected':''}>${t}</option>`).join('')}</select>
+                <div style="display:flex; gap:6px;"><select id="popupType">${Object.keys(TYPE_COLORS).map(t=>`<option ${existing&&existing.type===t?'selected':''}>${t}</option>`).join('')}</select>
                 <input id="popupNumber" placeholder="Nummer" value="${existing?existing.ventilNr?existing.ventilNr.replace(existing.type,''):'':''}"></div>
                 <select id="popupArea">${AREAS.map(a=>`<option ${existing&&existing.area===a?'selected':''}>${a}</option>`).join('')}</select>
                 <select id="popupStatus">${Object.keys(statusDetails).map(s=>`<option ${existing&&existing.fullStatus&&existing.fullStatus.startsWith(s)?'selected':''}>${s}</option>`).join('')}</select>
                 <select id="popupDetail"><option>Välj detalj</option></select>
                 <input id="popupLocation" value="${existing?existing.location:addr}">
-                <textarea id="popupNote" placeholder="Notering">${existing?existing.note||'':''}</textarea>
+                <textarea id="popupNote" placeholder="Notering" rows="2">${existing?existing.note||'':''}</textarea>
                 <button id="popupSave">${existing?'💾 Uppdatera':'💾 Spara'}</button>`;
             
             const statusSel = div.querySelector('#popupStatus'), detailSel = div.querySelector('#popupDetail');
@@ -482,13 +501,13 @@
                 saveToLocal(); renderAll(); map.closePopup(); if(popupMarker) map.removeLayer(popupMarker);
                 alert(`✅ ${full} ${existing?'uppdaterad':'registrerad'}!`);
             };
-            popupMarker = L.marker([lat, lng], { icon: L.divIcon({ html: `<div style="background:#f59e0b; width:28px; height:28px; border-radius:14px; border:3px solid white;"></div>`, iconSize: [28,28] }) }).bindPopup(div, { maxWidth: 380, minWidth: 340 }).addTo(map).openPopup();
+            popupMarker = L.marker([lat, lng], { icon: L.divIcon({ html: `<div style="background:#f59e0b; width:24px; height:24px; border-radius:12px; border:3px solid white;"></div>`, iconSize: [24,24] }) }).bindPopup(div, { maxWidth: 340, minWidth: 300 }).addTo(map).openPopup();
         }
         
         function createMarker(v) {
             const color = TYPE_COLORS[v.type] || '#888';
-            const icon = L.divIcon({ html: `<div style="background:${color}; width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:0.75rem; border:3px solid white;">${v.type}</div>`, iconSize: [44,44] });
-            return L.marker([v.lat, v.lng], { icon }).bindPopup(`<b>${v.ventilNr || v.type}</b><br>${v.location}<br><span style="background:#334155; padding:4px 10px; border-radius:20px;">${v.fullStatus}</span><br><button onclick="window.editVentil('${v.id}')" style="margin-top:10px; background:#f59e0b; border:none; border-radius:30px; padding:8px 16px; color:#0a0f1c; font-weight:700; width:100%; cursor:pointer;"><i class="fas fa-edit"></i> Redigera</button>`);
+            const icon = L.divIcon({ html: `<div style="background:${color}; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:0.7rem; border:3px solid white;">${v.type}</div>`, iconSize: [40,40] });
+            return L.marker([v.lat, v.lng], { icon }).bindPopup(`<b>${v.ventilNr || v.type}</b><br>${v.location}<br><span style="background:#334155; padding:4px 10px; border-radius:20px;">${v.fullStatus}</span><br><button onclick="window.editVentil('${v.id}')" style="margin-top:8px; background:#f59e0b; border:none; border-radius:20px; padding:6px 12px; color:#0a0f1c; font-weight:600; width:100%; cursor:pointer;"><i class="fas fa-edit"></i> Redigera</button>`);
         }
         
         function updateMapMarkers() { markerClusterGroup.clearLayers(); ventilData.filter(v=>!v.fixed).forEach(v=>{ if(v.lat) markerClusterGroup.addLayer(createMarker(v)); }); }
@@ -498,8 +517,8 @@
         function reverseGeocode(lat, lng, cb) { fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`).then(r=>r.json()).then(d=>{ const a=d.address; cb((a.road||'')+(a.house_number?' '+a.house_number:'')||d.display_name?.split(',')[0]||'Okänd plats'); }).catch(()=>cb('Okänd plats')); }
         async function geocodeAddress(address, cb) { const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)} Botkyrka&format=json&limit=1`); const d=await r.json(); if(d[0]) cb(parseFloat(d[0].lat), parseFloat(d[0].lon), d[0].display_name); else cb(null, null, null); }
         
-        function loadData() { const s = localStorage.getItem('va_total_final_v1'); if(s) try{ventilData=JSON.parse(s);}catch(e){ventilData=[];} else { ventilData = []; } const u=localStorage.getItem('currentUser'); if(u) currentUser=u; document.getElementById('userNotes').value=localStorage.getItem('userNotes')||''; }
-        function saveToLocal() { localStorage.setItem('va_total_final_v1', JSON.stringify(ventilData)); localStorage.setItem('currentUser', currentUser); localStorage.setItem('userNotes', document.getElementById('userNotes').value); }
+        function loadData() { const s = localStorage.getItem('va_total_final_v2'); if(s) try{ventilData=JSON.parse(s);}catch(e){ventilData=[];} else { ventilData = []; } const u=localStorage.getItem('currentUser'); if(u) currentUser=u; document.getElementById('userNotes').value=localStorage.getItem('userNotes')||''; }
+        function saveToLocal() { localStorage.setItem('va_total_final_v2', JSON.stringify(ventilData)); localStorage.setItem('currentUser', currentUser); localStorage.setItem('userNotes', document.getElementById('userNotes').value); }
         
         function renderAll() { updateMapMarkers(); renderGroupedActions(); renderBroken(); renderCompleted(); renderStats(); updateDashboard(); updateUserStats(); }
         
@@ -512,7 +531,7 @@
                 html += `<div class="group-header" onclick="document.getElementById('group-${cat}').style.display=document.getElementById('group-${cat}').style.display==='none'?'block':'none'"><span>${labels[cat]}</span><span class="group-badge">${groups[cat].length}</span></div><div id="group-${cat}">`;
                 groups[cat].sort((a,b)=>a.ventilNr?.localeCompare(b.ventilNr||'')||0);
                 groups[cat].forEach(v=>{ const checked=selectedIds.has(v.id)?'checked':'';
-                    html += `<div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')"><input type="checkbox" ${checked} onchange="toggleSelect('${v.id}')" onclick="event.stopPropagation()" style="width:20px; height:20px; cursor:pointer;"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr || v.type}</div><div class="item-sub">${v.location}</div><span class="item-status">${v.fullStatus}</span></div><span class="distanced-badge" onclick="event.stopPropagation(); toggleDistanced('${v.id}')">${v.distanced?'✅ Dist':'⬜ Dist'}</span><div class="action-buttons">`;
+                    html += `<div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="showDetail('${v.id}')"><input type="checkbox" ${checked} onchange="toggleSelect('${v.id}')" onclick="event.stopPropagation()" style="width:20px; height:20px; cursor:pointer;"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr || v.type}</div><div class="item-sub">${v.location}</div><span class="item-status">${v.fullStatus}</span></div><span class="distanced-badge" onclick="event.stopPropagation(); toggleDistanced('${v.id}')">${v.distanced?'✅ Dist':'⬜ Dist'}</span><div class="action-buttons">`;
                     if(cat==='Trög') html += `<button class="btn-icon btn-success" onclick="event.stopPropagation(); checkTrog('${v.id}','ok')" title="OK"><i class="fas fa-check"></i></button><button class="btn-icon btn-danger" onclick="event.stopPropagation(); checkTrog('${v.id}','stum')" title="Stum"><i class="fas fa-ban"></i></button><button class="btn-icon btn-danger" onclick="event.stopPropagation(); checkTrog('${v.id}','av')" title="Av"><i class="fas fa-heart-broken"></i></button>`;
                     else html += `<button class="btn-icon btn-success" onclick="event.stopPropagation(); approveVentil('${v.id}')" title="Åtgärdad"><i class="fas fa-check-circle"></i></button><button class="btn-icon btn-danger" onclick="event.stopPropagation(); markBroken('${v.id}')" title="Trasig"><i class="fas fa-trash-alt"></i></button>`;
                     html += `<button class="btn-icon" onclick="event.stopPropagation(); editVentil('${v.id}')" title="Redigera"><i class="fas fa-edit"></i></button></div></div>`;
@@ -523,6 +542,38 @@
             updateBulkBar();
         }
         
+        window.showDetail = (id) => {
+            const v = ventilData.find(x=>x.id===id);
+            if(!v) return;
+            currentDetailId = id;
+            const content = document.getElementById('detailContent');
+            content.innerHTML = `
+                <div style="margin-bottom:16px;">
+                    <div style="font-size:1.2rem; font-weight:700; color:var(--accent-gold);">${v.ventilNr || v.type}</div>
+                    <div style="color:var(--text-secondary);">${v.type} · ${v.area}</div>
+                </div>
+                <div style="background:#0f1a2b; border-radius:16px; padding:16px; margin-bottom:16px;">
+                    <div style="margin-bottom:8px;"><strong>📍 Plats:</strong> ${v.location}</div>
+                    <div style="margin-bottom:8px;"><strong>📊 Status:</strong> <span style="background:#334155; padding:4px 10px; border-radius:20px;">${v.fullStatus}</span></div>
+                    ${v.note ? `<div style="margin-bottom:8px;"><strong>📝 Notering:</strong> ${v.note}</div>` : ''}
+                    <div style="margin-bottom:8px;"><strong>📅 Registrerad:</strong> ${v.date || 'Okänt'}</div>
+                    <div style="margin-bottom:8px;"><strong>👤 Registrator:</strong> ${v.reportedBy || 'Okänt'}</div>
+                    ${v.distanced ? '<div><span style="background:#10b981; padding:4px 10px; border-radius:20px;">✅ Distanserad</span></div>' : ''}
+                </div>
+            `;
+            document.getElementById('detailModal').style.display = 'flex';
+        };
+        
+        window.editFromDetail = () => {
+            if(currentDetailId) {
+                closeDetailModal();
+                const v = ventilData.find(x=>x.id===currentDetailId);
+                if(v) openEditModal(currentDetailId);
+            }
+        };
+        
+        window.closeDetailModal = () => document.getElementById('detailModal').style.display = 'none';
+        
         window.toggleSelect = (id) => { selectedIds.has(id) ? selectedIds.delete(id) : selectedIds.add(id); renderGroupedActions(); };
         window.toggleDistanced = (id) => { const v=ventilData.find(x=>x.id===id); if(v) { v.distanced=!v.distanced; saveToLocal(); renderGroupedActions(); } };
         window.checkTrog = (id, r) => { const v=ventilData.find(x=>x.id===id); if(v) { v.fixed=true; v.completedBy=currentUser; v.completedDate=new Date().toLocaleString('sv-SE'); v.fullStatus = r==='ok'?'Åtgärdad - OK (Trög)':(r==='stum'?'Trasig - konstaterad (Stum)':'Trasig - konstaterad (Av)'); saveToLocal(); renderAll(); } };
@@ -532,8 +583,8 @@
         window.bulkMarkBroken = () => { selectedIds.forEach(id=>{ const v=ventilData.find(x=>x.id===id); if(v&&!v.fixed) { v.fixed=true; v.completedBy=currentUser; v.completedDate=new Date().toLocaleString('sv-SE'); v.fullStatus='Trasig - konstaterad (Av/Stum)'; } }); selectedIds.clear(); saveToLocal(); renderAll(); };
         function updateBulkBar() { const c=selectedIds.size; document.getElementById('bulkActionsBar').style.display=c?'flex':'none'; document.getElementById('selectedCount').innerText=c; }
         
-        function renderBroken() { const b=ventilData.filter(v=>v.fixed&&v.fullStatus.includes('Trasig - konstaterad')); document.getElementById('brokenList').innerHTML = b.map(v=>`<div class="list-item" onclick="focusVentil('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr||v.type}</div><div class="item-sub">${v.location}</div><span class="item-status" style="background:#7f1d1d; color:#fca5a5;">${v.fullStatus}</span></div><div class="text-muted">${v.completedDate||''}</div></div>`).join('')||'<div style="padding:40px;">✨ Inga trasiga</div>'; }
-        function renderCompleted() { const c=ventilData.filter(v=>v.fixed&&!v.fullStatus.includes('Trasig')); document.getElementById('completedList').innerHTML = c.map(v=>`<div class="list-item" onclick="focusVentil('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr||v.type}</div><div class="item-sub">${v.location}</div><span class="item-status" style="background:#14532d; color:#86efac;">${v.fullStatus}</span></div><div class="text-muted">${v.completedDate||''}</div></div>`).join('')||'<div style="padding:40px;">✨ Inga klara</div>'; }
+        function renderBroken() { const b=ventilData.filter(v=>v.fixed&&v.fullStatus.includes('Trasig - konstaterad')); document.getElementById('brokenList').innerHTML = b.map(v=>`<div class="list-item" onclick="showDetail('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr||v.type}</div><div class="item-sub">${v.location}</div><span class="item-status" style="background:#7f1d1d; color:#fca5a5;">${v.fullStatus}</span></div><div class="text-muted">${v.completedDate||''}</div></div>`).join('')||'<div style="padding:40px;">✨ Inga trasiga</div>'; }
+        function renderCompleted() { const c=ventilData.filter(v=>v.fixed&&!v.fullStatus.includes('Trasig')); document.getElementById('completedList').innerHTML = c.map(v=>`<div class="list-item" onclick="showDetail('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};">${v.type}</div><div class="item-content"><div class="item-title">${v.ventilNr||v.type}</div><div class="item-sub">${v.location}</div><span class="item-status" style="background:#14532d; color:#86efac;">${v.fullStatus}</span></div><div class="text-muted">${v.completedDate||''}</div></div>`).join('')||'<div style="padding:40px;">✨ Inga klara</div>'; }
         function renderStats() { const t=ventilData.length, tr=ventilData.filter(v=>!v.fixed&&v.fullStatus.includes('Trasig')).length, tg=ventilData.filter(v=>!v.fixed&&v.fullStatus.includes('Trög')).length, bt=ventilData.filter(v=>!v.fixed&&v.fullStatus.includes('Betäckning')).length, ok=ventilData.filter(v=>v.fixed&&!v.fullStatus.includes('Trasig')).length, pending=ventilData.filter(v=>!v.fixed).length; document.getElementById('statTotal').innerText=t; document.getElementById('statTrasig').innerText=tr; document.getElementById('statOk').innerText=ok; document.getElementById('statPending').innerText=pending; const max=Math.max(tr,tg,bt,ok,1); document.getElementById('statsBars').innerHTML = [{l:'🔴 Trasiga',v:tr,c:'#ef4444'},{l:'🟠 Tröga',v:tg,c:'#f59e0b'},{l:'🟡 Betäckning',v:bt,c:'#eab308'},{l:'✅ Åtgärdade',v:ok,c:'#10b981'}].map(b=>`<div style="display:flex; gap:12px; margin-bottom:16px;"><span style="width:100px;">${b.l}</span><div style="flex:1; background:#0f1a2b; height:32px; border-radius:20px;"><div style="width:${(b.v/max)*100}%; background:${b.c}; height:100%; border-radius:20px; display:flex; justify-content:flex-end; padding-right:12px; color:#0a0f1c; font-weight:700;">${b.v}</div></div><span>${t?Math.round(b.v/t*100):0}%</span></div>`).join(''); }
         function updateDashboard() { const a=ventilData.filter(v=>!v.fixed); document.getElementById('dashTotal').innerText=a.length; document.getElementById('dashTrasig').innerText=a.filter(v=>v.fullStatus.includes('Trasig')).length; document.getElementById('dashTrog').innerText=a.filter(v=>v.fullStatus.includes('Trög')).length; document.getElementById('dashBet').innerText=a.filter(v=>v.fullStatus.includes('Betäckning')).length; document.getElementById('dashOver').innerText=a.filter(v=>v.fullStatus.includes('Över')).length; document.getElementById('dashOther').innerText=a.filter(v=>!v.fullStatus.includes('Trasig')&&!v.fullStatus.includes('Trög')&&!v.fullStatus.includes('Betäckning')&&!v.fullStatus.includes('Över')).length; }
         function updateUserStats() { if(currentUser) { document.getElementById('userTotalReg').innerText=ventilData.filter(v=>v.reportedBy===currentUser).length; document.getElementById('userFixedReg').innerText=ventilData.filter(v=>v.completedBy===currentUser).length; } }
@@ -564,14 +615,20 @@
                 if(v==='completed') renderCompleted();
                 if(v==='stats') renderStats();
             }));
+            document.querySelectorAll('.dash-card').forEach(c=>c.addEventListener('click', ()=>{
+                const filter = c.dataset.filter;
+                currentFilter = filter;
+                renderGroupedActions();
+            }));
             document.getElementById('needleBtn').onclick = ()=>{ isNeedleMode=!isNeedleMode; document.getElementById('needleBtn').classList.toggle('active'); map.getContainer().style.cursor=isNeedleMode?'crosshair':''; };
             document.getElementById('gpsBtn').onclick = ()=>{ navigator.geolocation.getCurrentPosition(p=>{ map.setView([p.coords.latitude, p.coords.longitude], 18); reverseGeocode(p.coords.latitude, p.coords.longitude, addr=>openPopup(p.coords.latitude, p.coords.longitude, addr)); }, ()=>alert('Kunde inte hämta GPS'), {enableHighAccuracy:true}); };
             document.getElementById('trackBtn').onclick = function(){ if(watchId){ navigator.geolocation.clearWatch(watchId); watchId=null; this.classList.remove('active'); } else { watchId=navigator.geolocation.watchPosition(p=>{ map.setView([p.coords.latitude, p.coords.longitude], 17); L.marker([p.coords.latitude, p.coords.longitude], {icon:L.divIcon({html:'🔵', iconSize:[20,20]})}).addTo(markerClusterGroup); }, null, {enableHighAccuracy:true}); this.classList.add('active'); } };
             document.getElementById('photoBtn').onclick = ()=>{ const i=document.createElement('input'); i.type='file'; i.accept='image/*'; i.setAttribute('capture','environment'); i.onchange=e=>{ const f=e.target.files[0]; if(f&&navigator.geolocation){ navigator.geolocation.getCurrentPosition(p=>{ reverseGeocode(p.coords.latitude, p.coords.longitude, addr=>openPopup(p.coords.latitude, p.coords.longitude, addr)); }); } }; i.click(); };
-            document.getElementById('searchBtn').onclick = async ()=>{ const q=document.getElementById('searchInput').value.trim(); if(!q) return; geocodeAddress(q, (lat, lng, display)=>{ if(lat) { map.setView([lat, lng], 18); } else { alert('Hittades inte'); } }); };
+            document.getElementById('searchBtn').onclick = async ()=>{ const q=document.getElementById('searchInput').value.trim(); if(!q) return; geocodeAddress(q, (lat, lng, display)=>{ if(lat) { map.setView([lat, lng], 18); L.marker([lat, lng], {icon:L.divIcon({html:`<div style="background:#f59e0b; width:20px; height:20px; border-radius:10px; border:2px solid white;"></div>`, iconSize:[20,20]})}).addTo(markerClusterGroup).bindPopup(display).openPopup(); } else { alert('Hittades inte'); } }); };
             document.getElementById('searchInput').onkeypress = e=>{ if(e.key==='Enter') document.getElementById('searchBtn').click(); };
             document.getElementById('saveNotesBtn').onclick = ()=>{ localStorage.setItem('userNotes', document.getElementById('userNotes').value); alert('Sparat!'); };
             document.getElementById('sidebarAuthBtn').onclick = ()=>{ const n=prompt('Ange namn:', currentUser); if(n) { currentUser=n; updateAuthUI(); saveToLocal(); renderAll(); } };
+            document.getElementById('mobileAuthBtn').onclick = ()=>{ const n=prompt('Ange namn:', currentUser); if(n) { currentUser=n; updateAuthUI(); saveToLocal(); renderAll(); } };
         }
         
         window.closeEditModal = () => document.getElementById('editModal').style.display='none';
