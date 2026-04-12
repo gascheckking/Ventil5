@@ -1159,24 +1159,23 @@
         }
 
         async function searchAddress() {
-            const query = document.getElementById('searchInput').value.trim();
-            if (!query) return;
-            try {
-                const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)} Botkyrka&format=json&limit=1`);
-                const data = await res.json();
-                if (data && data[0]) {
-                    const lat = parseFloat(data[0].lat);
-                    const lng = parseFloat(data[0].lon);
-                    map.setView([lat, lng], 16);
-                    const marker = createMarker(lat, lng, 'VAV', data[0].display_name);
-                    markerClusterGroup.addLayer(marker);
-                } else {
-                    alert('Ingen adress hittades');
-                }
-            } catch (e) {
-                alert('Sökning misslyckades');
-            }
+    const query = document.getElementById('searchInput').value.trim();
+    if (!query) return;
+    try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)} Botkyrka&format=json&limit=1`);
+        const data = await res.json();
+        if (data && data[0]) {
+            const lat = parseFloat(data[0].lat);
+            const lng = parseFloat(data[0].lon);
+            map.setView([lat, lng], 18);  // Zoomar in närmare
+            // Ingen markör skapas här – bara kartan flyttas
+        } else {
+            alert('Ingen adress hittades');
         }
+    } catch (e) {
+        alert('Sökning misslyckades');
+    }
+}
 
         // Starta appen
         init();
