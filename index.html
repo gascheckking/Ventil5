@@ -16,42 +16,43 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: #f4f9fe;
+            background: linear-gradient(145deg, #f0f7ff 0%, #e6f0fa 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #1e293b;
+            color: #1a2e3b;
             padding: 20px;
             font-size: 0.85rem;
         }
 
-        /* === HUVUDAPP === */
+        /* === HUVUDAPP – FÄRGSTARK OCH GLASIG === */
         .app {
             max-width: 1440px;
             width: 100%;
             height: 95vh;
             max-height: 1000px;
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 36px;
-            border: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 30px 50px -15px rgba(0,20,40,0.2);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 35px 60px -15px rgba(0, 30, 60, 0.25),
+                        0 0 0 1px rgba(245, 158, 11, 0.15) inset;
             display: flex;
             overflow: hidden;
         }
 
-        /* === FAST VÄNSTERMENY (STICKY) === */
+        /* === FAST VÄNSTERMENY – STICKY OCH FÄRGGLAD === */
         .sidebar {
-            width: 280px;
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-right: 1px solid rgba(0,0,0,0.05);
+            width: 290px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.65), rgba(255, 248, 235, 0.5));
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-right: 1px solid rgba(245, 158, 11, 0.2);
             display: flex;
             flex-direction: column;
-            padding: 28px 0 24px;
+            padding: 32px 0 28px;
             flex-shrink: 0;
             position: sticky;
             top: 0;
@@ -62,96 +63,130 @@
         }
 
         .sidebar-header {
-            padding: 0 24px 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 0 26px 22px;
+            border-bottom: 2px solid rgba(245, 158, 11, 0.2);
         }
         .sidebar-header h2 {
-            font-weight: 700;
-            font-size: 1.8rem;
-            letter-spacing: -0.02em;
-            color: #0b2a41;
+            font-weight: 800;
+            font-size: 2rem;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #0b2a41, #1e4a6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        .sidebar-header h2 span { color: #f59e0b; }
+        .sidebar-header h2 span {
+            background: linear-gradient(145deg, #f59e0b, #ff7b00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
         .sidebar-header .sub {
-            font-size: 0.7rem;
-            color: #5e7a93;
-            margin-top: 4px;
-            font-weight: 500;
+            font-size: 0.75rem;
+            color: #f59e0b;
+            margin-top: 6px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .user-profile {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 24px 24px 16px;
+            gap: 16px;
+            padding: 26px 26px 18px;
         }
         .avatar {
-            width: 52px; height: 52px;
-            background: linear-gradient(145deg, #f59e0b, #f97316);
-            border-radius: 18px;
+            width: 56px; height: 56px;
+            background: linear-gradient(145deg, #f59e0b, #ff5722);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: 700;
-            font-size: 1.4rem;
-            box-shadow: 0 8px 14px rgba(245,158,11,0.2);
+            font-weight: 800;
+            font-size: 1.6rem;
+            box-shadow: 0 12px 20px rgba(245, 158, 11, 0.3);
+            border: 2px solid rgba(255,255,255,0.5);
         }
-        .user-info .name { font-weight: 700; font-size: 1rem; }
-        .user-info .role { font-size: 0.7rem; color: #5e7a93; }
+        .user-info .name {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #0b2a41;
+        }
+        .user-info .role {
+            font-size: 0.75rem;
+            color: #f59e0b;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
 
         .nav-menu {
             flex: 1;
-            padding: 20px 16px;
+            padding: 24px 18px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 12px 18px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #2c4c6b;
+            gap: 16px;
+            padding: 14px 20px;
+            border-radius: 24px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #1e405b;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
         }
-        .nav-item i { width: 22px; font-size: 1.1rem; }
+        .nav-item i {
+            width: 24px;
+            font-size: 1.2rem;
+            color: #f59e0b;
+        }
         .nav-item.active {
-            background: #f59e0b;
+            background: linear-gradient(145deg, #f59e0b, #ff7b00);
             color: white;
-            box-shadow: 0 8px 16px rgba(245,158,11,0.2);
+            box-shadow: 0 12px 18px -6px rgba(245, 158, 11, 0.4);
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        .nav-item:hover:not(.active) { background: rgba(245,158,11,0.08); }
+        .nav-item.active i { color: white; }
+        .nav-item:hover:not(.active) {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
 
         .sidebar-footer {
-            padding: 20px 24px 0;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            font-size: 0.7rem;
-            color: #5e7a93;
+            padding: 22px 26px 0;
+            border-top: 2px solid rgba(245, 158, 11, 0.2);
+            font-size: 0.75rem;
+            color: #1e405b;
         }
         .auth-btn-side {
             background: white;
-            border: 1px solid #d0dde9;
-            padding: 10px 16px;
-            border-radius: 40px;
+            border: 2px solid #f59e0b;
+            padding: 12px 18px;
+            border-radius: 50px;
             width: 100%;
-            font-weight: 600;
-            color: #1e3a5f;
+            font-weight: 700;
+            color: #f59e0b;
             cursor: pointer;
-            transition: 0.1s;
-            margin-top: 12px;
+            transition: 0.2s;
+            margin-top: 16px;
+            box-shadow: 0 6px 12px rgba(245, 158, 11, 0.1);
         }
-        .auth-btn-side:hover { background: #f8fafc; border-color: #f59e0b; }
+        .auth-btn-side:hover {
+            background: #f59e0b;
+            color: white;
+            box-shadow: 0 10px 18px rgba(245, 158, 11, 0.25);
+        }
 
         /* === HÖGER INNEHÅLL === */
         .main-content {
             flex: 1;
             overflow-y: auto;
-            padding: 28px 32px 32px;
+            padding: 32px 36px 36px;
             scrollbar-width: thin;
             background: transparent;
         }
@@ -160,268 +195,330 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 16px;
         }
         .program-selector {
             background: white;
             border-radius: 60px;
-            padding: 3px 8px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+            padding: 4px 10px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 8px 14px rgba(0,0,0,0.05);
         }
         .program-selector select {
             background: transparent;
             border: none;
-            color: #1e293b;
-            font-weight: 600;
-            font-size: 0.8rem;
-            padding: 8px 20px;
+            color: #0b2a41;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 10px 24px;
             outline: none;
         }
 
-        .search-section { display: flex; gap: 8px; align-items: center; }
+        /* Sök + verktygsrad – vänsterställd och färgglad */
+        .search-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
         .search-wrapper {
             background: white;
-            border-radius: 40px;
-            border: 1px solid #e2e8f0;
+            border-radius: 60px;
+            border: 2px solid rgba(245, 158, 11, 0.25);
             display: flex;
             align-items: center;
-            padding: 2px 8px 2px 18px;
-            min-width: 260px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            padding: 4px 10px 4px 22px;
+            width: 100%;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.04);
         }
-        .search-wrapper i { color: #f59e0b; font-size: 0.9rem; }
+        .search-wrapper i { color: #f59e0b; font-size: 1rem; }
         .search-wrapper input {
             background: transparent;
             border: none;
-            padding: 10px 6px;
-            color: #1e293b;
-            font-size: 0.8rem;
+            padding: 14px 8px;
+            color: #0b2a41;
+            font-size: 0.85rem;
             width: 100%;
             outline: none;
+            font-weight: 500;
+        }
+        .toolbar-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .icon-btn {
             background: white;
-            border: 1px solid #e2e8f0;
-            color: #3a5c7c;
-            width: 42px; height: 42px;
-            border-radius: 30px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            color: #f59e0b;
+            width: 48px; height: 48px;
+            border-radius: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            transition: all 0.1s;
+            box-shadow: 0 8px 14px rgba(0,0,0,0.05);
+            transition: all 0.15s;
         }
-        .icon-btn.active { background: #f59e0b; color: white; border-color: #f59e0b; }
+        .icon-btn.active {
+            background: #f59e0b;
+            color: white;
+            border-color: #f59e0b;
+            box-shadow: 0 10px 18px rgba(245, 158, 11, 0.3);
+        }
 
-        /* Karta */
+        /* Karta – med skugga och färg */
         .map-container {
-            border-radius: 24px;
+            border-radius: 30px;
             overflow: hidden;
-            height: 280px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.08);
-            background: #d4e1ed;
-            margin-bottom: 24px;
+            height: 300px;
+            border: 3px solid rgba(245, 158, 11, 0.25);
+            box-shadow: 0 20px 30px -8px rgba(0, 30, 60, 0.15);
+            background: #d4e6f5;
+            margin-bottom: 28px;
         }
         #map { height: 100%; width: 100%; }
 
-        /* Dashboard-kort */
+        /* Dashboard-kort – färgglada */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(5,1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 14px;
+            margin-bottom: 28px;
         }
         .dash-card {
-            background: white;
-            border-radius: 20px;
-            padding: 14px;
+            background: linear-gradient(145deg, #ffffff, #f8fcff);
+            border-radius: 24px;
+            padding: 18px 10px;
             text-align: center;
-            border: 1px solid #edf2f7;
+            border: 2px solid rgba(245, 158, 11, 0.2);
             cursor: pointer;
-            transition: all 0.1s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+            box-shadow: 0 8px 14px rgba(0,0,0,0.04);
         }
         .dash-card.active {
-            border: 2px solid #f59e0b;
-            background: #fff8e7;
+            border: 3px solid #f59e0b;
+            background: #fff5e6;
+            box-shadow: 0 12px 20px rgba(245, 158, 11, 0.2);
         }
         .dash-value {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            color: #0f2b40;
+            color: #0b2a41;
         }
         .dash-label {
-            font-size: 0.7rem;
-            color: #5e7a93;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #f59e0b;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
         }
 
         /* Vyer */
         .view-panel {
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 28px;
-            padding: 24px;
-            border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 36px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08);
         }
         .view { display: none; }
         .view.active { display: block; }
 
         .card-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: #1e3a5f;
-            margin-bottom: 20px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #0b2a41, #1e4a6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
+        .card-title i { color: #f59e0b; font-size: 1.3rem; }
 
         /* Grupperad åtgärdslista */
         .group-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0 6px;
-            font-weight: 700;
-            color: #1e3a5f;
+            padding: 14px 0 8px;
+            font-weight: 800;
+            color: #0b2a41;
             cursor: pointer;
         }
         .group-badge {
-            background: #eef2f7;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
+            background: #f59e0b;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
         .list-item {
             background: white;
-            border-radius: 16px;
-            padding: 12px 16px;
-            margin-bottom: 6px;
-            border-left: 5px solid;
+            border-radius: 22px;
+            padding: 16px 18px;
+            margin-bottom: 8px;
+            border-left: 8px solid;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            gap: 16px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.04);
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: all 0.15s;
+            border: 1px solid rgba(245, 158, 11, 0.15);
         }
-        .list-item:active { transform: scale(0.99); }
+        .list-item:active { transform: scale(0.99); background: #fffbf5; }
         .item-marker {
-            width: 28px; height: 28px;
-            border-radius: 10px;
-            background: #f1f5f9;
+            width: 36px; height: 36px;
+            border-radius: 14px;
+            background: #f59e0b;
         }
 
         /* Formulär */
         .input-field {
             background: white;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 40px;
-            padding: 12px 18px;
-            color: #1e293b;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 50px;
+            padding: 16px 22px;
+            color: #0b2a41;
             width: 100%;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
             outline: none;
-            font-size: 0.8rem;
-            transition: border 0.15s;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: border 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
         }
-        .input-field:focus { border-color: #f59e0b; }
-        .double-field { display: flex; gap: 12px; }
+        .input-field:focus { border-color: #f59e0b; box-shadow: 0 8px 16px rgba(245, 158, 11, 0.1); }
+        .double-field { display: flex; gap: 16px; }
         .gradient-btn {
-            background: linear-gradient(145deg, #f59e0b, #f97316);
+            background: linear-gradient(145deg, #f59e0b, #ff7b00);
             border: none;
-            border-radius: 40px;
-            padding: 14px;
-            font-weight: 700;
+            border-radius: 60px;
+            padding: 18px;
+            font-weight: 800;
             color: white;
             width: 100%;
             cursor: pointer;
-            font-size: 0.85rem;
-            box-shadow: 0 8px 16px rgba(245,158,11,0.2);
-            transition: all 0.1s;
+            font-size: 0.95rem;
+            box-shadow: 0 16px 24px -6px rgba(245, 158, 11, 0.4);
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.3);
+            letter-spacing: 0.5px;
         }
-        .gradient-btn:active { transform: scale(0.98); }
+        .gradient-btn:active { transform: scale(0.98); box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3); }
 
         /* Statistik */
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(3,1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 16px;
+            margin-bottom: 28px;
         }
         .stat-box {
             background: white;
-            border-radius: 18px;
-            padding: 16px;
-            border: 1px solid #edf2f7;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+            border-radius: 26px;
+            padding: 22px 16px;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+            box-shadow: 0 8px 14px rgba(0,0,0,0.04);
         }
         .stat-value {
-            font-size: 2rem;
+            font-size: 2.4rem;
             font-weight: 800;
-            color: #0f2b40;
+            color: #0b2a41;
         }
         .chart-bar {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 14px;
+            margin-bottom: 16px;
         }
-        .chart-label { width: 85px; font-size: 0.7rem; font-weight: 600; }
+        .chart-label { width: 100px; font-size: 0.8rem; font-weight: 700; color: #0b2a41; }
         .bar-bg {
             flex: 1;
-            height: 28px;
-            background: #e2e8f0;
-            border-radius: 20px;
+            height: 34px;
+            background: #e6edf5;
+            border-radius: 40px;
             overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
         .bar-fill {
             height: 100%;
-            border-radius: 20px;
+            border-radius: 40px;
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 10px;
+            padding-right: 14px;
             color: white;
-            font-size: 0.65rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
 
-        /* Responsivitet */
-        @media (max-width: 1000px) {
-            .dashboard-grid { grid-template-columns: repeat(3,1fr); }
-        }
+        /* === MOBILOPTIMERING – KOMPAKT MEN FÄRGGLAD === */
         @media (max-width: 800px) {
-            body { padding: 12px; }
-            .app { flex-direction: column; height: auto; max-height: none; }
+            body { padding: 8px; }
+            .app { flex-direction: column; height: auto; max-height: none; border-radius: 28px; }
             .sidebar {
                 width: 100%;
-                position: relative;
+                position: sticky;
+                top: 0;
+                z-index: 20;
                 height: auto;
+                max-height: none;
                 border-right: none;
-                border-bottom: 1px solid #eef2f6;
-                padding: 16px;
+                border-bottom: 2px solid #f59e0b40;
+                padding: 14px 18px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                background: rgba(255,255,255,0.7);
+                backdrop-filter: blur(12px);
             }
-            .nav-menu { flex-direction: row; flex-wrap: wrap; }
+            .sidebar-header { display: none; }
+            .user-profile { padding: 0; margin: 0; gap: 10px; }
+            .avatar { width: 40px; height: 40px; font-size: 1.2rem; }
+            .user-info .name { font-size: 0.9rem; }
+            .user-info .role { font-size: 0.65rem; }
+            .nav-menu {
+                flex-direction: row;
+                padding: 0;
+                gap: 6px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            .nav-item {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+                gap: 8px;
+                border-radius: 40px;
+            }
+            .nav-item i { font-size: 1rem; width: auto; }
+            .sidebar-footer { display: none; }
             .main-content { padding: 20px; }
-        }
-        @media (max-width: 600px) {
-            .dashboard-grid { grid-template-columns: repeat(2,1fr); }
             .top-bar { flex-direction: column; align-items: stretch; }
-            .search-wrapper { min-width: 100%; }
+            .map-container { height: 220px; }
+            .dashboard-grid { grid-template-columns: repeat(3,1fr); }
+            .view-panel { padding: 20px; }
         }
 
-        /* Anpassningar för clustermarkers */
+        @media (max-width: 480px) {
+            .nav-item span { display: none; }
+            .nav-item i { font-size: 1.2rem; }
+            .dashboard-grid { grid-template-columns: repeat(2,1fr); }
+            .toolbar-row .icon-btn { width: 44px; height: 44px; }
+        }
+
+        /* Övrigt – färgstarka markörer */
         .custom-marker {
             display: flex;
             align-items: center;
@@ -430,22 +527,22 @@
         .leaflet-popup-content button {
             background: #f59e0b;
             border: none;
-            border-radius: 30px;
-            padding: 6px 14px;
-            margin: 4px 2px;
+            border-radius: 40px;
+            padding: 8px 18px;
+            margin: 6px 3px;
             color: white;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);
         }
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(245, 158, 11, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="app">
-    <!-- FAST VÄNSTERMENY -->
+    <!-- SIDEBAR – FÄRGGLAD OCH FAST -->
     <div class="sidebar">
         <div class="sidebar-header">
             <h2>VA<span>Botkyrka</span></h2>
@@ -459,48 +556,53 @@
             </div>
         </div>
         <div class="nav-menu">
-            <div class="nav-item active" data-view="register"><i class="fas fa-pen-fancy"></i>Registrera</div>
-            <div class="nav-item" data-view="actions"><i class="fas fa-tools"></i>Åtgärdslista</div>
-            <div class="nav-item" data-view="broken"><i class="fas fa-exclamation-triangle"></i>Trasiga</div>
-            <div class="nav-item" data-view="stats"><i class="fas fa-chart-pie"></i>Statistik</div>
-            <div class="nav-item" data-view="profile"><i class="fas fa-user-circle"></i>Profil</div>
+            <div class="nav-item active" data-view="register"><i class="fas fa-pen-fancy"></i><span>Registrera</span></div>
+            <div class="nav-item" data-view="actions"><i class="fas fa-tools"></i><span>Åtgärder</span></div>
+            <div class="nav-item" data-view="broken"><i class="fas fa-exclamation-triangle"></i><span>Trasiga</span></div>
+            <div class="nav-item" data-view="stats"><i class="fas fa-chart-pie"></i><span>Statistik</span></div>
+            <div class="nav-item" data-view="profile"><i class="fas fa-user-circle"></i><span>Profil</span></div>
         </div>
         <div class="sidebar-footer">
-            <div style="display:flex; gap:8px; margin-bottom:12px;"><i class="fas fa-shield-alt"></i><span>Adminläge</span></div>
+            <div style="display:flex; gap:10px; margin-bottom:14px;"><i class="fas fa-shield-alt"></i><span>Adminläge</span></div>
             <button class="auth-btn-side" id="sidebarAuthBtn"><i class="fas fa-exchange-alt"></i> Byt användare</button>
         </div>
     </div>
 
     <!-- HÖGER INNEHÅLL -->
     <div class="main-content">
-        <div class="top-bar">
-            <div class="program-selector">
-                <select id="programSelect">
-                    <option value="" disabled selected>Ventilprogram</option>
-                    <option value="brandpostrondering">🔥 Brandpostrondering</option>
-                    <option value="test">🧪 Test</option>
-                </select>
+        <!-- Toppbar (endast register) -->
+        <div id="topBarContainer">
+            <div class="top-bar">
+                <div class="program-selector">
+                    <select id="programSelect">
+                        <option value="ventilprogram" selected>📋 Ventilprogram</option>
+                        <option value="brandpostrondering">🔥 Brandpostrondering</option>
+                        <option value="test">🧪 Test</option>
+                    </select>
+                </div>
             </div>
             <div class="search-section">
                 <div class="search-wrapper">
                     <i class="fas fa-search"></i>
                     <input type="text" id="searchInput" placeholder="Sök adress (t.ex. Oxelvägen 2)">
                 </div>
-                <div class="icon-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></div>
-                <div class="icon-btn" id="gpsBtn"><i class="fas fa-location-arrow"></i></div>
-                <div class="icon-btn" id="trackBtn" title="Live-spårning"><i class="fas fa-satellite"></i></div>
-                <div class="icon-btn" id="needleBtn"><i class="fas fa-map-pin"></i></div>
-                <div class="icon-btn" id="photoBtn"><i class="fas fa-camera"></i></div>
+                <div class="toolbar-row">
+                    <div class="icon-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></div>
+                    <div class="icon-btn" id="gpsBtn"><i class="fas fa-location-arrow"></i></div>
+                    <div class="icon-btn" id="trackBtn" title="Live-spårning"><i class="fas fa-satellite"></i></div>
+                    <div class="icon-btn" id="needleBtn"><i class="fas fa-map-pin"></i></div>
+                    <div class="icon-btn" id="photoBtn"><i class="fas fa-camera"></i></div>
+                </div>
             </div>
         </div>
 
-        <!-- Kartcontainer (döljs i adminvyer) -->
+        <!-- Kartcontainer -->
         <div id="mapContainer" style="display:block;">
             <div class="map-container"><div id="map"></div></div>
         </div>
 
-        <!-- Dashboard (visas i åtgärds-/trasig-vy) -->
-        <div id="dashboardArea" style="display:none; margin-bottom:20px;">
+        <!-- Dashboard -->
+        <div id="dashboardArea" style="display:none; margin-bottom:28px;">
             <div class="dashboard-grid">
                 <div class="dash-card" data-filter="all"><div class="dash-label">Totalt</div><div class="dash-value" id="dashTotal">0</div></div>
                 <div class="dash-card" data-filter="trasig"><div class="dash-label">Trasiga</div><div class="dash-value" id="dashTrasig" style="color:#dc2626;">0</div></div>
@@ -520,23 +622,21 @@
                         <option value="VAV">VAV</option><option value="VBP">VBP</option><option value="VSP">VSP</option>
                         <option value="DNB">DNB</option><option value="SNB">SNB</option><option value="VSV">VSV</option>
                     </select>
-                    <div style="flex:1.5; display:flex; align-items:center; background:white; border:1.5px solid #e2e8f0; border-radius:40px; padding:0 18px;">
+                    <div style="flex:1.5; display:flex; align-items:center; background:white; border:2px solid rgba(245,158,11,0.3); border-radius:50px; padding:0 22px;">
                         <span id="typePrefix">VAV-</span>
-                        <input type="text" id="regNumber" style="border:none; padding:12px 0; width:100%; outline:none; background:transparent;" placeholder="74259">
+                        <input type="text" id="regNumber" style="border:none; padding:16px 0; width:100%; outline:none; background:transparent;" placeholder="74259">
                     </div>
                 </div>
                 <select id="regArea" class="input-field">
-                    <option>Tullinge</option><option>Tumba</option><option>Vårsta</option><option>Norra Botkyrka</option>
+                    <option>Tullinge</option><option>Tumba</option><option>Vårsta</option><option>Grödinge</option><option>Norra Botkyrka</option>
                 </select>
-                <!-- Status med detaljdropdown -->
                 <select id="regStatus" class="input-field">
                     <option value="Trasig">🔴 Trasig</option>
                     <option value="Trög">🟠 Trög</option>
                     <option value="Övertäckt">🟡 Övertäckt</option>
                     <option value="Betäckning defekt">🟡 Betäckning</option>
-                    <option value="Hittar ej">⚪ Hittar ej</option>
                     <option value="Ej kontrollerad">⚪ Ej kontrollerad</option>
-                    <option value="OK">🟢 OK</option>
+                    <option value="Åtgärdad">✅ Åtgärdad</option>
                 </select>
                 <div id="regDetailContainer">
                     <select id="regDetail" class="input-field">
@@ -545,13 +645,13 @@
                 </div>
                 <input type="text" id="regLocation" class="input-field" placeholder="Plats (klicka på karta)">
                 <input type="text" id="regNote" class="input-field" placeholder="Notering">
-                <div id="photoPreview" style="display:none; align-items:center; gap:10px; margin-bottom:12px;">
-                    <img id="photoImg" style="width:45px;height:45px;border-radius:14px;"><span id="photoGpsInfo" style="font-size:0.7rem;"></span>
+                <div id="photoPreview" style="display:none; align-items:center; gap:12px; margin-bottom:16px;">
+                    <img id="photoImg" style="width:50px;height:50px;border-radius:18px;"><span id="photoGpsInfo" style="font-size:0.75rem;"></span>
                 </div>
                 <button class="gradient-btn" id="saveVentilBtn">💾 Spara ventil</button>
             </div>
 
-            <!-- ÅTGÄRDSLISTA (grupperad) -->
+            <!-- ÅTGÄRDSLISTA -->
             <div id="view-actions" class="view">
                 <div class="card-title"><i class="fas fa-tools"></i> Åtgärdslista</div>
                 <div id="groupedActionsList"></div>
@@ -559,7 +659,7 @@
 
             <!-- TRASIGA -->
             <div id="view-broken" class="view">
-                <div class="card-title"><i class="fas fa-exclamation-triangle" style="color:#dc2626;"></i> Trasiga ventiler</div>
+                <div class="card-title"><i class="fas fa-exclamation-triangle" style="color:#dc2626;"></i> Konstaterat trasiga</div>
                 <div id="brokenList"></div>
             </div>
 
@@ -577,8 +677,8 @@
             <!-- PROFIL -->
             <div id="view-profile" class="view">
                 <div class="card-title"><i class="fas fa-user-astronaut"></i> Min profil</div>
-                <div style="font-size:1.2rem; font-weight:700;" id="profileName">fredde</div>
-                <div class="stat-grid" style="grid-template-columns:1fr 1fr; margin:16px 0;">
+                <div style="font-size:1.3rem; font-weight:800;" id="profileName">fredde</div>
+                <div class="stat-grid" style="grid-template-columns:1fr 1fr; margin:20px 0;">
                     <div class="stat-box"><span>Mina</span><div class="stat-value" id="userTotalReg">0</div></div>
                     <div class="stat-box"><span>Åtgärdade</span><div class="stat-value" id="userFixedReg">0</div></div>
                 </div>
@@ -596,35 +696,30 @@
     (function(){
         "use strict";
 
-        // ---------- KONFIGURATION ----------
+        // === FÄRGKONFIGURATION ===
         const TYPE_COLORS = {
             'VAV':'#1f77b4', 'VBP':'#d62728', 'VSP':'#2ca02c',
             'DNB':'#ff7f0e', 'SNB':'#9467bd', 'VSV':'#17becf'
         };
         
-        // Detaljer per status
         const statusDetails = {
             "Trasig": ["Snurrar bara", "Stum (kan ej rubba)", "Saknar nyckelstång", "Läckljud", "Avdragen"],
             "Trög": ["Kräver 2 gubbar", "Kärvar", "Går tungt"],
             "Övertäckt": ["Asfalt", "Jord", "Buskage", "Bråte", "Mur", "Byggnation", "Bygge"],
             "Betäckning defekt": ["Höjas", "Trasigt lock", "Byta hela", "Saknar lock"],
-            "Hittar ej": ["Måste mätas in", "Borttagen"],
-            "Ej kontrollerad": ["-"],
-            "OK": ["Fungerar"]
+            "Ej kontrollerad": ["Måste mätas in", "Borttagen", "Ska tas bort i VA-banken"],
+            "Åtgärdad": ["Åtgärdad OK", "Åtgärdad Ej OK"]
         };
 
-        // ---------- GLOBALA VARIABLER ----------
-        let ventilData = [];                // Alla ventiler
-        let currentUser = 'fredde';         // Inloggad användare
-        let map, markerClusterGroup;        // Karta och klustergrupp
-        let currentMarker = null;           // Tillfällig markör (nål/GPS)
-        let watchId = null;                // Live-spårning
-        let isNeedleMode = false;          // Nål-läge
-        let currentPhoto = null;           // Base64-sträng för foto
-        let currentFilter = 'all';         // Dashboard-filter
-        let currentView = 'register';      // Aktiv vy
+        let ventilData = [];
+        let currentUser = 'fredde';
+        let map, markerClusterGroup;
+        let currentMarker = null;
+        let watchId = null;
+        let isNeedleMode = false;
+        let currentPhoto = null;
+        let currentFilter = 'all';
 
-        // ---------- INITIERING ----------
         function init() {
             loadData();
             initMap();
@@ -632,13 +727,11 @@
             renderAll();
             updateAuthUI();
             populateDetailDropdown();
-            // Sätt prefix
             document.getElementById('regType').addEventListener('change', (e) => {
                 document.getElementById('typePrefix').innerText = e.target.value + '-';
             });
         }
 
-        // ---------- KARTA ----------
         function initMap() {
             map = L.map('map').setView([59.2, 17.82], 12);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -650,8 +743,8 @@
                 iconCreateFunction: function(cluster) {
                     const count = cluster.getChildCount();
                     return L.divIcon({
-                        html: `<div style="background:#f59e0b; color:white; width:36px; height:36px; border-radius:18px; display:flex; align-items:center; justify-content:center; font-weight:bold; border:2px solid white; box-shadow:0 4px 8px rgba(0,0,0,0.2);">${count}</div>`,
-                        iconSize: [36,36],
+                        html: `<div style="background:#f59e0b; color:white; width:40px; height:40px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-weight:800; border:3px solid white; box-shadow:0 8px 14px rgba(0,0,0,0.2);">${count}</div>`,
+                        iconSize: [40,40],
                         className: 'cluster-marker'
                     });
                 }
@@ -677,8 +770,8 @@
 
         function createMarker(lat, lng, type, popupContent) {
             const icon = L.divIcon({
-                html: `<div style="background:${TYPE_COLORS[type]}; width:32px; height:32px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border:2px solid white; box-shadow:0 4px 8px rgba(0,0,0,0.2);">${type}</div>`,
-                iconSize: [32,32],
+                html: `<div style="background:${TYPE_COLORS[type]}; width:38px; height:38px; border-radius:16px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; border:3px solid white; box-shadow:0 8px 14px rgba(0,0,0,0.25);">${type}</div>`,
+                iconSize: [38,38],
                 className: 'custom-marker'
             });
             return L.marker([lat, lng], { icon }).bindPopup(popupContent);
@@ -696,18 +789,12 @@
                 }
             });
         }
-
-        // Globala hjälpfunktioner för popup
         window.routeTo = (lat, lng) => window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank');
         window.focusVentil = (id) => {
             const v = ventilData.find(x => x.id === id);
-            if (v) {
-                map.setView([v.lat, v.lng], 17);
-                // Öppna popup? Vi kan inte enkelt trigga popup via kluster, men vi kan zooma.
-            }
+            if (v) { map.setView([v.lat, v.lng], 17); }
         };
 
-        // ---------- GEOKODNING ----------
         function reverseGeocode(lat, lng, callback) {
             fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
                 .then(r => r.json())
@@ -721,26 +808,22 @@
                 .catch(() => callback('Okänd plats'));
         }
 
-        // ---------- DATAHANTERING ----------
         function loadData() {
-            const stored = localStorage.getItem('va_botkyrka_ultimate');
+            const stored = localStorage.getItem('va_botkyrka_ultimate_v2');
             if (stored) {
                 try { ventilData = JSON.parse(stored); } catch(e){ ventilData = []; }
-            } else {
-                ventilData = []; // Tom start
-            }
+            } else { ventilData = []; }
             const user = localStorage.getItem('currentUser');
             if (user) currentUser = user;
             document.getElementById('userNotes').value = localStorage.getItem('userNotes') || '';
         }
 
         function saveToLocal() {
-            localStorage.setItem('va_botkyrka_ultimate', JSON.stringify(ventilData));
+            localStorage.setItem('va_botkyrka_ultimate_v2', JSON.stringify(ventilData));
             if (currentUser) localStorage.setItem('currentUser', currentUser);
             localStorage.setItem('userNotes', document.getElementById('userNotes').value);
         }
 
-        // ---------- RENDERING ----------
         function renderAll() {
             updateMapMarkers();
             renderGroupedActions();
@@ -752,57 +835,55 @@
 
         function renderGroupedActions() {
             const actions = ventilData.filter(v => !v.fixed);
-            const groups = {
-                trog: actions.filter(v => v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')),
-                betackning: actions.filter(v => v.fullStatus.includes('Betäckning')),
-                overtackt: actions.filter(v => v.fullStatus.includes('Över'))
-            };
+            const groups = {};
+            actions.forEach(v => {
+                let cat = 'Övrigt';
+                if (v.fullStatus.includes('Trög')) cat = 'Trög';
+                else if (v.fullStatus.includes('Betäckning')) cat = 'Betäckning';
+                else if (v.fullStatus.includes('Över')) cat = 'Övertäckt';
+                else if (v.fullStatus.includes('Ej kontrollerad')) cat = 'Ej kontrollerad';
+                else if (v.fullStatus.includes('Åtgärdad')) cat = 'Åtgärdad';
+                if (!groups[cat]) groups[cat] = [];
+                groups[cat].push(v);
+            });
             
             let html = '';
-            const labels = { trog: '🟠 Trög', betackning: '🟡 Betäckning', overtackt: '⬜ Övertäckt' };
-            
-            for (let key in groups) {
-                const items = groups[key];
-                if (items.length === 0) continue;
-                html += `<div class="group-header" data-group="${key}">
-                    <span>${labels[key]}</span>
-                    <span class="group-badge">${items.length}</span>
-                </div>`;
-                
-                items.sort((a,b) => a.ventilNr.localeCompare(b.ventilNr));
-                items.forEach(v => {
+            const order = ['Trög', 'Betäckning', 'Övertäckt', 'Ej kontrollerad', 'Åtgärdad', 'Övrigt'];
+            order.forEach(cat => {
+                if (!groups[cat] || groups[cat].length === 0) return;
+                html += `<div class="group-header"><span>${cat}</span><span class="group-badge">${groups[cat].length}</span></div>`;
+                groups[cat].sort((a,b) => a.ventilNr.localeCompare(b.ventilNr));
+                groups[cat].forEach(v => {
+                    const distancedText = v.distanced ? '✅ Ja' : '⬜ Nej';
                     html += `<div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')">
                         <div class="item-marker" style="background:${TYPE_COLORS[v.type]};"></div>
                         <div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div>
-                        <i class="fas fa-check-circle" style="color:#16a34a; font-size:1.2rem;" onclick="event.stopPropagation(); approveVentil('${v.id}')"></i>
+                        <i class="fas fa-check-circle" style="color:#16a34a; font-size:1.4rem;" onclick="event.stopPropagation(); approveVentil('${v.id}')"></i>
+                        <i class="fas fa-trash-alt" style="color:#dc2626; margin-left:6px; font-size:1.2rem;" onclick="event.stopPropagation(); markAsBroken('${v.id}')"></i>
+                        <span style="margin-left:10px; cursor:pointer; background:#f59e0b20; padding:6px 12px; border-radius:30px; font-size:0.75rem; font-weight:600;" onclick="event.stopPropagation(); toggleDistanced('${v.id}')">${distancedText}</span>
                     </div>`;
                 });
-            }
-            
-            document.getElementById('groupedActionsList').innerHTML = html || '<div style="padding:20px; text-align:center;">✨ Inga åtgärder just nu</div>';
+            });
+            document.getElementById('groupedActionsList').innerHTML = html || '<div style="padding:30px; text-align:center;">✨ Inga åtgärder just nu</div>';
         }
 
         window.approveVentil = (id) => {
             const v = ventilData.find(x => x.id === id);
-            if (v) {
-                v.fixed = true;
-                v.completedBy = currentUser;
-                v.completedDate = new Date().toLocaleString();
-                saveToLocal();
-                renderAll();
-            }
+            if (v) { v.fixed = true; v.completedBy = currentUser; v.completedDate = new Date().toLocaleString(); saveToLocal(); renderAll(); }
+        };
+        window.markAsBroken = (id) => {
+            const v = ventilData.find(x => x.id === id);
+            if (v) { v.fixed = true; v.fullStatus = 'Trasig - konstaterad'; v.completedBy = currentUser; v.completedDate = new Date().toLocaleString(); saveToLocal(); renderAll(); }
+        };
+        window.toggleDistanced = (id) => {
+            const v = ventilData.find(x => x.id === id);
+            if (v) { v.distanced = !v.distanced; saveToLocal(); renderGroupedActions(); }
         };
 
         function renderBrokenList() {
-            const broken = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trasig'));
-            let html = broken.map(v => `
-                <div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')">
-                    <div class="item-marker" style="background:${TYPE_COLORS[v.type]};"></div>
-                    <div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div>
-                    <i class="fas fa-check-circle" style="color:#16a34a;" onclick="event.stopPropagation(); approveVentil('${v.id}')"></i>
-                </div>
-            `).join('');
-            document.getElementById('brokenList').innerHTML = html || '<div style="padding:20px; text-align:center;">✨ Inga trasiga ventiler</div>';
+            const broken = ventilData.filter(v => v.fixed && v.fullStatus.includes('Trasig - konstaterad'));
+            let html = broken.map(v => `<div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};"></div><div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div></div>`).join('');
+            document.getElementById('brokenList').innerHTML = html || '<div style="padding:30px;">✨ Inga konstaterat trasiga</div>';
         }
 
         function renderStats() {
@@ -810,12 +891,10 @@
             const trasig = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trasig')).length;
             const trog = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')).length;
             const bet = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Betäckning')).length;
-            const ok = ventilData.filter(v => v.fixed).length;
-            
+            const ok = ventilData.filter(v => v.fixed && !v.fullStatus.includes('Trasig - konstaterad')).length;
             document.getElementById('statTotal').innerText = total;
             document.getElementById('statTrasig').innerText = trasig;
             document.getElementById('statOk').innerText = ok;
-            
             const maxVal = Math.max(trasig, trog, bet, ok, 1);
             const bars = [
                 { label: '🔴 Trasiga', val: trasig, color: '#dc2626' },
@@ -823,33 +902,21 @@
                 { label: '🟡 Betäckning', val: bet, color: '#d97706' },
                 { label: '✅ Åtgärdade', val: ok, color: '#16a34a' }
             ];
-            
             let barsHtml = '';
             bars.forEach(b => {
                 const percent = total ? Math.round((b.val / total) * 100) : 0;
-                barsHtml += `<div class="chart-bar">
-                    <div class="chart-label">${b.label}</div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width:${(b.val / maxVal) * 100}%; background:${b.color};">${b.val}</div>
-                    </div>
-                    <div style="width:40px; text-align:right;">${percent}%</div>
-                </div>`;
+                barsHtml += `<div class="chart-bar"><div class="chart-label">${b.label}</div><div class="bar-bg"><div class="bar-fill" style="width:${(b.val/maxVal)*100}%; background:${b.color};">${b.val}</div></div><div style="width:50px; font-weight:700;">${percent}%</div></div>`;
             });
             document.getElementById('statsBars').innerHTML = barsHtml;
         }
 
         function updateDashboard() {
             const total = ventilData.length;
-            const trasig = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trasig')).length;
-            const trog = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')).length;
-            const bet = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Betäckning')).length;
-            const over = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Över')).length;
-            
             document.getElementById('dashTotal').innerText = total;
-            document.getElementById('dashTrasig').innerText = trasig;
-            document.getElementById('dashTrog').innerText = trog;
-            document.getElementById('dashBet').innerText = bet;
-            document.getElementById('dashOver').innerText = over;
+            document.getElementById('dashTrasig').innerText = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trasig')).length;
+            document.getElementById('dashTrog').innerText = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')).length;
+            document.getElementById('dashBet').innerText = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Betäckning')).length;
+            document.getElementById('dashOver').innerText = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Över')).length;
         }
 
         function updateUserStats() {
@@ -864,12 +931,10 @@
             document.getElementById('avatarInitial').innerText = currentUser ? currentUser.charAt(0).toUpperCase() : '?';
         }
 
-        // ---------- DROPDOWN FÖR DETALJER ----------
         function populateDetailDropdown() {
             const statusSelect = document.getElementById('regStatus');
             const detailSelect = document.getElementById('regDetail');
             const container = document.getElementById('regDetailContainer');
-            
             function updateDetails() {
                 const status = statusSelect.value;
                 const details = statusDetails[status];
@@ -877,64 +942,40 @@
                     container.style.display = 'block';
                     detailSelect.innerHTML = '<option value="">Välj detalj</option>';
                     details.forEach(d => { detailSelect.innerHTML += `<option>${d}</option>`; });
-                } else {
-                    container.style.display = 'none';
-                }
+                } else { container.style.display = 'none'; }
             }
-            
             statusSelect.addEventListener('change', updateDetails);
             updateDetails();
         }
 
-        // ---------- EVENT LISTENERS ----------
         function setupEventListeners() {
-            // Navigation
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.addEventListener('click', () => {
                     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                     item.classList.add('active');
                     const viewId = item.dataset.view;
-                    currentView = viewId;
-                    
                     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
                     document.getElementById(`view-${viewId}`).classList.add('active');
-                    
                     const mapContainer = document.getElementById('mapContainer');
                     const dashboardArea = document.getElementById('dashboardArea');
-                    
+                    const topBarContainer = document.getElementById('topBarContainer');
                     if (viewId === 'register') {
                         mapContainer.style.display = 'block';
                         dashboardArea.style.display = 'none';
+                        topBarContainer.style.display = 'block';
                         setTimeout(() => map.invalidateSize(), 100);
                     } else {
                         mapContainer.style.display = 'none';
                         dashboardArea.style.display = (viewId === 'actions' || viewId === 'broken') ? 'block' : 'none';
+                        topBarContainer.style.display = 'none';
                     }
-                    
                     if (viewId === 'actions') renderGroupedActions();
                     if (viewId === 'broken') renderBrokenList();
                     if (viewId === 'stats') renderStats();
                 });
             });
-            
-            // Dashboard-filter
-            document.querySelectorAll('.dash-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const filter = card.dataset.filter;
-                    currentFilter = filter;
-                    // Här kan vi implementera filtrering av åtgärdslistan vid behov
-                    renderGroupedActions(); // enkel uppdatering
-                });
-            });
-            
-            // Nål-läge
-            document.getElementById('needleBtn').addEventListener('click', () => {
-                isNeedleMode = !isNeedleMode;
-                document.getElementById('needleBtn').classList.toggle('active');
-                map.getContainer().style.cursor = isNeedleMode ? 'crosshair' : '';
-            });
-            
-            // GPS-knapp
+            document.querySelectorAll('.dash-card').forEach(card => card.addEventListener('click', () => { currentFilter = card.dataset.filter; renderGroupedActions(); }));
+            document.getElementById('needleBtn').addEventListener('click', () => { isNeedleMode = !isNeedleMode; document.getElementById('needleBtn').classList.toggle('active'); map.getContainer().style.cursor = isNeedleMode ? 'crosshair' : ''; });
             document.getElementById('gpsBtn').addEventListener('click', () => {
                 if (!navigator.geolocation) { alert('GPS stöds ej'); return; }
                 navigator.geolocation.getCurrentPosition(pos => {
@@ -948,75 +989,42 @@
                     });
                 }, () => alert('Kunde inte hämta position'));
             });
-            
-            // Live-spårning
             document.getElementById('trackBtn').addEventListener('click', function() {
-                if (watchId) {
-                    navigator.geolocation.clearWatch(watchId);
-                    watchId = null;
-                    this.classList.remove('active');
-                } else {
+                if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; this.classList.remove('active'); }
+                else {
                     if (!navigator.geolocation) return;
                     watchId = navigator.geolocation.watchPosition(pos => {
                         map.setView([pos.coords.latitude, pos.coords.longitude], 16);
-                        L.marker([pos.coords.latitude, pos.coords.longitude], {
-                            icon: L.divIcon({ html: '🔵', className: 'tracker-marker', iconSize: [20,20] })
-                        }).addTo(markerClusterGroup);
+                        L.marker([pos.coords.latitude, pos.coords.longitude], { icon: L.divIcon({ html: '🔵' }) }).addTo(markerClusterGroup);
                     }, null, { enableHighAccuracy: true });
                     this.classList.add('active');
                 }
             });
-            
-            // Foto
             document.getElementById('photoBtn').addEventListener('click', takePhoto);
-            
-            // Spara ventil
             document.getElementById('saveVentilBtn').addEventListener('click', () => {
                 if (!currentUser) { alert('Logga in först'); return; }
-                
                 const type = document.getElementById('regType').value;
                 const number = document.getElementById('regNumber').value.trim();
                 if (!number) { alert('Ange nummer'); return; }
-                
                 const fullNr = type + number;
                 const area = document.getElementById('regArea').value;
                 const location = document.getElementById('regLocation').value.trim();
                 if (!location) { alert('Ange plats'); return; }
-                
                 const status = document.getElementById('regStatus').value;
                 const detail = document.getElementById('regDetail').value;
                 const fullStatus = detail ? `${status} - ${detail}` : status;
                 const note = document.getElementById('regNote').value;
-                
                 let lat, lng;
-                if (currentMarker) {
-                    const pos = currentMarker.getLatLng();
-                    lat = pos.lat; lng = pos.lng;
-                } else {
-                    // Default till centrum om ingen markör
-                    lat = 59.2; lng = 17.82;
-                }
-                
+                if (currentMarker) { const pos = currentMarker.getLatLng(); lat = pos.lat; lng = pos.lng; }
+                else { lat = 59.2; lng = 17.82; }
                 const newVentil = {
                     id: 'v_' + Date.now() + Math.random().toString(36),
-                    ventilNr: fullNr,
-                    type: type,
-                    area: area,
-                    location: location,
-                    fullStatus: fullStatus,
-                    note: note,
-                    reportedBy: currentUser,
-                    fixed: false,
-                    lat, lng,
-                    photo: currentPhoto,
-                    date: new Date().toLocaleString()
+                    ventilNr: fullNr, type, area, location, fullStatus, note,
+                    reportedBy: currentUser, fixed: false, lat, lng, photo: currentPhoto,
+                    date: new Date().toLocaleString(), distanced: false
                 };
-                
                 ventilData.push(newVentil);
-                saveToLocal();
-                renderAll();
-                
-                // Rensa formulär
+                saveToLocal(); renderAll();
                 document.getElementById('regNumber').value = '';
                 document.getElementById('regLocation').value = '';
                 document.getElementById('regNote').value = '';
@@ -1024,41 +1032,19 @@
                 currentPhoto = null;
                 if (currentMarker) markerClusterGroup.removeLayer(currentMarker);
                 currentMarker = null;
-                
                 alert(`✅ ${fullNr} sparad!`);
             });
-            
-            // Sök
             document.getElementById('searchBtn').addEventListener('click', searchAddress);
             document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') searchAddress(); });
-            
-            // Anteckningar
-            document.getElementById('saveNotesBtn').addEventListener('click', () => {
-                localStorage.setItem('userNotes', document.getElementById('userNotes').value);
-                alert('Anteckning sparad');
-            });
-            
-            // Byt användare
-            document.getElementById('sidebarAuthBtn').addEventListener('click', () => {
-                const newName = prompt('Ange namn:', currentUser || '');
-                if (newName) {
-                    currentUser = newName;
-                    updateAuthUI();
-                    saveToLocal();
-                    renderAll();
-                }
-            });
+            document.getElementById('saveNotesBtn').addEventListener('click', () => { localStorage.setItem('userNotes', document.getElementById('userNotes').value); alert('Anteckning sparad'); });
+            document.getElementById('sidebarAuthBtn').addEventListener('click', () => { const newName = prompt('Ange namn:', currentUser || ''); if (newName) { currentUser = newName; updateAuthUI(); saveToLocal(); renderAll(); } });
         }
 
         function takePhoto() {
             const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.setAttribute('capture', 'environment');
+            input.type = 'file'; input.accept = 'image/*'; input.setAttribute('capture', 'environment');
             input.onchange = e => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
+                const file = e.target.files[0]; if (!file) return;
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(pos => {
                         reverseGeocode(pos.coords.latitude, pos.coords.longitude, addr => {
@@ -1067,13 +1053,8 @@
                         });
                     });
                 }
-                
                 const reader = new FileReader();
-                reader.onload = ev => {
-                    currentPhoto = ev.target.result;
-                    document.getElementById('photoImg').src = currentPhoto;
-                    document.getElementById('photoPreview').style.display = 'flex';
-                };
+                reader.onload = ev => { currentPhoto = ev.target.result; document.getElementById('photoImg').src = currentPhoto; document.getElementById('photoPreview').style.display = 'flex'; };
                 reader.readAsDataURL(file);
             };
             input.click();
@@ -1086,21 +1067,14 @@
                 const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)} Botkyrka&format=json&limit=1`);
                 const data = await res.json();
                 if (data && data[0]) {
-                    const lat = parseFloat(data[0].lat);
-                    const lng = parseFloat(data[0].lon);
+                    const lat = parseFloat(data[0].lat), lng = parseFloat(data[0].lon);
                     map.setView([lat, lng], 16);
-                    const marker = createMarker(lat, lng, 'VAV', data[0].display_name);
-                    markerClusterGroup.addLayer(marker);
+                    markerClusterGroup.addLayer(createMarker(lat, lng, 'VAV', data[0].display_name));
                     document.getElementById('regLocation').value = data[0].display_name;
-                } else {
-                    alert('Ingen adress hittades');
-                }
-            } catch (e) {
-                alert('Sökning misslyckades');
-            }
+                } else alert('Ingen adress hittades');
+            } catch (e) { alert('Sökning misslyckades'); }
         }
 
-        // Starta appen
         init();
     })();
 </script>
