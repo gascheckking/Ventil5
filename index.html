@@ -160,9 +160,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 12px;
         }
         .program-selector {
             background: white;
@@ -181,7 +181,8 @@
             outline: none;
         }
 
-        .search-section { display: flex; gap: 8px; align-items: center; }
+        /* Sök + verktygsrad */
+        .search-section { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
         .search-wrapper {
             background: white;
             border-radius: 40px;
@@ -189,7 +190,7 @@
             display: flex;
             align-items: center;
             padding: 2px 8px 2px 18px;
-            min-width: 260px;
+            width: 100%;
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
         .search-wrapper i { color: #f59e0b; font-size: 0.9rem; }
@@ -201,6 +202,12 @@
             font-size: 0.8rem;
             width: 100%;
             outline: none;
+        }
+        .toolbar-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .icon-btn {
             background: white;
@@ -439,7 +446,6 @@
             .sidebar-footer { display: none; }
             .main-content { padding: 16px; }
             .top-bar { flex-direction: column; align-items: stretch; }
-            .search-wrapper { min-width: 100%; }
             .map-container { height: 200px; }
             .dashboard-grid { grid-template-columns: repeat(3,1fr); }
             .view-panel { padding: 16px; }
@@ -449,6 +455,7 @@
             .nav-item span { display: none; }
             .nav-item i { font-size: 1.1rem; }
             .dashboard-grid { grid-template-columns: repeat(2,1fr); }
+            .toolbar-row .icon-btn { width: 38px; height: 38px; }
         }
 
         /* Övrigt */
@@ -470,7 +477,7 @@
 </head>
 <body>
 <div class="app">
-    <!-- SIDEBAR (mobiloptimerad) -->
+    <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-header">
             <h2>VA<span>Botkyrka</span></h2>
@@ -508,11 +515,13 @@
                         <option value="test">🧪 Test</option>
                     </select>
                 </div>
-                <div class="search-section">
-                    <div class="search-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Sök adress (t.ex. Oxelvägen 2)">
-                    </div>
+            </div>
+            <div class="search-section">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Sök adress (t.ex. Oxelvägen 2)">
+                </div>
+                <div class="toolbar-row">
                     <div class="icon-btn" id="searchBtn"><i class="fas fa-arrow-right"></i></div>
                     <div class="icon-btn" id="gpsBtn"><i class="fas fa-location-arrow"></i></div>
                     <div class="icon-btn" id="trackBtn" title="Live-spårning"><i class="fas fa-satellite"></i></div>
@@ -622,7 +631,6 @@
     (function(){
         "use strict";
 
-        // ---------- KONFIGURATION ----------
         const TYPE_COLORS = {
             'VAV':'#1f77b4', 'VBP':'#d62728', 'VSP':'#2ca02c',
             'DNB':'#ff7f0e', 'SNB':'#9467bd', 'VSV':'#17becf'
@@ -656,7 +664,6 @@
             document.getElementById('regType').addEventListener('change', (e) => {
                 document.getElementById('typePrefix').innerText = e.target.value + '-';
             });
-            // Mobil: visa/dölj text i menyn vid behov
         }
 
         function initMap() {
@@ -736,7 +743,7 @@
         }
 
         function loadData() {
-            const stored = localStorage.getItem('va_botkyrka_final_v3');
+            const stored = localStorage.getItem('va_botkyrka_final_v4');
             if (stored) {
                 try { ventilData = JSON.parse(stored); } catch(e){ ventilData = []; }
             } else { ventilData = []; }
@@ -746,7 +753,7 @@
         }
 
         function saveToLocal() {
-            localStorage.setItem('va_botkyrka_final_v3', JSON.stringify(ventilData));
+            localStorage.setItem('va_botkyrka_final_v4', JSON.stringify(ventilData));
             if (currentUser) localStorage.setItem('currentUser', currentUser);
             localStorage.setItem('userNotes', document.getElementById('userNotes').value);
         }
@@ -796,45 +803,21 @@
 
         window.approveVentil = (id) => {
             const v = ventilData.find(x => x.id === id);
-            if (v) {
-                v.fixed = true;
-                v.completedBy = currentUser;
-                v.completedDate = new Date().toLocaleString();
-                saveToLocal();
-                renderAll();
-            }
+            if (v) { v.fixed = true; v.completedBy = currentUser; v.completedDate = new Date().toLocaleString(); saveToLocal(); renderAll(); }
         };
-
         window.markAsBroken = (id) => {
             const v = ventilData.find(x => x.id === id);
-            if (v) {
-                v.fixed = true;
-                v.fullStatus = 'Trasig - konstaterad';
-                v.completedBy = currentUser;
-                v.completedDate = new Date().toLocaleString();
-                saveToLocal();
-                renderAll();
-            }
+            if (v) { v.fixed = true; v.fullStatus = 'Trasig - konstaterad'; v.completedBy = currentUser; v.completedDate = new Date().toLocaleString(); saveToLocal(); renderAll(); }
         };
-
         window.toggleDistanced = (id) => {
             const v = ventilData.find(x => x.id === id);
-            if (v) {
-                v.distanced = !v.distanced;
-                saveToLocal();
-                renderGroupedActions();
-            }
+            if (v) { v.distanced = !v.distanced; saveToLocal(); renderGroupedActions(); }
         };
 
         function renderBrokenList() {
             const broken = ventilData.filter(v => v.fixed && v.fullStatus.includes('Trasig - konstaterad'));
-            let html = broken.map(v => `
-                <div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')">
-                    <div class="item-marker" style="background:${TYPE_COLORS[v.type]};"></div>
-                    <div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div>
-                </div>
-            `).join('');
-            document.getElementById('brokenList').innerHTML = html || '<div style="padding:20px; text-align:center;">✨ Inga konstaterat trasiga</div>';
+            let html = broken.map(v => `<div class="list-item" style="border-left-color:${TYPE_COLORS[v.type]};" onclick="focusVentil('${v.id}')"><div class="item-marker" style="background:${TYPE_COLORS[v.type]};"></div><div style="flex:1"><b>${v.ventilNr}</b><br><small>${v.location}</small></div></div>`).join('');
+            document.getElementById('brokenList').innerHTML = html || '<div style="padding:20px;">✨ Inga konstaterat trasiga</div>';
         }
 
         function renderStats() {
@@ -843,11 +826,9 @@
             const trog = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')).length;
             const bet = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Betäckning')).length;
             const ok = ventilData.filter(v => v.fixed && !v.fullStatus.includes('Trasig - konstaterad')).length;
-            
             document.getElementById('statTotal').innerText = total;
             document.getElementById('statTrasig').innerText = trasig;
             document.getElementById('statOk').innerText = ok;
-            
             const maxVal = Math.max(trasig, trog, bet, ok, 1);
             const bars = [
                 { label: '🔴 Trasiga', val: trasig, color: '#dc2626' },
@@ -855,33 +836,21 @@
                 { label: '🟡 Betäckning', val: bet, color: '#d97706' },
                 { label: '✅ Åtgärdade', val: ok, color: '#16a34a' }
             ];
-            
             let barsHtml = '';
             bars.forEach(b => {
                 const percent = total ? Math.round((b.val / total) * 100) : 0;
-                barsHtml += `<div class="chart-bar">
-                    <div class="chart-label">${b.label}</div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width:${(b.val / maxVal) * 100}%; background:${b.color};">${b.val}</div>
-                    </div>
-                    <div style="width:40px; text-align:right;">${percent}%</div>
-                </div>`;
+                barsHtml += `<div class="chart-bar"><div class="chart-label">${b.label}</div><div class="bar-bg"><div class="bar-fill" style="width:${(b.val/maxVal)*100}%; background:${b.color};">${b.val}</div></div><div style="width:40px;">${percent}%</div></div>`;
             });
             document.getElementById('statsBars').innerHTML = barsHtml;
         }
 
         function updateDashboard() {
             const total = ventilData.length;
-            const trasig = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trasig')).length;
-            const trog = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')).length;
-            const bet = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Betäckning')).length;
-            const over = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Över')).length;
-            
             document.getElementById('dashTotal').innerText = total;
-            document.getElementById('dashTrasig').innerText = trasig;
-            document.getElementById('dashTrog').innerText = trog;
-            document.getElementById('dashBet').innerText = bet;
-            document.getElementById('dashOver').innerText = over;
+            document.getElementById('dashTrasig').innerText = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trasig')).length;
+            document.getElementById('dashTrog').innerText = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Trög') && !v.fullStatus.includes('Trasig')).length;
+            document.getElementById('dashBet').innerText = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Betäckning')).length;
+            document.getElementById('dashOver').innerText = ventilData.filter(v => !v.fixed && v.fullStatus.includes('Över')).length;
         }
 
         function updateUserStats() {
@@ -900,7 +869,6 @@
             const statusSelect = document.getElementById('regStatus');
             const detailSelect = document.getElementById('regDetail');
             const container = document.getElementById('regDetailContainer');
-            
             function updateDetails() {
                 const status = statusSelect.value;
                 const details = statusDetails[status];
@@ -908,11 +876,8 @@
                     container.style.display = 'block';
                     detailSelect.innerHTML = '<option value="">Välj detalj</option>';
                     details.forEach(d => { detailSelect.innerHTML += `<option>${d}</option>`; });
-                } else {
-                    container.style.display = 'none';
-                }
+                } else { container.style.display = 'none'; }
             }
-            
             statusSelect.addEventListener('change', updateDetails);
             updateDetails();
         }
@@ -923,14 +888,11 @@
                     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                     item.classList.add('active');
                     const viewId = item.dataset.view;
-                    
                     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
                     document.getElementById(`view-${viewId}`).classList.add('active');
-                    
                     const mapContainer = document.getElementById('mapContainer');
                     const dashboardArea = document.getElementById('dashboardArea');
                     const topBarContainer = document.getElementById('topBarContainer');
-                    
                     if (viewId === 'register') {
                         mapContainer.style.display = 'block';
                         dashboardArea.style.display = 'none';
@@ -941,26 +903,13 @@
                         dashboardArea.style.display = (viewId === 'actions' || viewId === 'broken') ? 'block' : 'none';
                         topBarContainer.style.display = 'none';
                     }
-                    
                     if (viewId === 'actions') renderGroupedActions();
                     if (viewId === 'broken') renderBrokenList();
                     if (viewId === 'stats') renderStats();
                 });
             });
-            
-            document.querySelectorAll('.dash-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    currentFilter = card.dataset.filter;
-                    renderGroupedActions();
-                });
-            });
-            
-            document.getElementById('needleBtn').addEventListener('click', () => {
-                isNeedleMode = !isNeedleMode;
-                document.getElementById('needleBtn').classList.toggle('active');
-                map.getContainer().style.cursor = isNeedleMode ? 'crosshair' : '';
-            });
-            
+            document.querySelectorAll('.dash-card').forEach(card => card.addEventListener('click', () => { currentFilter = card.dataset.filter; renderGroupedActions(); }));
+            document.getElementById('needleBtn').addEventListener('click', () => { isNeedleMode = !isNeedleMode; document.getElementById('needleBtn').classList.toggle('active'); map.getContainer().style.cursor = isNeedleMode ? 'crosshair' : ''; });
             document.getElementById('gpsBtn').addEventListener('click', () => {
                 if (!navigator.geolocation) { alert('GPS stöds ej'); return; }
                 navigator.geolocation.getCurrentPosition(pos => {
@@ -974,71 +923,42 @@
                     });
                 }, () => alert('Kunde inte hämta position'));
             });
-            
             document.getElementById('trackBtn').addEventListener('click', function() {
-                if (watchId) {
-                    navigator.geolocation.clearWatch(watchId);
-                    watchId = null;
-                    this.classList.remove('active');
-                } else {
+                if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; this.classList.remove('active'); }
+                else {
                     if (!navigator.geolocation) return;
                     watchId = navigator.geolocation.watchPosition(pos => {
                         map.setView([pos.coords.latitude, pos.coords.longitude], 16);
-                        L.marker([pos.coords.latitude, pos.coords.longitude], {
-                            icon: L.divIcon({ html: '🔵', className: 'tracker-marker', iconSize: [20,20] })
-                        }).addTo(markerClusterGroup);
+                        L.marker([pos.coords.latitude, pos.coords.longitude], { icon: L.divIcon({ html: '🔵' }) }).addTo(markerClusterGroup);
                     }, null, { enableHighAccuracy: true });
                     this.classList.add('active');
                 }
             });
-            
             document.getElementById('photoBtn').addEventListener('click', takePhoto);
-            
             document.getElementById('saveVentilBtn').addEventListener('click', () => {
                 if (!currentUser) { alert('Logga in först'); return; }
-                
                 const type = document.getElementById('regType').value;
                 const number = document.getElementById('regNumber').value.trim();
                 if (!number) { alert('Ange nummer'); return; }
-                
                 const fullNr = type + number;
                 const area = document.getElementById('regArea').value;
                 const location = document.getElementById('regLocation').value.trim();
                 if (!location) { alert('Ange plats'); return; }
-                
                 const status = document.getElementById('regStatus').value;
                 const detail = document.getElementById('regDetail').value;
                 const fullStatus = detail ? `${status} - ${detail}` : status;
                 const note = document.getElementById('regNote').value;
-                
                 let lat, lng;
-                if (currentMarker) {
-                    const pos = currentMarker.getLatLng();
-                    lat = pos.lat; lng = pos.lng;
-                } else {
-                    lat = 59.2; lng = 17.82;
-                }
-                
+                if (currentMarker) { const pos = currentMarker.getLatLng(); lat = pos.lat; lng = pos.lng; }
+                else { lat = 59.2; lng = 17.82; }
                 const newVentil = {
                     id: 'v_' + Date.now() + Math.random().toString(36),
-                    ventilNr: fullNr,
-                    type: type,
-                    area: area,
-                    location: location,
-                    fullStatus: fullStatus,
-                    note: note,
-                    reportedBy: currentUser,
-                    fixed: false,
-                    lat, lng,
-                    photo: currentPhoto,
-                    date: new Date().toLocaleString(),
-                    distanced: false
+                    ventilNr: fullNr, type, area, location, fullStatus, note,
+                    reportedBy: currentUser, fixed: false, lat, lng, photo: currentPhoto,
+                    date: new Date().toLocaleString(), distanced: false
                 };
-                
                 ventilData.push(newVentil);
-                saveToLocal();
-                renderAll();
-                
+                saveToLocal(); renderAll();
                 document.getElementById('regNumber').value = '';
                 document.getElementById('regLocation').value = '';
                 document.getElementById('regNote').value = '';
@@ -1046,38 +966,19 @@
                 currentPhoto = null;
                 if (currentMarker) markerClusterGroup.removeLayer(currentMarker);
                 currentMarker = null;
-                
                 alert(`✅ ${fullNr} sparad!`);
             });
-            
             document.getElementById('searchBtn').addEventListener('click', searchAddress);
             document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') searchAddress(); });
-            
-            document.getElementById('saveNotesBtn').addEventListener('click', () => {
-                localStorage.setItem('userNotes', document.getElementById('userNotes').value);
-                alert('Anteckning sparad');
-            });
-            
-            document.getElementById('sidebarAuthBtn').addEventListener('click', () => {
-                const newName = prompt('Ange namn:', currentUser || '');
-                if (newName) {
-                    currentUser = newName;
-                    updateAuthUI();
-                    saveToLocal();
-                    renderAll();
-                }
-            });
+            document.getElementById('saveNotesBtn').addEventListener('click', () => { localStorage.setItem('userNotes', document.getElementById('userNotes').value); alert('Anteckning sparad'); });
+            document.getElementById('sidebarAuthBtn').addEventListener('click', () => { const newName = prompt('Ange namn:', currentUser || ''); if (newName) { currentUser = newName; updateAuthUI(); saveToLocal(); renderAll(); } });
         }
 
         function takePhoto() {
             const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.setAttribute('capture', 'environment');
+            input.type = 'file'; input.accept = 'image/*'; input.setAttribute('capture', 'environment');
             input.onchange = e => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
+                const file = e.target.files[0]; if (!file) return;
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(pos => {
                         reverseGeocode(pos.coords.latitude, pos.coords.longitude, addr => {
@@ -1086,13 +987,8 @@
                         });
                     });
                 }
-                
                 const reader = new FileReader();
-                reader.onload = ev => {
-                    currentPhoto = ev.target.result;
-                    document.getElementById('photoImg').src = currentPhoto;
-                    document.getElementById('photoPreview').style.display = 'flex';
-                };
+                reader.onload = ev => { currentPhoto = ev.target.result; document.getElementById('photoImg').src = currentPhoto; document.getElementById('photoPreview').style.display = 'flex'; };
                 reader.readAsDataURL(file);
             };
             input.click();
@@ -1105,18 +1001,12 @@
                 const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)} Botkyrka&format=json&limit=1`);
                 const data = await res.json();
                 if (data && data[0]) {
-                    const lat = parseFloat(data[0].lat);
-                    const lng = parseFloat(data[0].lon);
+                    const lat = parseFloat(data[0].lat), lng = parseFloat(data[0].lon);
                     map.setView([lat, lng], 16);
-                    const marker = createMarker(lat, lng, 'VAV', data[0].display_name);
-                    markerClusterGroup.addLayer(marker);
+                    markerClusterGroup.addLayer(createMarker(lat, lng, 'VAV', data[0].display_name));
                     document.getElementById('regLocation').value = data[0].display_name;
-                } else {
-                    alert('Ingen adress hittades');
-                }
-            } catch (e) {
-                alert('Sökning misslyckades');
-            }
+                } else alert('Ingen adress hittades');
+            } catch (e) { alert('Sökning misslyckades'); }
         }
 
         init();
