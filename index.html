@@ -614,15 +614,15 @@
         };
 
         // ---------- GLOBALA VARIABLER ----------
-        let ventilData = [];
-        let currentUser = 'fredde';
-        let map, markerClusterGroup;
-        let currentMarker = null;
-        let watchId = null;
-        let isNeedleMode = false;
-        let currentPhoto = null;
-        let currentFilter = 'all';
-        let currentView = 'register';
+        let ventilData = [];                // Alla ventiler
+        let currentUser = 'fredde';         // Inloggad användare
+        let map, markerClusterGroup;        // Karta och klustergrupp
+        let currentMarker = null;           // Tillfällig markör (nål/GPS)
+        let watchId = null;                // Live-spårning
+        let isNeedleMode = false;          // Nål-läge
+        let currentPhoto = null;           // Base64-sträng för foto
+        let currentFilter = 'all';         // Dashboard-filter
+        let currentView = 'register';      // Aktiv vy
 
         // ---------- INITIERING ----------
         function init() {
@@ -632,6 +632,7 @@
             renderAll();
             updateAuthUI();
             populateDetailDropdown();
+            // Sätt prefix
             document.getElementById('regType').addEventListener('change', (e) => {
                 document.getElementById('typePrefix').innerText = e.target.value + '-';
             });
@@ -696,10 +697,14 @@
             });
         }
 
+        // Globala hjälpfunktioner för popup
         window.routeTo = (lat, lng) => window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank');
         window.focusVentil = (id) => {
             const v = ventilData.find(x => x.id === id);
-            if (v) { map.setView([v.lat, v.lng], 17); }
+            if (v) {
+                map.setView([v.lat, v.lng], 17);
+                // Öppna popup? Vi kan inte enkelt trigga popup via kluster, men vi kan zooma.
+            }
         };
 
         // ---------- GEOKODNING ----------
@@ -722,7 +727,7 @@
             if (stored) {
                 try { ventilData = JSON.parse(stored); } catch(e){ ventilData = []; }
             } else {
-                ventilData = [];
+                ventilData = []; // Tom start
             }
             const user = localStorage.getItem('currentUser');
             if (user) currentUser = user;
@@ -883,6 +888,7 @@
 
         // ---------- EVENT LISTENERS ----------
         function setupEventListeners() {
+            // Navigation
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.addEventListener('click', () => {
                     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -911,20 +917,24 @@
                 });
             });
             
+            // Dashboard-filter
             document.querySelectorAll('.dash-card').forEach(card => {
                 card.addEventListener('click', () => {
                     const filter = card.dataset.filter;
                     currentFilter = filter;
-                    renderGroupedActions();
+                    // Här kan vi implementera filtrering av åtgärdslistan vid behov
+                    renderGroupedActions(); // enkel uppdatering
                 });
             });
             
+            // Nål-läge
             document.getElementById('needleBtn').addEventListener('click', () => {
                 isNeedleMode = !isNeedleMode;
                 document.getElementById('needleBtn').classList.toggle('active');
                 map.getContainer().style.cursor = isNeedleMode ? 'crosshair' : '';
             });
             
+            // GPS-knapp
             document.getElementById('gpsBtn').addEventListener('click', () => {
                 if (!navigator.geolocation) { alert('GPS stöds ej'); return; }
                 navigator.geolocation.getCurrentPosition(pos => {
@@ -939,6 +949,7 @@
                 }, () => alert('Kunde inte hämta position'));
             });
             
+            // Live-spårning
             document.getElementById('trackBtn').addEventListener('click', function() {
                 if (watchId) {
                     navigator.geolocation.clearWatch(watchId);
@@ -956,8 +967,10 @@
                 }
             });
             
+            // Foto
             document.getElementById('photoBtn').addEventListener('click', takePhoto);
             
+            // Spara ventil
             document.getElementById('saveVentilBtn').addEventListener('click', () => {
                 if (!currentUser) { alert('Logga in först'); return; }
                 
@@ -980,6 +993,7 @@
                     const pos = currentMarker.getLatLng();
                     lat = pos.lat; lng = pos.lng;
                 } else {
+                    // Default till centrum om ingen markör
                     lat = 59.2; lng = 17.82;
                 }
                 
@@ -1002,6 +1016,7 @@
                 saveToLocal();
                 renderAll();
                 
+                // Rensa formulär
                 document.getElementById('regNumber').value = '';
                 document.getElementById('regLocation').value = '';
                 document.getElementById('regNote').value = '';
@@ -1013,14 +1028,17 @@
                 alert(`✅ ${fullNr} sparad!`);
             });
             
+            // Sök
             document.getElementById('searchBtn').addEventListener('click', searchAddress);
             document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') searchAddress(); });
             
+            // Anteckningar
             document.getElementById('saveNotesBtn').addEventListener('click', () => {
                 localStorage.setItem('userNotes', document.getElementById('userNotes').value);
                 alert('Anteckning sparad');
             });
             
+            // Byt användare
             document.getElementById('sidebarAuthBtn').addEventListener('click', () => {
                 const newName = prompt('Ange namn:', currentUser || '');
                 if (newName) {
@@ -1082,6 +1100,7 @@
             }
         }
 
+        // Starta appen
         init();
     })();
 </script>
