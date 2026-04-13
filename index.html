@@ -42,7 +42,7 @@
             overflow: hidden;
         }
 
-        /* === FAST VÄNSTERMENY (STICKY) === */
+        /* === VÄNSTERMENY (DESKTOP) === */
         .sidebar {
             width: 280px;
             background: rgba(255,255,255,0.5);
@@ -397,36 +397,62 @@
             font-weight: 600;
         }
 
-        /* Responsivitet */
-        @media (max-width: 1000px) {
-            .dashboard-grid { grid-template-columns: repeat(3,1fr); }
-        }
+        /* === MOBILOPTIMERING === */
         @media (max-width: 800px) {
-            body { padding: 12px; }
-            .app { flex-direction: column; height: auto; max-height: none; }
+            body { padding: 8px; }
+            .app { flex-direction: column; height: auto; max-height: none; border-radius: 24px; }
             .sidebar {
                 width: 100%;
-                position: relative;
+                position: sticky;
+                top: 0;
+                z-index: 20;
                 height: auto;
+                max-height: none;
                 border-right: none;
-                border-bottom: 1px solid #eef2f6;
-                padding: 16px;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+                padding: 12px 16px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                backdrop-filter: blur(8px);
+                background: rgba(255,255,255,0.6);
             }
-            .nav-menu { flex-direction: row; flex-wrap: wrap; }
-            .main-content { padding: 20px; }
-        }
-        @media (max-width: 600px) {
-            .dashboard-grid { grid-template-columns: repeat(2,1fr); }
+            .sidebar-header { display: none; }
+            .user-profile { padding: 0; margin: 0; gap: 8px; }
+            .avatar { width: 36px; height: 36px; font-size: 1rem; }
+            .user-info .name { font-size: 0.8rem; }
+            .user-info .role { font-size: 0.6rem; }
+            .nav-menu {
+                flex-direction: row;
+                padding: 0;
+                gap: 4px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            .nav-item {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+                gap: 6px;
+                border-radius: 30px;
+            }
+            .nav-item i { font-size: 0.9rem; width: auto; }
+            .sidebar-footer { display: none; }
+            .main-content { padding: 16px; }
             .top-bar { flex-direction: column; align-items: stretch; }
             .search-wrapper { min-width: 100%; }
+            .map-container { height: 200px; }
+            .dashboard-grid { grid-template-columns: repeat(3,1fr); }
+            .view-panel { padding: 16px; }
         }
 
-        /* Anpassningar för clustermarkers */
-        .custom-marker {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        @media (max-width: 480px) {
+            .nav-item span { display: none; }
+            .nav-item i { font-size: 1.1rem; }
+            .dashboard-grid { grid-template-columns: repeat(2,1fr); }
         }
+
+        /* Övrigt */
+        .custom-marker { display: flex; align-items: center; justify-content: center; }
         .leaflet-popup-content button {
             background: #f59e0b;
             border: none;
@@ -437,7 +463,6 @@
             font-weight: 600;
             cursor: pointer;
         }
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -445,7 +470,7 @@
 </head>
 <body>
 <div class="app">
-    <!-- FAST VÄNSTERMENY -->
+    <!-- SIDEBAR (mobiloptimerad) -->
     <div class="sidebar">
         <div class="sidebar-header">
             <h2>VA<span>Botkyrka</span></h2>
@@ -459,11 +484,11 @@
             </div>
         </div>
         <div class="nav-menu">
-            <div class="nav-item active" data-view="register"><i class="fas fa-pen-fancy"></i>Registrera</div>
-            <div class="nav-item" data-view="actions"><i class="fas fa-tools"></i>Åtgärdslista</div>
-            <div class="nav-item" data-view="broken"><i class="fas fa-exclamation-triangle"></i>Trasiga</div>
-            <div class="nav-item" data-view="stats"><i class="fas fa-chart-pie"></i>Statistik</div>
-            <div class="nav-item" data-view="profile"><i class="fas fa-user-circle"></i>Profil</div>
+            <div class="nav-item active" data-view="register"><i class="fas fa-pen-fancy"></i><span>Registrera</span></div>
+            <div class="nav-item" data-view="actions"><i class="fas fa-tools"></i><span>Åtgärder</span></div>
+            <div class="nav-item" data-view="broken"><i class="fas fa-exclamation-triangle"></i><span>Trasiga</span></div>
+            <div class="nav-item" data-view="stats"><i class="fas fa-chart-pie"></i><span>Statistik</span></div>
+            <div class="nav-item" data-view="profile"><i class="fas fa-user-circle"></i><span>Profil</span></div>
         </div>
         <div class="sidebar-footer">
             <div style="display:flex; gap:8px; margin-bottom:12px;"><i class="fas fa-shield-alt"></i><span>Adminläge</span></div>
@@ -473,7 +498,7 @@
 
     <!-- HÖGER INNEHÅLL -->
     <div class="main-content">
-        <!-- Toppbar (visas endast vid register) -->
+        <!-- Toppbar (endast register) -->
         <div id="topBarContainer">
             <div class="top-bar">
                 <div class="program-selector">
@@ -497,12 +522,12 @@
             </div>
         </div>
 
-        <!-- Kartcontainer (döljs i adminvyer) -->
+        <!-- Kartcontainer -->
         <div id="mapContainer" style="display:block;">
             <div class="map-container"><div id="map"></div></div>
         </div>
 
-        <!-- Dashboard (visas i åtgärds-/trasig-vy) -->
+        <!-- Dashboard -->
         <div id="dashboardArea" style="display:none; margin-bottom:20px;">
             <div class="dashboard-grid">
                 <div class="dash-card" data-filter="all"><div class="dash-label">Totalt</div><div class="dash-value" id="dashTotal">0</div></div>
@@ -552,7 +577,7 @@
                 <button class="gradient-btn" id="saveVentilBtn">💾 Spara ventil</button>
             </div>
 
-            <!-- ÅTGÄRDSLISTA (grupperad med distans) -->
+            <!-- ÅTGÄRDSLISTA -->
             <div id="view-actions" class="view">
                 <div class="card-title"><i class="fas fa-tools"></i> Åtgärdslista</div>
                 <div id="groupedActionsList"></div>
@@ -603,7 +628,6 @@
             'DNB':'#ff7f0e', 'SNB':'#9467bd', 'VSV':'#17becf'
         };
         
-        // Detaljer per status
         const statusDetails = {
             "Trasig": ["Snurrar bara", "Stum (kan ej rubba)", "Saknar nyckelstång", "Läckljud", "Avdragen"],
             "Trög": ["Kräver 2 gubbar", "Kärvar", "Går tungt"],
@@ -613,7 +637,6 @@
             "Åtgärdad": ["Åtgärdad OK", "Åtgärdad Ej OK"]
         };
 
-        // ---------- GLOBALA VARIABLER ----------
         let ventilData = [];
         let currentUser = 'fredde';
         let map, markerClusterGroup;
@@ -623,7 +646,6 @@
         let currentPhoto = null;
         let currentFilter = 'all';
 
-        // ---------- INITIERING ----------
         function init() {
             loadData();
             initMap();
@@ -634,9 +656,9 @@
             document.getElementById('regType').addEventListener('change', (e) => {
                 document.getElementById('typePrefix').innerText = e.target.value + '-';
             });
+            // Mobil: visa/dölj text i menyn vid behov
         }
 
-        // ---------- KARTA ----------
         function initMap() {
             map = L.map('map').setView([59.2, 17.82], 12);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -700,7 +722,6 @@
             if (v) { map.setView([v.lat, v.lng], 17); }
         };
 
-        // ---------- GEOKODNING ----------
         function reverseGeocode(lat, lng, callback) {
             fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
                 .then(r => r.json())
@@ -714,26 +735,22 @@
                 .catch(() => callback('Okänd plats'));
         }
 
-        // ---------- DATAHANTERING ----------
         function loadData() {
-            const stored = localStorage.getItem('va_botkyrka_final_v2');
+            const stored = localStorage.getItem('va_botkyrka_final_v3');
             if (stored) {
                 try { ventilData = JSON.parse(stored); } catch(e){ ventilData = []; }
-            } else {
-                ventilData = [];
-            }
+            } else { ventilData = []; }
             const user = localStorage.getItem('currentUser');
             if (user) currentUser = user;
             document.getElementById('userNotes').value = localStorage.getItem('userNotes') || '';
         }
 
         function saveToLocal() {
-            localStorage.setItem('va_botkyrka_final_v2', JSON.stringify(ventilData));
+            localStorage.setItem('va_botkyrka_final_v3', JSON.stringify(ventilData));
             if (currentUser) localStorage.setItem('currentUser', currentUser);
             localStorage.setItem('userNotes', document.getElementById('userNotes').value);
         }
 
-        // ---------- RENDERING ----------
         function renderAll() {
             updateMapMarkers();
             renderGroupedActions();
@@ -805,7 +822,7 @@
             if (v) {
                 v.distanced = !v.distanced;
                 saveToLocal();
-                renderGroupedActions(); // Uppdatera endast listan
+                renderGroupedActions();
             }
         };
 
@@ -879,7 +896,6 @@
             document.getElementById('avatarInitial').innerText = currentUser ? currentUser.charAt(0).toUpperCase() : '?';
         }
 
-        // ---------- DROPDOWN FÖR DETALJER ----------
         function populateDetailDropdown() {
             const statusSelect = document.getElementById('regStatus');
             const detailSelect = document.getElementById('regDetail');
@@ -901,9 +917,7 @@
             updateDetails();
         }
 
-        // ---------- EVENT LISTENERS ----------
         function setupEventListeners() {
-            // Navigation
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.addEventListener('click', () => {
                     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -934,23 +948,19 @@
                 });
             });
             
-            // Dashboard-filter
             document.querySelectorAll('.dash-card').forEach(card => {
                 card.addEventListener('click', () => {
-                    const filter = card.dataset.filter;
-                    currentFilter = filter;
+                    currentFilter = card.dataset.filter;
                     renderGroupedActions();
                 });
             });
             
-            // Nål-läge
             document.getElementById('needleBtn').addEventListener('click', () => {
                 isNeedleMode = !isNeedleMode;
                 document.getElementById('needleBtn').classList.toggle('active');
                 map.getContainer().style.cursor = isNeedleMode ? 'crosshair' : '';
             });
             
-            // GPS-knapp
             document.getElementById('gpsBtn').addEventListener('click', () => {
                 if (!navigator.geolocation) { alert('GPS stöds ej'); return; }
                 navigator.geolocation.getCurrentPosition(pos => {
@@ -965,7 +975,6 @@
                 }, () => alert('Kunde inte hämta position'));
             });
             
-            // Live-spårning
             document.getElementById('trackBtn').addEventListener('click', function() {
                 if (watchId) {
                     navigator.geolocation.clearWatch(watchId);
@@ -983,10 +992,8 @@
                 }
             });
             
-            // Foto
             document.getElementById('photoBtn').addEventListener('click', takePhoto);
             
-            // Spara ventil
             document.getElementById('saveVentilBtn').addEventListener('click', () => {
                 if (!currentUser) { alert('Logga in först'); return; }
                 
@@ -1043,17 +1050,14 @@
                 alert(`✅ ${fullNr} sparad!`);
             });
             
-            // Sök
             document.getElementById('searchBtn').addEventListener('click', searchAddress);
             document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') searchAddress(); });
             
-            // Anteckningar
             document.getElementById('saveNotesBtn').addEventListener('click', () => {
                 localStorage.setItem('userNotes', document.getElementById('userNotes').value);
                 alert('Anteckning sparad');
             });
             
-            // Byt användare
             document.getElementById('sidebarAuthBtn').addEventListener('click', () => {
                 const newName = prompt('Ange namn:', currentUser || '');
                 if (newName) {
@@ -1115,7 +1119,6 @@
             }
         }
 
-        // Starta appen
         init();
     })();
 </script>
